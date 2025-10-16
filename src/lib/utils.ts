@@ -1,10 +1,8 @@
-import { type ClassValue, clsx } from 'clsx';
-
 /**
- * Utility function to merge class names with clsx
+ * Utility function to merge class names
  */
-export function cn(...inputs: ClassValue[]) {
-  return clsx(inputs);
+export function cn(...inputs: (string | boolean | null | undefined)[]): string {
+  return inputs.filter(Boolean).join(' ');
 }
 
 /**
