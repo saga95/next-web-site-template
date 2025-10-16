@@ -1,0 +1,17 @@
+{
+  "recommendations": [
+    "ms-vscode.vscode-typescript-next",
+    "bradlc.vscode-tailwindcss",
+    "esbenp.prettier-vscode",
+    "ms-vscode.eslint",
+    "ms-playwright.playwright",
+    "ms-vscode.vscode-json",
+    "christian-kohler.path-intellisense",
+    "formulahendry.auto-rename-tag",
+    "ms-vscode.vscode-color",
+    "usernamehw.errorlens",
+    "ms-vscode.vscode-typescript-next",
+    "ms-vscode.vscode-react",
+    "ms-vscode.vscode-accessibility-tools"
+  ]
+}

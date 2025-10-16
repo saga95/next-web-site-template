@@ -1,17 +1,6 @@
 import Head from "next/head";
 import Image from "next/image";
-import { Geist, Geist_Mono } from "next/font/google";
 import styles from "@/styles/Home.module.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export default function Home() {
   return (
@@ -22,12 +11,10 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div
-        className={`${styles.page} ${geistSans.variable} ${geistMono.variable}`}
-      >
-        <main className={styles.main}>
+      <div className={styles['page']}>
+        <main className={styles['main']}>
           <Image
-            className={styles.logo}
+            className={styles['logo']}
             src="/next.svg"
             alt="Next.js logo"
             width={180}
@@ -41,15 +28,15 @@ export default function Home() {
             <li>Save and see your changes instantly.</li>
           </ol>
 
-          <div className={styles.ctas}>
+          <div className={styles['ctas']}>
             <a
-              className={styles.primary}
+              className={styles['primary']}
               href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
               target="_blank"
               rel="noopener noreferrer"
             >
               <Image
-                className={styles.logo}
+                className={styles['logo']}
                 src="/vercel.svg"
                 alt="Vercel logomark"
                 width={20}
@@ -61,13 +48,13 @@ export default function Home() {
               href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
               target="_blank"
               rel="noopener noreferrer"
-              className={styles.secondary}
+              className={styles['secondary']}
             >
               Read our docs
             </a>
           </div>
         </main>
-        <footer className={styles.footer}>
+        <footer className={styles['footer']}>
           <a
             href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
             target="_blank"

@@ -1,0 +1,22 @@
+User-agent: *
+Allow: /
+
+# SEO optimizations
+Sitemap: https://yoursite.com/sitemap.xml
+
+# Block common bot paths
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+Disallow: /dashboard/
+
+# Block development and testing paths
+Disallow: /test/
+Disallow: /dev/
+Disallow: /*.json$
+
+# Allow important pages
+Allow: /api/og/
+
+# Crawl delay for respectful crawling
+Crawl-delay: 1

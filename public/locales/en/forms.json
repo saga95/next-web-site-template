@@ -1,0 +1,22 @@
+{
+  "emailLabel": "Email",
+  "emailPlaceholder": "Enter your email",
+  "emailRequired": "Email is required",
+  "emailInvalid": "Please enter a valid email",
+  "passwordLabel": "Password",
+  "passwordPlaceholder": "Enter your password",
+  "passwordRequired": "Password is required",
+  "passwordMinLength": "Password must be at least {{min}} characters",
+  "nameLabel": "Name",
+  "namePlaceholder": "Enter your name",
+  "nameRequired": "Name is required",
+  "messageLabel": "Message",
+  "messagePlaceholder": "Enter your message",
+  "messageRequired": "Message is required",
+  "phoneLabel": "Phone",
+  "phonePlaceholder": "Enter your phone number",
+  "addressLabel": "Address",
+  "addressPlaceholder": "Enter your address",
+  "formSubmitSuccess": "Form submitted successfully!",
+  "formSubmitError": "Failed to submit form. Please try again."
+}
