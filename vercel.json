@@ -1,0 +1,29 @@
+{
+  "git": {
+    "deploymentEnabled": {
+      "main": true,
+      "staging": true,
+      "development": true
+    }
+  },
+  "github": {
+    "enabled": true,
+    "autoAlias": true,
+    "silent": false,
+    "autoJobCancelation": true
+  },
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "regions": ["iad1"],
+  "env": {
+    "NEXT_PUBLIC_APP_NAME": "@next_public_app_name",
+    "NEXT_PUBLIC_APP_URL": "@next_public_app_url"
+  },
+  "build": {
+    "env": {
+      "NEXT_PUBLIC_VERCEL_ENV": "@vercel-env"
+    }
+  }
+}

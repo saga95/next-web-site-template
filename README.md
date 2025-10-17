@@ -383,29 +383,68 @@ Contributions welcome! Please open an issue or PR.- Performance best practices
 
 ## 🚀 Deployment
 
-### Vercel (Recommended)
+This template is configured for deployment to multiple platforms with automated environment management.
+
+### Quick Deploy - Vercel (Recommended)
+
+**Option 1: Via Dashboard (Easiest)**
 ```bash
-npx vercel
+# Run the setup script
+./scripts/deploy-vercel.sh
+```
+Then follow the interactive guide to deploy via Vercel dashboard.
+
+**Option 2: Via CLI (Quick)**
+```bash
+# Install Vercel CLI
+npm install -g vercel
+
+# Login and deploy
+vercel login
+vercel
 ```
 
-### Netlify
+**📚 See [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) for complete instructions**
+
+### Other Platforms
+
+#### Netlify
 ```bash
 npm run build
-# Deploy dist folder
+# Deploy via Netlify CLI or dashboard
+# Configure environment variables in Netlify dashboard
 ```
 
-### AWS Amplify
+#### AWS Amplify
 ```bash
 npm run build
 # Configure build settings in Amplify console
+# Set environment variables in Amplify console
 ```
+
+### Environment Management
+
+Each deployment platform supports our three-branch strategy:
+- **main** → Production environment
+- **staging** → Staging environment  
+- **development** → Development environment
+
+**Environment Files:**
+- `.env.development` - Development defaults
+- `.env.staging` - Staging defaults
+- `.env.production` - Production structure
+- `.env.vercel` - Vercel-specific guide
+
+**📚 See [ENVIRONMENT_SETUP.md](./ENVIRONMENT_SETUP.md) for environment configuration**
 
 ### Build Configuration
 The template supports:
-- Static export mode (`npm run build:static`)
-- Server-side rendering
-- Incremental Static Regeneration
+- Server-side rendering (SSR)
+- Static site generation (SSG)
+- Incremental Static Regeneration (ISR)
 - API routes
+- Automatic environment detection
+- Branch-based deployments
 
 ## 🧪 Testing Strategy
 
@@ -457,6 +496,13 @@ The template supports:
 
 ## 📚 Documentation
 
+### Project Documentation
+- **[DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md)** - Complete deployment guide for Vercel, Netlify, AWS
+- **[ENVIRONMENT_SETUP.md](./ENVIRONMENT_SETUP.md)** - Environment variable management
+- **[BRANCHING_STRATEGY.md](./BRANCHING_STRATEGY.md)** - Git workflow and branching strategy
+- **[TESTING.md](./TESTING.md)** - Testing setup and guidelines
+- **[BRANCHES_CREATED.md](./BRANCHES_CREATED.md)** - Current branch status and next steps
+
 ### Code Standards
 - Use TypeScript for all new code
 - Follow ESLint configuration
@@ -479,9 +525,11 @@ The template supports:
 
 - [Next.js Documentation](https://nextjs.org/docs)
 - [React Documentation](https://react.dev)
-- [Tailwind CSS](https://tailwindcss.com)
+- [Material UI](https://mui.com/)
+- [i18next Documentation](https://www.i18next.com/)
 - [WCAG Guidelines](https://www.w3.org/WAI/WCAG22/quickref/)
 - [Web.dev Performance](https://web.dev/performance/)
+- [Vercel Documentation](https://vercel.com/docs)
 
 ## 📄 License
 
