@@ -1,0 +1,106 @@
+# Netlify configuration for Next.js
+# https://docs.netlify.com/configure-builds/file-based-configuration/
+
+[build]
+  # Build command
+  command = "npm run build"
+  
+  # Publish directory (Next.js outputs to .next)
+  publish = ".next"
+  
+  # Functions directory (for serverless functions)
+  functions = "netlify/functions"
+
+[build.environment]
+  # Node version
+  NODE_VERSION = "18.17.0"
+  
+  # Next.js specific
+  NEXT_TELEMETRY_DISABLED = "1"
+  
+  # Enable Next.js Runtime
+  NETLIFY_NEXT_PLUGIN_SKIP = "false"
+
+# Production context: all deploys from the main branch
+[context.production]
+  command = "npm run build"
+  
+  [context.production.environment]
+    NEXT_PUBLIC_VERCEL_ENV = "production"
+    NODE_ENV = "production"
+
+# Staging context: all deploys from the staging branch
+[context.staging]
+  command = "npm run build"
+  
+  [context.staging.environment]
+    NEXT_PUBLIC_VERCEL_ENV = "preview"
+    NODE_ENV = "production"
+
+# Development context: all deploys from the development branch
+[context.development]
+  command = "npm run build"
+  
+  [context.development.environment]
+    NEXT_PUBLIC_VERCEL_ENV = "development"
+    NODE_ENV = "development"
+
+# Branch deploy context: all deploys from branches other than main
+[context.branch-deploy]
+  command = "npm run build"
+
+# Deploy Preview context: all Deploy Previews
+[context.deploy-preview]
+  command = "npm run build"
+
+# Headers for security and performance
+[[headers]]
+  for = "/*"
+  
+  [headers.values]
+    # Security headers
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    
+    # Performance headers
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/static/*"
+  
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/_next/static/*"
+  
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/images/*"
+  
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Redirects and rewrites
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# Custom 404 page
+[[redirects]]
+  from = "/*"
+  to = "/404"
+  status = 404
+
+# Plugins
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[[plugins]]
+  package = "netlify-plugin-cache-nextjs"

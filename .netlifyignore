@@ -1,0 +1,85 @@
+# Files to ignore during Netlify deployment
+
+# Local environment files
+.env*.local
+.env.local
+
+# Development files
+BRANCHES_CREATED.md
+DEPLOYMENT_TEST.md
+DEPLOYMENT_COMPLETE.md
+NETLIFY_TEST.md
+TESTING.md
+TESTING_SETUP.md
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Scripts (except netlify functions)
+scripts/
+
+# Documentation (optional - comment out if you want docs in production)
+# *.md
+# !README.md
+
+# Testing
+__tests__/
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+jest.config.js
+jest.setup.js
+coverage/
+.coverage/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+*.log
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm/
+.eslintcache
+
+# Vercel (if you're also deploying to Vercel)
+.vercel/
+vercel.json
+
+# Build artifacts that will be regenerated
+.next/
+out/
+build/
+dist/
+
+# Dependency directories
+node_modules/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn
+.yarn-integrity
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*

@@ -404,22 +404,46 @@ vercel login
 vercel
 ```
 
-**📚 See [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) for complete instructions**
+**📚 See [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) for complete Vercel instructions**
 
-### Other Platforms
+---
 
-#### Netlify
+### Quick Deploy - Netlify
+
+**Option 1: Via Dashboard (Easiest)**
 ```bash
-npm run build
-# Deploy via Netlify CLI or dashboard
-# Configure environment variables in Netlify dashboard
+# Run the setup script
+./scripts/deploy-netlify.sh
+```
+Then follow the interactive guide to deploy via Netlify dashboard.
+
+**Option 2: Via CLI (Quick)**
+```bash
+# Install Netlify CLI
+npm install -g netlify-cli
+
+# Login and deploy
+netlify login
+netlify deploy --build
 ```
 
-#### AWS Amplify
+**📚 See [DEPLOYMENT_GUIDE_NETLIFY.md](./DEPLOYMENT_GUIDE_NETLIFY.md) for complete Netlify instructions**
+
+---
+
+### AWS Amplify
+
 ```bash
+# Build the project
 npm run build
-# Configure build settings in Amplify console
-# Set environment variables in Amplify console
+
+# Deploy via AWS Amplify Console
+# 1. Connect your GitHub repository
+# 2. Configure build settings:
+#    - Build command: npm run build
+#    - Output directory: .next
+# 3. Set environment variables in Amplify console
+# 4. Deploy!
 ```
 
 ### Environment Management
@@ -434,6 +458,7 @@ Each deployment platform supports our three-branch strategy:
 - `.env.staging` - Staging defaults
 - `.env.production` - Production structure
 - `.env.vercel` - Vercel-specific guide
+- `.env.netlify` - Netlify-specific guide
 
 **📚 See [ENVIRONMENT_SETUP.md](./ENVIRONMENT_SETUP.md) for environment configuration**
 
@@ -497,7 +522,8 @@ The template supports:
 ## 📚 Documentation
 
 ### Project Documentation
-- **[DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md)** - Complete deployment guide for Vercel, Netlify, AWS
+- **[DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md)** - Complete Vercel deployment guide
+- **[DEPLOYMENT_GUIDE_NETLIFY.md](./DEPLOYMENT_GUIDE_NETLIFY.md)** - Complete Netlify deployment guide
 - **[ENVIRONMENT_SETUP.md](./ENVIRONMENT_SETUP.md)** - Environment variable management
 - **[BRANCHING_STRATEGY.md](./BRANCHING_STRATEGY.md)** - Git workflow and branching strategy
 - **[TESTING.md](./TESTING.md)** - Testing setup and guidelines
