@@ -1,0 +1,264 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - staging
+      - development
+  pull_request:
+    branches:
+      - main
+      - staging
+      - development
+
+env:
+  NODE_VERSION: '20.x'
+
+jobs:
+  # ============================================================================
+  # Code Quality Checks
+  # ============================================================================
+  lint:
+    name: Lint & Type Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Run ESLint
+        run: npm run lint:check
+        
+      - name: Run TypeScript check
+        run: npm run type-check
+
+  # ============================================================================
+  # Tests
+  # ============================================================================
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Run tests
+        run: npm test -- --coverage
+        
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage/coverage-final.json
+          fail_ci_if_error: false
+
+  # ============================================================================
+  # Build
+  # ============================================================================
+  build:
+    name: Build Application
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    
+    strategy:
+      matrix:
+        environment: [development, staging, production]
+        
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Load environment variables
+        run: |
+          if [ "${{ matrix.environment }}" = "development" ]; then
+            cp .env.development .env.production
+          elif [ "${{ matrix.environment }}" = "staging" ]; then
+            cp .env.staging .env.production
+          fi
+          
+      - name: Build application
+        run: npm run build
+        env:
+          NODE_ENV: production
+          
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-${{ matrix.environment }}
+          path: |
+            .next
+            public
+          retention-days: 7
+
+  # ============================================================================
+  # Security Audit
+  # ============================================================================
+  security:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Run npm audit
+        run: npm audit --audit-level=moderate
+        continue-on-error: true
+        
+      - name: Run Snyk security scan
+        uses: snyk/actions/node@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+  # ============================================================================
+  # Deploy to Development
+  # ============================================================================
+  deploy-dev:
+    name: Deploy to Development
+    runs-on: ubuntu-latest
+    needs: [build]
+    if: github.ref == 'refs/heads/development' && github.event_name == 'push'
+    environment:
+      name: development
+      url: https://dev.yourapp.com
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-development
+          
+      - name: Deploy to Development
+        run: |
+          echo "Deploying to development environment..."
+          # Add your deployment commands here
+          # Example: vercel --prod --token=${{ secrets.VERCEL_TOKEN }}
+          
+      - name: Notify deployment
+        uses: 8398a7/action-slack@v3
+        if: always()
+        with:
+          status: ${{ job.status }}
+          text: 'Development deployment completed'
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+
+  # ============================================================================
+  # Deploy to Staging
+  # ============================================================================
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [build]
+    if: github.ref == 'refs/heads/staging' && github.event_name == 'push'
+    environment:
+      name: staging
+      url: https://staging.yourapp.com
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-staging
+          
+      - name: Deploy to Staging
+        run: |
+          echo "Deploying to staging environment..."
+          # Add your deployment commands here
+          
+      - name: Run smoke tests
+        run: |
+          echo "Running smoke tests..."
+          # Add smoke test commands
+          
+      - name: Notify deployment
+        uses: 8398a7/action-slack@v3
+        if: always()
+        with:
+          status: ${{ job.status }}
+          text: 'Staging deployment completed'
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+
+  # ============================================================================
+  # Deploy to Production
+  # ============================================================================
+  deploy-prod:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [build, security]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment:
+      name: production
+      url: https://yourapp.com
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-production
+          
+      - name: Deploy to Production
+        run: |
+          echo "Deploying to production environment..."
+          # Add your deployment commands here
+          
+      - name: Create release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ github.run_number }}
+          release_name: Release v${{ github.run_number }}
+          draft: false
+          prerelease: false
+          
+      - name: Notify deployment
+        uses: 8398a7/action-slack@v3
+        if: always()
+        with:
+          status: ${{ job.status }}
+          text: 'Production deployment completed 🚀'
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
