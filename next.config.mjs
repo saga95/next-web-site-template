@@ -3,6 +3,11 @@ const nextConfig = {
   /* config options here */
   reactStrictMode: true,
   
+  // Exclude test files and directories from pages
+  pageExtensions: ['tsx', 'ts', 'jsx', 'js'].map(ext => {
+    return ext;
+  }),
+  
   // Performance optimizations
   swcMinify: true,
   compress: true,
