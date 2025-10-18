@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import Home from '../index'
+import Home from '../../src/pages/index'
 
 describe('Home Page', () => {
   it('renders without crashing', () => {
