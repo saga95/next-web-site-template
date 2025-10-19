@@ -41,7 +41,7 @@ Built with enterprise-grade features, comprehensive documentation, and deploymen
 
 ```bash
 # 1. Fork or clone this repository
-git clone https://github.com/saga95/web-site-template.git my-project-name
+git clone https://github.com/saga95/next-web-site-template.git my-project-name
 cd my-project-name
 
 # 2. Install dependencies
@@ -95,14 +95,14 @@ After running `npm run dev`, verify:
 ### Recommended Fork Workflow
 
 ```bash
-# 1. Fork on GitHub UI (creates your-username/web-site-template)
+# 1. Fork on GitHub UI (creates your-username/next-web-site-template)
 
 # 2. Clone your fork
-git clone https://github.com/YOUR-USERNAME/web-site-template.git client-project-name
+git clone https://github.com/YOUR-USERNAME/next-web-site-template.git client-project-name
 cd client-project-name
 
 # 3. Add upstream remote to sync template updates
-git remote add upstream https://github.com/saga95/web-site-template.git
+git remote add upstream https://github.com/saga95/next-web-site-template.git
 
 # 4. Create your project branch
 git checkout -b project/client-name-setup
@@ -155,7 +155,7 @@ Organize your projects effectively:
 
 ```
 📁 Your GitHub Organization/
-├── 🔧 web-site-template (your fork - stays pristine)
+├── 🔧 next-web-site-template (your fork - stays pristine)
 ├── 🏢 client-acme-marketing-site
 ├── 🏢 client-beta-backoffice
 ├── ⚡ client-gamma-prototype
@@ -525,7 +525,7 @@ chore: update dependencies
 
 ```bash
 # 1. Fork template
-git clone https://github.com/YOUR-ORG/web-site-template.git client-acme-marketing
+git clone https://github.com/YOUR-ORG/next-web-site-template.git client-acme-marketing
 
 # 2. Customize branding
 cd client-acme-marketing
@@ -601,7 +601,7 @@ npm uninstall recharts
 
 ```bash
 # 1. Fork template
-git clone https://github.com/YOUR-ORG/web-site-template.git client-beta-backoffice
+git clone https://github.com/YOUR-ORG/next-web-site-template.git client-beta-backoffice
 
 # 2. Add authentication
 # Install NextAuth.js or Auth0
@@ -730,7 +730,7 @@ export const ProtectedRoute: React.FC = ({ children }) => {
 
 ```bash
 # 1. Fork template (5 minutes)
-git clone https://github.com/YOUR-ORG/web-site-template.git prototype-idea-name
+git clone https://github.com/YOUR-ORG/next-web-site-template.git prototype-idea-name
 
 # 2. Remove unnecessary features (15 minutes)
 # - Keep only needed languages
@@ -1673,8 +1673,8 @@ Built with these amazing technologies:
 ## 📞 Support
 
 For questions, issues, or feature requests:
-- **GitHub Issues**: [Open an issue](https://github.com/saga95/web-site-template/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/saga95/web-site-template/discussions)
+- **GitHub Issues**: [Open an issue](https://github.com/saga95/next-web-site-template/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/saga95/next-web-site-template/discussions)
 - **Email**: your-email@example.com
 
 ---

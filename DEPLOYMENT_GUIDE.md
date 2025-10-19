@@ -36,7 +36,7 @@ vercel login
 #### Via Vercel Dashboard:
 1. Go to https://vercel.com/new
 2. Click **"Import Git Repository"**
-3. Select **saga95/web-site-template**
+3. Select **saga95/next-web-site-template**
 4. Click **"Import"**
 
 #### Via CLI:
@@ -49,7 +49,7 @@ Follow the prompts:
 - **Set up and deploy?** Yes
 - **Which scope?** Your account
 - **Link to existing project?** No
-- **What's your project's name?** web-site-template (or your preferred name)
+- **What's your project's name?** next-web-site-template (or your preferred name)
 - **In which directory is your code located?** ./
 - **Override settings?** No
 
@@ -57,7 +57,7 @@ Follow the prompts:
 
 ### 3️⃣ Configure Production Branch
 
-1. Go to your project settings: https://vercel.com/saga95/web-site-template/settings
+1. Go to your project settings: https://vercel.com/saga95/next-web-site-template/settings
 2. Navigate to **Git → Production Branch**
 3. Change from `main` to: **`main`** (confirm it's set correctly)
 
@@ -74,8 +74,8 @@ Follow the prompts:
 
 Vercel will now deploy:
 - `main` → Production URL
-- `staging` → Preview URL (staging-web-site-template-*.vercel.app)
-- `development` → Preview URL (development-web-site-template-*.vercel.app)
+- `staging` → Preview URL (staging-next-web-site-template-*.vercel.app)
+- `development` → Preview URL (development-next-web-site-template-*.vercel.app)
 
 ---
 
@@ -98,7 +98,7 @@ API_SECRET_KEY=your-secret-key-here
 
 ##### **Production (main branch only)**
 ```bash
-NEXT_PUBLIC_APP_URL=https://web-site-template.vercel.app
+NEXT_PUBLIC_APP_URL=https://next-web-site-template.vercel.app
 NEXT_PUBLIC_EMAILJS_SERVICE_ID=prod_service_id
 NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=prod_template_id
 NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=prod_public_key
@@ -107,7 +107,7 @@ NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 
 ##### **Preview - Staging branch**
 ```bash
-NEXT_PUBLIC_APP_URL=https://staging-web-site-template.vercel.app
+NEXT_PUBLIC_APP_URL=https://staging-next-web-site-template.vercel.app
 NEXT_PUBLIC_EMAILJS_SERVICE_ID=staging_service_id
 NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=staging_template_id
 NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=staging_public_key
@@ -115,7 +115,7 @@ NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=staging_public_key
 
 ##### **Preview - Development branch**
 ```bash
-NEXT_PUBLIC_APP_URL=https://development-web-site-template.vercel.app
+NEXT_PUBLIC_APP_URL=https://development-next-web-site-template.vercel.app
 NEXT_PUBLIC_EMAILJS_SERVICE_ID=dev_service_id
 NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=dev_template_id
 NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=dev_public_key
@@ -181,7 +181,7 @@ git push origin development
 
 #### Check deployment status:
 
-1. Go to https://vercel.com/saga95/web-site-template
+1. Go to https://vercel.com/saga95/next-web-site-template
 2. You should see a new deployment for `development` branch
 3. Click on it to see build logs
 4. Once deployed, click "Visit" to see your site
@@ -203,7 +203,7 @@ git checkout development
 git commit -m "feat: new feature"
 git push origin development
 ```
-→ **Auto-deploys to:** `development-web-site-template-*.vercel.app`
+→ **Auto-deploys to:** `development-next-web-site-template-*.vercel.app`
 
 ### Staging Workflow:
 ```bash
@@ -212,7 +212,7 @@ git checkout staging
 git merge development
 git push origin staging
 ```
-→ **Auto-deploys to:** `staging-web-site-template-*.vercel.app`
+→ **Auto-deploys to:** `staging-next-web-site-template-*.vercel.app`
 
 ### Production Workflow:
 ```bash
@@ -231,7 +231,7 @@ git checkout main
 git merge release/1.0.0
 git push origin main
 ```
-→ **Auto-deploys to:** `web-site-template.vercel.app` (Production)
+→ **Auto-deploys to:** `next-web-site-template.vercel.app` (Production)
 
 ---
 
@@ -283,10 +283,10 @@ After setup, you'll have:
 
 | Branch | Environment | URL Pattern | Purpose |
 |--------|-------------|-------------|---------|
-| **main** | Production | `web-site-template.vercel.app` | Live production site |
+| **main** | Production | `next-web-site-template.vercel.app` | Live production site |
 | **staging** | Preview | `staging-*-saga95.vercel.app` | Pre-production testing |
 | **development** | Preview | `development-*-saga95.vercel.app` | Development testing |
-| **feature/*** | Preview | `web-site-template-*-saga95.vercel.app` | Feature branch previews |
+| **feature/*** | Preview | `next-web-site-template-*-saga95.vercel.app` | Feature branch previews |
 
 ---
 

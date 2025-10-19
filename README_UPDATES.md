@@ -144,7 +144,7 @@ The new README is structured for **forking this template** to build multiple cli
 
 ```
 📁 Your Organization/
-├── web-site-template (your fork)
+├── next-web-site-template (your fork)
 ├── client-acme-marketing-site
 ├── client-beta-backoffice
 ├── client-gamma-prototype

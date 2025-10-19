@@ -5,7 +5,7 @@
 Your repository now has the following branch structure:
 
 ```
-📦 saga95/web-site-template
+📦 saga95/next-web-site-template
 ├── 🌟 main (Production)
 │   └── commit: 27df437 - "feat: add branching strategy and environment management"
 │
@@ -26,9 +26,9 @@ Your repository now has the following branch structure:
 
 ## 🔗 GitHub URLs
 
-- **Main Branch:** https://github.com/saga95/web-site-template/tree/main
-- **Staging Branch:** https://github.com/saga95/web-site-template/tree/staging
-- **Development Branch:** https://github.com/saga95/web-site-template/tree/development
+- **Main Branch:** https://github.com/saga95/next-web-site-template/tree/main
+- **Staging Branch:** https://github.com/saga95/next-web-site-template/tree/staging
+- **Development Branch:** https://github.com/saga95/next-web-site-template/tree/development
 
 ## 📝 What Was Committed
 

@@ -106,7 +106,7 @@ Then select option 1 for dashboard deployment.
 1. Go to https://app.netlify.com/start
 2. Click "Import from Git"
 3. Select "GitHub"
-4. Choose **saga95/web-site-template**
+4. Choose **saga95/next-web-site-template**
 5. Configure build settings:
    - Build command: `npm run build`
    - Publish directory: `.next`
@@ -180,10 +180,10 @@ Every time you push to GitHub:
 - **Pull Request** → Deploy preview
 
 ### URLs You'll Get
-- **Production**: `web-site-template.netlify.app`
-- **Staging**: `staging--web-site-template.netlify.app`
-- **Development**: `development--web-site-template.netlify.app`
-- **PR Preview**: `deploy-preview-{PR#}--web-site-template.netlify.app`
+- **Production**: `next-web-site-template.netlify.app`
+- **Staging**: `staging--next-web-site-template.netlify.app`
+- **Development**: `development--next-web-site-template.netlify.app`
+- **PR Preview**: `deploy-preview-{PR#}--next-web-site-template.netlify.app`
 
 ### Build & Deploy Process
 1. Netlify detects the push
@@ -311,7 +311,7 @@ git push origin development
 
 ### 2. Watch the Deployment
 
-1. Go to https://app.netlify.com/sites/web-site-template/deploys
+1. Go to https://app.netlify.com/sites/next-web-site-template/deploys
 2. You'll see a new deployment for `development` branch
 3. Click on it to see build logs in real-time
 4. Wait for "Building" → "Deploying" → "Published"

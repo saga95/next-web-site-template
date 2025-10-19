@@ -88,8 +88,8 @@ export default function Home() {
             <h2 className={styles['sectionTitle']}>Quick Start</h2>
             <div className={styles['codeBlock']}>
               <code>
-                git clone https://github.com/saga95/web-site-template.git<br />
-                cd web-site-template<br />
+                git clone https://github.com/saga95/next-web-site-template.git<br />
+                cd next-web-site-template<br />
                 npm install<br />
                 npm run dev
               </code>
@@ -98,7 +98,7 @@ export default function Home() {
 
           <div className={styles['ctas']}>
             <a
-              href="https://github.com/saga95/web-site-template"
+              href="https://github.com/saga95/next-web-site-template"
               target="_blank"
               rel="noopener noreferrer"
               className={styles['primary']}
@@ -109,7 +109,7 @@ export default function Home() {
               View on GitHub
             </a>
             <a
-              href="https://github.com/saga95/web-site-template/blob/main/README.md"
+              href="https://github.com/saga95/next-web-site-template/blob/main/README.md"
               target="_blank"
               rel="noopener noreferrer"
               className={styles['secondary']}
@@ -143,7 +143,7 @@ export default function Home() {
           </p>
           <div className={styles['footerLinks']}>
             <a
-              href="https://github.com/saga95/web-site-template"
+              href="https://github.com/saga95/next-web-site-template"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -151,7 +151,7 @@ export default function Home() {
             </a>
             <span className={styles['separator']}>•</span>
             <a
-              href="https://github.com/saga95/web-site-template/blob/main/README.md"
+              href="https://github.com/saga95/next-web-site-template/blob/main/README.md"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -159,7 +159,7 @@ export default function Home() {
             </a>
             <span className={styles['separator']}>•</span>
             <a
-              href="https://github.com/saga95/web-site-template/issues"
+              href="https://github.com/saga95/next-web-site-template/issues"
               target="_blank"
               rel="noopener noreferrer"
             >

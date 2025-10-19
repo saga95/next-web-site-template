@@ -37,7 +37,7 @@ netlify login
 1. Go to https://app.netlify.com/start
 2. Click **"Import from Git"**
 3. Select **"GitHub"**
-4. Choose **saga95/web-site-template**
+4. Choose **saga95/next-web-site-template**
 5. Configure build settings:
    - **Build command**: `npm run build`
    - **Publish directory**: `.next`
@@ -53,7 +53,7 @@ netlify init
 Follow the prompts:
 - **Create & configure a new site?** Yes
 - **Team**: Your team/account
-- **Site name**: web-site-template (or your preferred name)
+- **Site name**: next-web-site-template (or your preferred name)
 - **Build command**: `npm run build`
 - **Directory to deploy**: `.next`
 - **Netlify Functions**: netlify/functions
@@ -73,8 +73,8 @@ Follow the prompts:
 
 Netlify will now deploy:
 - `main` → Production URL
-- `staging` → Branch deploy URL (staging--web-site-template.netlify.app)
-- `development` → Branch deploy URL (development--web-site-template.netlify.app)
+- `staging` → Branch deploy URL (staging--next-web-site-template.netlify.app)
+- `development` → Branch deploy URL (development--next-web-site-template.netlify.app)
 
 ---
 
@@ -120,7 +120,7 @@ Netlify allows you to set variables per deploy context:
 
 Select **"Production" scope**:
 ```bash
-NEXT_PUBLIC_APP_URL=https://web-site-template.netlify.app
+NEXT_PUBLIC_APP_URL=https://next-web-site-template.netlify.app
 NEXT_PUBLIC_EMAILJS_SERVICE_ID=prod_service_id
 NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=prod_template_id
 NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=prod_public_key
@@ -219,7 +219,7 @@ git push origin development
 
 #### Check deployment status:
 
-1. Go to https://app.netlify.com/sites/web-site-template/deploys
+1. Go to https://app.netlify.com/sites/next-web-site-template/deploys
 2. You should see a new deployment for `development` branch
 3. Click on it to see build logs
 4. Once deployed, click "Preview deploy" to see your site
@@ -242,7 +242,7 @@ git checkout development
 git commit -m "feat: new feature"
 git push origin development
 ```
-→ **Auto-deploys to:** `development--web-site-template.netlify.app`
+→ **Auto-deploys to:** `development--next-web-site-template.netlify.app`
 
 ### Staging Workflow:
 ```bash
@@ -251,7 +251,7 @@ git checkout staging
 git merge development
 git push origin staging
 ```
-→ **Auto-deploys to:** `staging--web-site-template.netlify.app`
+→ **Auto-deploys to:** `staging--next-web-site-template.netlify.app`
 
 ### Production Workflow:
 ```bash
@@ -270,7 +270,7 @@ git checkout main
 git merge release/1.0.0
 git push origin main
 ```
-→ **Auto-deploys to:** `web-site-template.netlify.app` (Production)
+→ **Auto-deploys to:** `next-web-site-template.netlify.app` (Production)
 
 ---
 
@@ -330,10 +330,10 @@ After setup, you'll have:
 
 | Branch | Environment | URL Pattern | Purpose |
 |--------|-------------|-------------|---------|
-| **main** | Production | `web-site-template.netlify.app` | Live production site |
-| **staging** | Branch Deploy | `staging--web-site-template.netlify.app` | Pre-production testing |
-| **development** | Branch Deploy | `development--web-site-template.netlify.app` | Development testing |
-| **feature/*** | Deploy Preview | `deploy-preview-*--web-site-template.netlify.app` | PR previews |
+| **main** | Production | `next-web-site-template.netlify.app` | Live production site |
+| **staging** | Branch Deploy | `staging--next-web-site-template.netlify.app` | Pre-production testing |
+| **development** | Branch Deploy | `development--next-web-site-template.netlify.app` | Development testing |
+| **feature/*** | Deploy Preview | `deploy-preview-*--next-web-site-template.netlify.app` | PR previews |
 
 ---
 

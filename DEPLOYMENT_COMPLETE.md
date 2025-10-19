@@ -86,7 +86,7 @@ Then select option 1 for dashboard deployment.
 ### **Option 2: Manual Dashboard (Recommended for First Time)**
 1. Go to https://vercel.com/new
 2. Click "Import Git Repository"
-3. Select **saga95/web-site-template**
+3. Select **saga95/next-web-site-template**
 4. Click "Import"
 5. Configure settings (or use defaults)
 6. Click "Deploy"
@@ -151,9 +151,9 @@ Every time you push to GitHub:
 - **Push to development** → Deploys to Development Preview
 
 ### URLs You'll Get
-- **Production**: `web-site-template.vercel.app`
-- **Staging**: `staging-web-site-template-xxx.vercel.app`
-- **Development**: `development-web-site-template-xxx.vercel.app`
+- **Production**: `next-web-site-template.vercel.app`
+- **Staging**: `staging-next-web-site-template-xxx.vercel.app`
+- **Development**: `development-next-web-site-template-xxx.vercel.app`
 
 ### Build & Deploy
 1. Vercel detects the push
@@ -172,21 +172,21 @@ For each environment, you need to set variables:
 
 **Production (main branch):**
 ```bash
-NEXT_PUBLIC_APP_URL=https://web-site-template.vercel.app
+NEXT_PUBLIC_APP_URL=https://next-web-site-template.vercel.app
 NEXT_PUBLIC_EMAILJS_SERVICE_ID=prod_service_id
 # ... etc
 ```
 
 **Staging (staging branch):**
 ```bash
-NEXT_PUBLIC_APP_URL=https://staging-web-site-template.vercel.app
+NEXT_PUBLIC_APP_URL=https://staging-next-web-site-template.vercel.app
 NEXT_PUBLIC_EMAILJS_SERVICE_ID=staging_service_id
 # ... etc
 ```
 
 **Development (development branch):**
 ```bash
-NEXT_PUBLIC_APP_URL=https://development-web-site-template.vercel.app
+NEXT_PUBLIC_APP_URL=https://development-next-web-site-template.vercel.app
 NEXT_PUBLIC_EMAILJS_SERVICE_ID=dev_service_id
 # ... etc
 ```
@@ -267,7 +267,7 @@ git push origin development
 
 ### 2. Watch the Deployment
 
-1. Go to https://vercel.com/saga95/web-site-template
+1. Go to https://vercel.com/saga95/next-web-site-template
 2. You'll see a new deployment for `development` branch
 3. Click on it to see build logs in real-time
 4. Wait for "Building" → "Deploying" → "Ready"
