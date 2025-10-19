@@ -19,6 +19,7 @@ Built with enterprise-grade features, comprehensive documentation, and deploymen
 3. [🚀 Features Overview](#-features-overview)
 4. [🏗️ Project Architecture](#-project-architecture)
 5. [⚙️ Development Workflow](#-development-workflow)
+   - [🤖 MCP-Powered Development (Agentic AI)](#-mcp-powered-development-agentic-ai)
 6. [🏢 Building Client Projects](#-building-client-projects)
 7. [⚡ Building Prototypes](#-building-prototypes)
 8. [🚢 Deployment Guide](#-deployment-guide)
@@ -74,6 +75,16 @@ After running `npm run dev`, verify:
 - [ ] 📝 No console errors in browser DevTools
 
 **🎉 You're ready to start developing!**
+
+### 🤖 Optional: Enable AI-Powered Development (MCP)
+
+Want to accelerate development with Figma-to-code workflows?
+
+1. **Setup Figma token** (5 minutes): See [MCP Setup Guide](./MCP_SETUP_GUIDE.md)
+2. **🚨 ALWAYS use "Copy Dev Mode link"** in Figma (not prototype link)
+3. **Ask Copilot**: "Generate component from [Figma Dev Mode link]"
+
+📚 **Full docs**: [MCP_SETUP_GUIDE.md](./MCP_SETUP_GUIDE.md) | [Quick Reference](./MCP_QUICK_REFERENCE.md)
 
 ---
 
@@ -395,6 +406,70 @@ export default async function handler(
 ---
 
 ## ⚙️ Development Workflow
+
+### 🤖 MCP-Powered Development (Agentic AI)
+
+This template includes **Model Context Protocol (MCP)** configuration for enhanced AI-assisted development with GitHub Copilot.
+
+#### Quick Start with MCP
+
+1. **Setup tokens** (one-time, 5 minutes):
+   ```bash
+   # Copy environment template
+   cp .env.example .env.local
+   
+   # Add your Figma token to .env.local
+   FIGMA_PERSONAL_ACCESS_TOKEN=figd_your_token_here
+   
+   # Reload VS Code: Cmd/Ctrl + Shift + P → "Reload Window"
+   ```
+
+2. **🚨 CRITICAL: Always use "Copy Dev Mode Link" in Figma**:
+   - Select node/component in Figma
+   - Click **Share** button → **"Copy Dev Mode link"** ✅
+   - Paste link in Copilot Chat
+
+3. **Use in Copilot Chat**:
+   ```
+   "Extract design tokens from [paste Figma Dev Mode link]"
+   "Generate a Material UI component from [paste link]"
+   "Create a theme.ts file with colors from Figma"
+   ```
+
+#### Available MCP Servers
+
+- 🎨 **Figma MCP** - Extract designs, tokens, components from Figma
+- 📁 **Filesystem MCP** - Enhanced file operations
+- 🔀 **Git MCP** - Automated git operations
+- 🐙 **GitHub MCP** - Issues, PRs, and automation
+
+#### Example Workflows
+
+**Design-to-Code in 30 seconds**:
+```
+1. Design button component in Figma
+2. Share → "Copy Dev Mode link"
+3. Ask Copilot: "Generate Material UI Button from [link]"
+4. Component generated with TypeScript + styles!
+```
+
+**Extract Design System**:
+```
+Ask Copilot: 
+"Extract all design tokens (colors, typography, spacing) from 
+[Figma Dev Mode link] and create a Material UI theme"
+```
+
+**Automated Git Operations**:
+```
+Ask Copilot:
+"Show git diff for components folder"
+"Create a commit with message 'feat: add user dashboard'"
+```
+
+📚 **Full Documentation**: See [MCP_SETUP_GUIDE.md](./MCP_SETUP_GUIDE.md) and [MCP_QUICK_REFERENCE.md](./MCP_QUICK_REFERENCE.md)
+
+---
 
 ### Daily Development Commands
 

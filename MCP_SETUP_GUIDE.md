@@ -81,7 +81,19 @@ If you want to use Figma integration:
    - Click "Generate new token"
    - Copy the token
 
-2. **Add to your environment**:
+2. **⚠️ IMPORTANT: Always Use "Copy Dev Mode Link"**:
+   - In Figma, click the **Share** button (top right)
+   - Click **"Copy Dev Mode link"** (NOT "Copy prototype link")
+   - This ensures you get the correct file key and node ID format
+   - The Dev Mode link includes design metadata needed by MCP
+
+2. **⚠️ IMPORTANT: Always Use "Copy Dev Mode Link"**:
+   - In Figma, click the **Share** button (top right)
+   - Click **"Copy Dev Mode link"** (NOT "Copy prototype link")
+   - This ensures you get the correct file key and node ID format
+   - The Dev Mode link includes design metadata needed by MCP
+
+3. **Add token to your environment**:
 
    **Option A: Using .env file (Recommended)**
    ```bash
@@ -94,7 +106,7 @@ If you want to use Figma integration:
    - Search for "MCP"
    - Add the token to Figma MCP Server environment variables
 
-3. **Update mcp.json** (if not using environment variables):
+4. **Update mcp.json** (if not using environment variables):
    ```json
    {
      "mcpServers": {
@@ -178,6 +190,23 @@ Or remove the entire server configuration from `mcp.json`.
 
 ## 🎨 Figma Integration
 
+### 🚨 CRITICAL: Always Use "Copy Dev Mode Link"
+
+When sharing Figma designs with MCP:
+
+1. **Select your node/component** in Figma
+2. **Click Share button** (top right)
+3. **Click "Copy Dev Mode link"** ✅ (NOT "Copy prototype link")
+4. **Paste the link** in your Copilot Chat prompt
+
+**Why Dev Mode Link?**
+- ✅ Includes design specifications (colors, spacing, typography)
+- ✅ Correct file key and node ID format
+- ✅ Access to component metadata
+- ❌ Prototype links don't work with MCP
+
+**Visual Reference**: See the "Copy Dev Mode link" option in Figma's Share dialog (shown in your screenshot).
+
 ### Common Use Cases
 
 #### 1. Extract Design Tokens from Figma
@@ -187,12 +216,26 @@ Ask Copilot:
 "Extract design tokens from Figma file <file-key> node <node-id>"
 ```
 
+**OR use the Dev Mode link directly**:
+```
+Ask Copilot:
+"Extract design tokens from this Figma design:
+[paste Dev Mode link here]"
+```
+
 #### 2. Generate Component from Figma Design
 
 ```
 Ask Copilot:
 "Generate a React component based on Figma design at 
 https://figma.com/design/<file-key>/<file-name>?node-id=<node-id>"
+```
+
+**OR**:
+```
+Ask Copilot:
+"Generate a Material UI Button component from:
+[paste Dev Mode link here]"
 ```
 
 #### 3. Get Design System Colors

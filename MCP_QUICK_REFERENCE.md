@@ -1,6 +1,18 @@
 # MCP Quick Reference Card
 
-## 🚀 Quick Commands for Copilot Chat
+## � CRITICAL: Always Use "Copy Dev Mode Link" in Figma
+
+**Before using Figma MCP**:
+1. Select node/component in Figma
+2. Click **Share** button (top right)
+3. Click **"Copy Dev Mode link"** ✅
+4. Paste in Copilot Chat
+
+**DO NOT use "Copy prototype link"** ❌
+
+---
+
+## �🚀 Quick Commands for Copilot Chat
 
 ### Figma Integration
 
