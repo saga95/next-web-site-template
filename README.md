@@ -241,6 +241,7 @@ Organize your projects effectively:
 - 🐶 **Husky** - Git hooks for quality assurance
 - 🔧 **Development Tools** - Hot reload, debugging, profiling
 - 📊 **Bundle Analyzer** - Visualize bundle composition
+- 🤖 **MCP Configuration** - Agentic AI development with Figma, GitHub, Git, and Filesystem integration (see [MCP Setup Guide](./MCP_SETUP_GUIDE.md))
 
 ### Communication & Utilities
 
