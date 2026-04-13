@@ -1,6 +1,92 @@
-import "@/styles/globals.css";
-import type { AppProps } from "next/app";
+import '@/styles/globals.css';
+import '@aws-amplify/ui-react/styles.css';
+import type { AppProps } from 'next/app';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { Amplify } from 'aws-amplify';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import ErrorBoundary from '@/components/ErrorBoundary';
+import { ToastProvider } from '@/components/Toast';
+import { AuthProvider } from '@/contexts/AuthContext';
+import '@/lib/i18n'; // Initialize i18n
+
+// ─── Amplify Provider ──────────────────────────────────────────────────────────
+
+function AmplifyProvider({ children }: { children: React.ReactNode }) {
+  const [isConfigured, setIsConfigured] = useState(false);
+
+  useEffect(() => {
+    const configureAmplify = async () => {
+      try {
+        const outputs = await import('../../amplify_outputs.json');
+        Amplify.configure(outputs.default);
+        setIsConfigured(true);
+      } catch {
+        // In development without sandbox, continue without Amplify
+        console.warn(
+          'Amplify outputs not found. Running without backend configuration.'
+        );
+        setIsConfigured(true);
+      }
+    };
+
+    configureAmplify();
+  }, []);
+
+  if (!isConfigured) {
+    return null;
+  }
+
+  return <>{children}</>;
+}
+
+// ─── React Query Client ────────────────────────────────────────────────────────
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 30 * 1000,
+      retry: 3,
+      retryDelay: (attemptIndex: number) =>
+        Math.min(1000 * 2 ** attemptIndex, 30000),
+      refetchOnWindowFocus: true,
+      refetchOnReconnect: true,
+    },
+    mutations: {
+      retry: 1,
+    },
+  },
+});
+
+// ─── App Component ─────────────────────────────────────────────────────────────
 
 export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+  const router = useRouter();
+
+  // Track page views (integrate with your analytics provider)
+  useEffect(() => {
+    const handleRouteChange = (_url: string) => {
+      // Analytics tracking placeholder
+      // Example: trackPageView(url);
+    };
+
+    router.events.on('routeChangeComplete', handleRouteChange);
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router.events]);
+
+  return (
+    <ErrorBoundary>
+      <AmplifyProvider>
+        <AuthProvider>
+          <QueryClientProvider client={queryClient}>
+            <ToastProvider>
+              <Component {...pageProps} />
+            </ToastProvider>
+          </QueryClientProvider>
+        </AuthProvider>
+      </AmplifyProvider>
+    </ErrorBoundary>
+  );
 }

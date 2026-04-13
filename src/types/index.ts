@@ -157,6 +157,31 @@ export interface StructuredData {
   [key: string]: unknown;
 }
 
+// ─── Auth / RBAC Types ─────────────────────────────────────────────────────────
+
+/** Cognito user groups — extend as needed for your domain. */
+export type UserRole = 'Admin' | 'Shopper';
+
+/** Profile returned by AuthContext after login. */
+export interface UserProfile {
+  sub: string;
+  email: string;
+  givenName?: string;
+  familyName?: string;
+  phoneNumber?: string;
+  groups: UserRole[];
+  emailVerified: boolean;
+}
+
+/** AuthContext state shape. */
+export interface AuthState {
+  user: UserProfile | null;
+  isAuthenticated: boolean;
+  isAdmin: boolean;
+  isShopper: boolean;
+  isLoading: boolean;
+}
+
 // User Types
 export interface User {
   id: string;
@@ -324,25 +349,116 @@ export interface AsyncState<T> extends LoadingState {
 }
 
 // Utility Types for React
-export type ComponentWithChildren<P = {}> = React.FC<P & { children: React.ReactNode }>;
+export type ComponentWithChildren<P = {}> = React.FC<
+  P & { children: React.ReactNode }
+>;
 
-export type ComponentPropsWithoutRef<T extends React.ElementType> = React.ComponentPropsWithoutRef<T>;
+export type ComponentPropsWithoutRef<T extends React.ElementType> =
+  React.ComponentPropsWithoutRef<T>;
 
-export type PolymorphicRef<C extends React.ElementType> = React.ComponentPropsWithRef<C>['ref'];
+export type PolymorphicRef<C extends React.ElementType> =
+  React.ComponentPropsWithRef<C>['ref'];
 
 export type PolymorphicComponentProp<
   C extends React.ElementType,
-  Props = {}
+  Props = {},
 > = React.PropsWithChildren<Props & { as?: C }> &
   Omit<React.ComponentPropsWithoutRef<C>, keyof Props>;
 
 export type PolymorphicComponentPropWithRef<
   C extends React.ElementType,
-  Props = {}
+  Props = {},
 > = PolymorphicComponentProp<C, Props> & { ref?: PolymorphicRef<C> };
 
 // Event Types
 export type KeyboardEventHandler = (event: React.KeyboardEvent) => void;
 export type MouseEventHandler = (event: React.MouseEvent) => void;
-export type ChangeEventHandler = (event: React.ChangeEvent<HTMLInputElement>) => void;
+export type ChangeEventHandler = (
+  event: React.ChangeEvent<HTMLInputElement>
+) => void;
 export type FocusEventHandler = (event: React.FocusEvent) => void;
+
+// ─── Ecommerce Reference Types ─────────────────────────────────────────────────
+// Pattern from uwu-sri-lanka/website. Replace / extend for your domain.
+
+export type OrderStatus =
+  | 'PENDING'
+  | 'CONFIRMED'
+  | 'PROCESSING'
+  | 'SHIPPED'
+  | 'DELIVERED'
+  | 'CANCELLED';
+
+export type ProductStatus = 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
+
+export interface Product {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  price: number;
+  compareAtPrice?: number;
+  currency: string;
+  images: string[];
+  categoryId: string;
+  status: ProductStatus;
+  inventory: number;
+  sku?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string;
+  image?: string;
+  parentId?: string;
+  sortOrder: number;
+}
+
+export interface OrderItem {
+  productId: string;
+  name: string;
+  price: number;
+  quantity: number;
+  image?: string;
+}
+
+export interface Order {
+  id: string;
+  userId: string;
+  items: OrderItem[];
+  subtotal: number;
+  tax: number;
+  shipping: number;
+  total: number;
+  status: OrderStatus;
+  shippingAddress: Address;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Address {
+  line1: string;
+  line2?: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
+}
+
+export interface CartItem {
+  product: Product;
+  quantity: number;
+}
+
+export interface ContactSubmission {
+  id: string;
+  name: string;
+  email: string;
+  subject?: string;
+  message: string;
+  createdAt: string;
+}
