@@ -9,6 +9,7 @@ import ErrorBoundary from '@/components/ErrorBoundary';
 import { ToastProvider } from '@/components/Toast';
 import { AuthProvider } from '@/contexts/AuthContext';
 import '@/lib/i18n'; // Initialize i18n
+export { reportWebVitals } from '@/lib/webVitals';
 
 // ─── Amplify Provider ──────────────────────────────────────────────────────────
 
@@ -82,6 +83,9 @@ export default function App({ Component, pageProps }: AppProps) {
         <AuthProvider>
           <QueryClientProvider client={queryClient}>
             <ToastProvider>
+              <a href="#main-content" className="skip-link">
+                Skip to main content
+              </a>
               <Component {...pageProps} />
             </ToastProvider>
           </QueryClientProvider>

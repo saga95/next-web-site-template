@@ -58,15 +58,16 @@ export const sleep = (ms: number): Promise<void> =>
   new Promise(resolve => setTimeout(resolve, ms));
 
 /**
- * Generate a random ID
+ * Generate a cryptographically secure random ID
  */
 export function generateId(length = 8): string {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let result = '';
-  for (let i = 0; i < length; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  if (typeof crypto !== 'undefined' && crypto.randomUUID && length >= 32) {
+    return crypto.randomUUID().replace(/-/g, '').slice(0, length);
   }
-  return result;
+  const bytes = new Uint8Array(length);
+  crypto.getRandomValues(bytes);
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  return Array.from(bytes, b => chars[b % chars.length]).join('');
 }
 
 /**
@@ -157,15 +158,9 @@ export function getNestedValue<T>(
 }
 
 /**
- * Remove HTML tags from string
+ * Remove HTML tags from string (safe — no innerHTML)
  */
 export function stripHtml(html: string): string {
-  if (isBrowser) {
-    const div = document.createElement('div');
-    div.innerHTML = html;
-    return div.textContent || div.innerText || '';
-  }
-  // Server-side fallback
   return html.replace(/<[^>]*>/g, '');
 }
 

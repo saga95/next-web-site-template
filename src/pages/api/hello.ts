@@ -6,8 +6,13 @@ type Data = {
 };
 
 export default function handler(
-  _req: NextApiRequest,
-  res: NextApiResponse<Data>,
+  req: NextApiRequest,
+  res: NextApiResponse<Data | { error: string }>,
 ) {
+  if (req.method !== 'GET') {
+    res.setHeader('Allow', 'GET');
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
   res.status(200).json({ name: "John Doe" });
 }
