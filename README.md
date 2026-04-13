@@ -2,7 +2,7 @@
 
 > **A battle-tested, production-ready foundation for building client projects and rapid prototypes**
 
-This template is designed for **forking and customization** to build:
+This is a **GitHub Template Repository** — click **"Use this template"** to create a new, independent project with a clean history.
 
 - 🏢 **Client Marketing Sites** - SEO-optimized, accessible web presence
 - 🔐 **Backoffice Applications** - Admin dashboards, content management
@@ -16,7 +16,7 @@ Built with enterprise-grade features, comprehensive documentation, and deploymen
 ## 📋 Table of Contents
 
 1. [🎯 Getting Started for Developers](#-getting-started-for-developers)
-2. [🔱 For Project Leads: Forking Strategy](#-for-project-leads-forking-strategy)
+2. [🔱 For Project Leads: Creating a New Project](#-for-project-leads-creating-a-new-project)
 3. [🚀 Features Overview](#-features-overview)
 4. [🏗️ Project Architecture](#-project-architecture)
 5. [⚙️ Development Workflow](#-development-workflow)
@@ -42,17 +42,19 @@ Built with enterprise-grade features, comprehensive documentation, and deploymen
 ### Initial Setup (5 minutes)
 
 ```bash
-# 1. Fork or clone this repository
+# Option A: Use the "Use this template" button on GitHub (recommended)
+# → Creates a new independent repo with clean history, can be private from day one
+
+# Option B: Clone manually
 git clone https://github.com/saga95/next-web-site-template.git my-project-name
 cd my-project-name
+rm -rf .git
+git init && git add . && git commit -m "Initial commit from template"
 
-# 2. Run the bootstrap script (installs deps, sets up env, validates)
-./scripts/bootstrap.sh
-
-# 3. Start development server
-pnpm dev   # or: pnpm dev
-
-# 4. Open http://localhost:3000
+# Then:
+./scripts/bootstrap.sh   # installs deps, sets up env, validates
+pnpm dev                 # start development server
+# Open http://localhost:3000
 ```
 
 **Or setup manually:**
@@ -94,81 +96,63 @@ Want to accelerate development with Figma-to-code workflows?
 
 ---
 
-## 🔱 For Project Leads: Forking Strategy
+## 🔱 For Project Leads: Creating a New Project
 
-### When to Fork vs. Clone
+### "Use this template" vs. Fork vs. Clone
 
-**Fork This Template When:**
+| Method | Visibility | History | Upstream sync | Best for |
+|--------|-----------|---------|---------------|----------|
+| **Use this template** (recommended) | Private or public | Clean (1 commit) | Manual | Client projects, SaaS products |
+| **Clone + re-init** | Private or public | Clean (1 commit) | Manual | Quick prototypes, internal tools |
+| **Fork** | Inherits public | Full history | Easy (`git fetch upstream`) | Open-source contributions, learning |
 
-- ✅ Starting a new client project with ongoing maintenance
-- ✅ Building a unique product/prototype that may evolve
-- ✅ Need to maintain project-specific customizations
-- ✅ Want to sync upstream template improvements periodically
+> **⚠️ Important:** Forking a public repo creates a **public** fork. GitHub does not allow making forks of public repos private. For client or commercial work, always use **"Use this template"** or **clone + re-init**.
 
-**Clone Directly When:**
-
-- ✅ Quick one-off prototype (no long-term maintenance)
-- ✅ Learning/experimentation purposes
-- ✅ Internal tools that won't need template updates
-
-### Recommended Fork Workflow
+### Recommended Workflow (Use this template)
 
 ```bash
-# 1. Fork on GitHub UI (creates your-username/next-web-site-template)
+# 1. Click "Use this template" → "Create a new repository" on GitHub
+#    → Set owner, name, and visibility (private for client work)
 
-# 2. Clone your fork
-git clone https://github.com/YOUR-USERNAME/next-web-site-template.git client-project-name
+# 2. Clone your new repo
+git clone https://github.com/YOUR-USERNAME/client-project-name.git
 cd client-project-name
 
-# 3. Add upstream remote to sync template updates
-git remote add upstream https://github.com/saga95/next-web-site-template.git
+# 3. Bootstrap the project
+./scripts/bootstrap.sh
 
-# 4. Create your project branch
-git checkout -b project/client-name-setup
-
-# 5. Customize for your project (see Customization Guide below)
+# 4. Customize for your project (see Customization Guide below)
 # - Update package.json (name, version, description)
 # - Update this README.md with project specifics
 # - Configure branding (colors, fonts, logos)
 # - Remove unused features
 # - Add project-specific components
 
-# 6. Commit your baseline
+# 5. Commit your baseline
 git commit -am "feat: initialize [client-name] project baseline"
-git push origin project/client-name-setup
-
-# 7. Merge to main when ready
-git checkout main
-git merge project/client-name-setup
 git push origin main
 ```
 
-### Syncing Template Updates
+### Syncing future template improvements (optional)
 
-Periodically pull improvements from the original template:
+If you used "Use this template" or cloned, you can still pull in future improvements:
 
 ```bash
-# 1. Fetch latest changes from upstream
-git fetch upstream
+# Add the original template as a remote (one-time)
+git remote add template https://github.com/saga95/next-web-site-template.git
 
-# 2. Review what changed before merging
-git log upstream/main --oneline --since="2 weeks ago"
-git diff main..upstream/main --stat          # File-level summary
-git diff main..upstream/main -- src/lib/     # Inspect specific directories
+# Periodically fetch and review
+git fetch template
+git log template/main --oneline --since="1 month ago"
 
-# 3. Create a sync branch (never merge directly to main)
+# Option A: Cherry-pick specific commits
+git cherry-pick <commit-hash>
+
+# Option B: Full merge (create a branch first)
 git checkout -b update/sync-template
-
-# 4. Merge upstream
-git merge upstream/main
-
-# 5. Resolve conflicts, then validate
-pnpm install                                 # Update dependencies
-pnpm type-check && pnpm lint && pnpm test    # Quality gates
-pnpm build                                   # Full build verification
-
-# 6. Push and create PR for team review
-git push origin update/sync-template
+git merge template/main
+pnpm install && pnpm type-check && pnpm test && pnpm build  # validate
+git push origin update/sync-template  # create PR for review
 ```
 
 #### What Merges Cleanly vs. What Conflicts

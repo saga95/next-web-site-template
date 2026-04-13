@@ -39,7 +39,10 @@
     "prepare": "husky",
     "amplify:sandbox": "npx ampx sandbox",
     "amplify:deploy": "npx ampx pipeline-deploy",
-    "bootstrap": "bash scripts/bootstrap.sh"
+    "bootstrap": "bash scripts/bootstrap.sh",
+    "audit": "pnpm audit --audit-level=high",
+    "quality:quick": "pnpm lint:check && pnpm type-check && pnpm test",
+    "quality": "pnpm format:check && pnpm lint:check && pnpm type-check && pnpm test:coverage && pnpm audit"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -66,6 +69,7 @@
     "aws-amplify": "^6.0.0",
     "critters": "^0.0.23",
     "dayjs": "^1.11.13",
+    "dompurify": "^3.3.3",
     "i18next": "^23.16.4",
     "i18next-browser-languagedetector": "^8.0.2",
     "i18next-http-backend": "^2.6.2",
@@ -84,6 +88,7 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
+    "@types/dompurify": "^3.2.0",
     "@types/jest": "^30.0.0",
     "@types/node": "^20",
     "@types/react": "^18",
@@ -115,5 +120,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "pnpm": {
+    "overrides": {},
+    "auditConfig": {
+      "ignoreCves": []
+    }
   }
 }

@@ -12,7 +12,14 @@ const customJestConfig = {
   
   // Test environment
   testEnvironment: 'jest-environment-jsdom',
-  
+  // Fail fast after 5 failures to save CI time
+  bail: 5,
+
+  // Per-test timeout (10 seconds) — prevents hanging tests
+  testTimeout: 10000,
+
+  // Do not enable fake timers globally — opt in per test
+  fakeTimers: { enableGlobally: false },  
   // Module name mapper for path aliases
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',

@@ -115,10 +115,17 @@ const eslintConfig = [
       'jsx-a11y/scope': 'error',
       'jsx-a11y/tabindex-no-positive': 'error',
 
+      // Security rules — prevent code injection vectors
+      'no-eval': 'error',
+      'no-implied-eval': 'error',
+      'no-new-func': 'error',
+      'no-script-url': 'error',
+
       // Performance and best practices
       'no-console': ['warn', { allow: ['warn', 'error'] }],
       'no-debugger': 'error',
       'no-duplicate-imports': 'error',
+      'eqeqeq': ['warn', 'smart'],
       'no-unused-expressions': 'error',
       'prefer-const': 'error',
       'no-var': 'error',
