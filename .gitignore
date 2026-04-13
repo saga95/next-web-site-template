@@ -47,3 +47,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# amplify — amplify_outputs.json is public client config (not secrets)
+# It is committed as a stub; `ampx sandbox` overwrites it with real values

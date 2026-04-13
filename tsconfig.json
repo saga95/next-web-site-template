@@ -51,12 +51,15 @@
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": [
     "node_modules",
+    "amplify",
+    "e2e",
     "**/*.test.ts",
     "**/*.test.tsx",
     "**/*.spec.ts",
     "**/*.spec.tsx",
     "jest.setup.ts",
     "jest.config.js",
+    "playwright.config.ts",
     "__tests__"
   ]
 }

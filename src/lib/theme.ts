@@ -1,11 +1,12 @@
 import { createTheme, ThemeOptions } from '@mui/material/styles';
 
+// TODO: Customize brand colors below to match your design system
 // Light theme configuration
 export const lightTheme: ThemeOptions = {
   palette: {
     mode: 'light',
     primary: {
-      main: '#6366f1',
+      main: '#6366f1', // TODO: Replace with your primary brand color
       light: '#818cf8',
       dark: '#4f46e5',
       contrastText: '#ffffff',

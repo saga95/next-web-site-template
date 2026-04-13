@@ -1,8 +1,9 @@
 User-agent: *
 Allow: /
 
-# SEO optimizations
-Sitemap: https://yoursite.com/sitemap.xml
+# Sitemap is served dynamically via /api/sitemap
+# After deploying, update the line below with your actual domain:
+# Sitemap: https://yourdomain.com/api/sitemap
 
 # Block common bot paths
 Disallow: /api/
