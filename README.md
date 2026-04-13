@@ -3,6 +3,7 @@
 > **A battle-tested, production-ready foundation for building client projects and rapid prototypes**
 
 This template is designed for **forking and customization** to build:
+
 - 🏢 **Client Marketing Sites** - SEO-optimized, accessible web presence
 - 🔐 **Backoffice Applications** - Admin dashboards, content management
 - ⚡ **Rapid Prototypes** - MVP validation and proof-of-concepts
@@ -34,7 +35,7 @@ Built with enterprise-grade features, comprehensive documentation, and deploymen
 ### Prerequisites
 
 - **Node.js 18+** (LTS recommended)
-- **npm/yarn/pnpm** (npm 9+ preferred)
+- **pnpm** (preferred), or npm/yarn
 - **Git** with SSH or HTTPS access
 - **Basic knowledge of**: Next.js, React, TypeScript, Material UI
 
@@ -45,27 +46,32 @@ Built with enterprise-grade features, comprehensive documentation, and deploymen
 git clone https://github.com/saga95/next-web-site-template.git my-project-name
 cd my-project-name
 
-# 2. Install dependencies
-npm install
+# 2. Run the bootstrap script (installs deps, sets up env, validates)
+./scripts/bootstrap.sh
 
-# 3. Copy environment template
-cp .env.development .env.local
+# 3. Start development server
+pnpm dev   # or: pnpm dev
 
-# 4. Configure EmailJS (optional for contact forms)
-# Sign up at https://www.emailjs.com/ and add your keys to .env.local
-# NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_service_id
-# NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_template_id
-# NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_public_key
+# 4. Open http://localhost:3000
+```
 
-# 5. Start development server
-npm run dev
+**Or setup manually:**
 
-# 6. Open http://localhost:3000
+```bash
+pnpm install                      # Install dependencies
+cp .env.example .env.local        # Create env config (edit with your values)
+pnpm dev                          # Start dev server
+```
+
+**Optional: AWS Amplify backend**
+
+```bash
+npx ampx sandbox                  # Start local Amplify sandbox
 ```
 
 ### First Steps Checklist
 
-After running `npm run dev`, verify:
+After running `pnpm dev`, verify:
 
 - [ ] ✅ Server running on http://localhost:3000
 - [ ] 🎨 Page displays with Material UI theme
@@ -93,12 +99,14 @@ Want to accelerate development with Figma-to-code workflows?
 ### When to Fork vs. Clone
 
 **Fork This Template When:**
+
 - ✅ Starting a new client project with ongoing maintenance
 - ✅ Building a unique product/prototype that may evolve
 - ✅ Need to maintain project-specific customizations
 - ✅ Want to sync upstream template improvements periodically
 
 **Clone Directly When:**
+
 - ✅ Quick one-off prototype (no long-term maintenance)
 - ✅ Learning/experimentation purposes
 - ✅ Internal tools that won't need template updates
@@ -140,25 +148,69 @@ git push origin main
 Periodically pull improvements from the original template:
 
 ```bash
-# Fetch latest changes from upstream
+# 1. Fetch latest changes from upstream
 git fetch upstream
 
-# Check what's new
-git log upstream/main --oneline
+# 2. Review what changed before merging
+git log upstream/main --oneline --since="2 weeks ago"
+git diff main..upstream/main --stat          # File-level summary
+git diff main..upstream/main -- src/lib/     # Inspect specific directories
 
-# Merge updates (preferably on a branch first)
+# 3. Create a sync branch (never merge directly to main)
 git checkout -b update/sync-template
+
+# 4. Merge upstream
 git merge upstream/main
 
-# Resolve conflicts carefully - test thoroughly!
-npm install  # Update dependencies
-npm run dev  # Verify locally
-npm run build  # Ensure build works
-npm run test  # Run test suite
+# 5. Resolve conflicts, then validate
+pnpm install                                 # Update dependencies
+pnpm type-check && pnpm lint && pnpm test    # Quality gates
+pnpm build                                   # Full build verification
 
-# Push and create PR for review
+# 6. Push and create PR for team review
 git push origin update/sync-template
 ```
+
+#### What Merges Cleanly vs. What Conflicts
+
+The template is structured so **infrastructure stays separate from your domain code**. Understanding this helps predict and resolve conflicts:
+
+| Layer | Files | Merge Behavior |
+|-------|-------|---------------|
+| **Infra (clean merge)** | `src/lib/` (env, logger, seo, i18n, date, utils), `src/hooks/common.ts`, `src/components/ErrorBoundary.tsx`, `src/components/Toast.tsx`, `docs/`, `scripts/`, CI/CD, eslint/prettier configs | Merges cleanly — you typically don't modify these |
+| **Auth & Layouts (may conflict)** | `src/contexts/AuthContext.tsx`, `src/components/AdminLayout.tsx`, `src/components/AccountLayout.tsx`, `src/pages/auth/*` | May conflict if you customized nav items, groups, or form fields |
+| **Amplify backend (likely conflicts)** | `amplify/data/resource.ts`, `amplify/auth/resource.ts`, `amplify/storage/resource.ts`, `amplify/backend.ts` | Will conflict — you've added your own models and config |
+| **Your domain (no conflict)** | `src/pages/` (your pages), `src/features/` (your modules), `src/components/` (your components) | No conflict — template doesn't touch your custom files |
+| **Shared config (review carefully)** | `package.json`, `tsconfig.json`, `next.config.mjs`, `_app.tsx` | May conflict on dependency versions or provider order |
+
+#### Conflict Resolution Strategy
+
+```bash
+# When you hit conflicts during merge:
+
+# 1. See which files conflict
+git diff --name-only --diff-filter=U
+
+# 2. For each conflicted file, decide:
+#    - KEEP YOURS: Your customizations take priority (schemas, themes, pages)
+git checkout --ours amplify/data/resource.ts
+#    - KEEP THEIRS: Template improvement is better (infra, utilities)
+git checkout --theirs src/lib/logger.ts
+#    - MANUAL MERGE: Both sides have valuable changes (package.json, _app.tsx)
+#      Open the file, resolve <<<< markers, test
+
+# 3. After resolving all conflicts
+git add .
+pnpm install                                 # In case package.json changed
+pnpm type-check && pnpm test && pnpm build   # Validate everything
+git commit
+```
+
+#### Recommended Sync Cadence
+
+- **Monthly** — for active SaaS products (catches security patches and DX improvements)
+- **Quarterly** — for stable client projects in maintenance mode
+- **Before major milestones** — sync before starting a new feature sprint to bring in latest infra
 
 ### Multi-Client Organization Strategy
 
@@ -175,6 +227,7 @@ Organize your projects effectively:
 ```
 
 **Pro Tips:**
+
 - Use GitHub **Topics/Labels**: `client-project`, `prototype`, `backoffice`, `marketing-site`
 - Tag releases: `v1.0.0-acme`, `v2.1.0-beta`
 - Create a **private template** in your org for pre-configured client defaults
@@ -193,6 +246,19 @@ Organize your projects effectively:
 - **🔄 React Query v4** - Powerful data fetching and caching
 - **📝 React Hook Form** - Performant form validation
 - **✅ Zod** - Runtime type validation and schema validation
+- **☁️ AWS Amplify Gen 2** - Auth (Cognito), API (AppSync/GraphQL), Storage (S3), Database (DynamoDB)
+
+### Authentication & Authorization (Cognito RBAC)
+
+- 🔐 **Cognito User Groups** - Admin and Shopper roles out of the box
+- 📝 **Auth Pages** - Login, Register, Confirm Email, Forgot Password (React Hook Form + Zod)
+- 🧩 **AuthContext** - `useAuth()` hook with `isAdmin`, `isShopper`, user profile, login/logout/register
+- 🚀 **Post-Confirmation Lambda** - Auto-assigns default group on sign-up
+- 🔒 **AdminLayout** - Protected sidebar layout for admin pages (responsive, role-gated)
+- 👤 **AccountLayout** - Tabbed layout for authenticated user pages (profile, orders, settings)
+- 🔑 **Dual Data Clients** - Public (API-key) and authenticated (userPool) AppSync clients
+- 🛡️ **CDK Overrides** - Password policy, Admin IAM permissions, S3 CORS configuration
+- 📋 **Reference Data Schema** - Product, Order, Category, ContactSubmission models with auth rules
 
 ### Performance (Core Web Vitals Optimized)
 
@@ -226,13 +292,14 @@ Organize your projects effectively:
 
 ### SEO & Metadata
 
-- 🔍 **Dynamic Meta Tags** - Title, description, Open Graph
-- 🗺️ **Sitemap Generation** - Automatic sitemap.xml
+- 🔍 **Dynamic Meta Tags** - Title, description, Open Graph via `generatePageMeta()`
+- 🗺️ **Sitemap Generation** - Automatic sitemap.xml with search engine ping
 - 🤖 **robots.txt** - Search engine directives
-- 📊 **Structured Data** - Schema.org implementation
+- 📊 **Structured Data** - JSON-LD helpers for Organization, Website, FAQ, Article, Product, LocalBusiness
 - 🌐 **Open Graph** - Social media optimization
 - 🐦 **Twitter Cards** - Twitter-specific metadata
 - 📱 **Mobile-First** - Responsive and mobile-optimized
+- 🤖 **AEO/GEO** - Answer Engine Optimization and Generative Engine Optimization ready
 
 ### Internationalization (i18n)
 
@@ -245,14 +312,22 @@ Organize your projects effectively:
 
 ### Developer Experience
 
-- 📝 **TypeScript** - Strict type checking enabled
-- 🧪 **Testing Suite** - Jest + React Testing Library + Playwright ready
-- 📏 **ESLint** - Comprehensive linting rules
+- 📝 **TypeScript** - 20+ strict mode flags (noImplicitAny, exactOptionalPropertyTypes, noUncheckedIndexedAccess, etc.)
+- 🧪 **Testing Suite** - Jest + React Testing Library (unit) + Playwright (E2E)
+- 📏 **ESLint** - Flat config with 30+ jsx-a11y accessibility rules (WCAG 2.2 AA)
 - 💅 **Prettier** - Automatic code formatting
-- 🐶 **Husky** - Git hooks for quality assurance
+- 🐶 **Husky + lint-staged** - Git hooks for pre-commit quality (lint + format)
+- 🛡️ **ErrorBoundary** - Global error boundary with graceful fallback UI
+- 🔔 **Toast Notifications** - Snackbar system via `ToastProvider` + `useToast()` hook
+- 🔐 **Auth Provider** - `AuthProvider` + `useAuth()` for Cognito session, groups, and role detection
+- 🏗️ **DDD Feature Modules** - Reference domain-driven architecture (`src/features/todos/`)
+- 📋 **Structured Logger** - Environment-aware logging with child loggers (`src/lib/logger.ts`)
+- 📊 **ISO Compliance** - ISO 25010 quality model and ISO 27001 security compliance matrix
 - 🔧 **Development Tools** - Hot reload, debugging, profiling
 - 📊 **Bundle Analyzer** - Visualize bundle composition
+- 🤖 **Agent Orchestration** - Role-based AI agent guides (`AGENTS.md`) and Copilot instructions
 - 🤖 **MCP Configuration** - Agentic AI development with Figma, GitHub, Git, and Filesystem integration (see [MCP Setup Guide](./MCP_SETUP_GUIDE.md))
+- 🚀 **Bootstrap Script** - One-command project setup (`./scripts/bootstrap.sh`)
 
 ### Communication & Utilities
 
@@ -270,79 +345,116 @@ Organize your projects effectively:
 ```
 my-next-template/
 ├── .github/                    # GitHub configuration
-│   └── workflows/             # CI/CD workflows (currently disabled)
-├── .next/                     # Next.js build output (gitignored)
-├── __tests__/                 # Test files (root level)
-│   ├── components/           # Component tests
-│   ├── hooks/                # Hook tests
-│   └── pages/                # Page tests
-├── node_modules/              # Dependencies (gitignored)
+│   ├── copilot-instructions.md # AI agent coding standards
+│   ├── workflows/
+│   │   └── ci-cd.yml         # CI/CD pipeline (lint, type-check, test, build)
+│   ├── ISSUE_TEMPLATE/       # Bug report & feature request templates
+│   └── PULL_REQUEST_TEMPLATE.md
+├── .husky/                    # Git hooks
+│   └── pre-commit             # Lint-staged pre-commit hook
+├── __tests__/                 # Root-level page tests
+│   └── pages/
+│       └── index.test.tsx
+├── amplify/                   # AWS Amplify Gen 2 backend
+│   ├── auth/resource.ts      # Cognito authentication (groups, MFA, phone)
+│   ├── auth/post-confirmation/ # Lambda: auto-assign default group on sign-up
+│   │   ├── resource.ts
+│   │   └── handler.ts
+│   ├── data/resource.ts      # AppSync/DynamoDB data schema (Product, Order, Category, Contact)
+│   ├── storage/resource.ts   # S3 storage (uploads, assets, per-user files)
+│   ├── backend.ts            # Backend entry + CDK overrides (password policy, Admin IAM, S3 CORS)
+│   └── package.json          # Amplify dependencies
+├── docs/                      # Project documentation
+│   └── compliance.md         # ISO 25010 & ISO 27001 compliance matrix
+├── e2e/                       # Playwright end-to-end tests
+│   └── smoke.spec.ts         # Smoke tests (homepage, a11y, API, responsive)
 ├── public/                    # Static assets
-│   ├── locales/              # Translation JSON files
-│   │   ├── en/              # English translations
-│   │   ├── es/              # Spanish translations
-│   │   ├── fr/              # French translations
-│   │   ├── de/              # German translations
-│   │   ├── ja/              # Japanese translations
-│   │   ├── zh/              # Chinese translations
-│   │   └── ar/              # Arabic translations
-│   ├── favicon.ico
-│   └── images/              # Image assets
+│   ├── locales/              # Translation JSON files (7 languages)
+│   │   ├── en/              # English (primary)
+│   │   ├── es/, fr/, de/    # European languages
+│   │   ├── ja/, zh/         # Asian languages
+│   │   └── ar/              # Arabic (RTL)
+│   ├── icons/
+│   │   └── icon.svg          # App icon (TODO: replace with your icon)
+│   ├── manifest.json         # PWA manifest
+│   ├── og-image.svg          # Social preview placeholder (TODO: replace)
+│   └── robots.txt            # Search engine directives
 ├── scripts/                   # Deployment and utility scripts
-│   ├── deploy-vercel.sh     # Vercel deployment helper
-│   └── deploy-netlify.sh    # Netlify deployment helper
-├── src/                       # Source code
+│   ├── bootstrap.sh          # One-command project setup
+│   ├── deploy-vercel.sh      # Vercel deployment helper
+│   ├── deploy-netlify.sh     # Netlify deployment helper
+│   └── setup-env.sh          # Environment setup helper
+├── src/
 │   ├── components/           # Reusable React components
-│   │   ├── common/          # Shared components (Button, Input, etc.)
-│   │   ├── layout/          # Layout components (Header, Footer)
-│   │   └── forms/           # Form components
+│   │   ├── AccountLayout.tsx # Authenticated user layout (tabs: profile, orders, settings)
+│   │   ├── AdminLayout.tsx   # Admin dashboard layout (sidebar, role protection)
+│   │   ├── ContactForm.tsx   # EmailJS-powered contact form
+│   │   ├── ErrorBoundary.tsx # Global error boundary
+│   │   ├── Toast.tsx         # Toast notification system (ToastProvider + useToast)
+│   │   └── __tests__/        # Component tests
+│   ├── contexts/             # React context providers
+│   │   └── AuthContext.tsx   # Cognito auth (login, register, groups, isAdmin/isShopper)
+│   ├── features/             # Domain-driven feature modules
+│   │   └── todos/            # Reference DDD implementation
+│   │       ├── types.ts      # Domain types
+│   │       ├── repository.ts # Data access layer
+│   │       ├── hooks.ts      # React Query hooks
+│   │       └── index.ts      # Public API
 │   ├── hooks/                # Custom React hooks
-│   │   ├── useTranslation.ts
-│   │   ├── useTheme.ts
-│   │   └── useAuth.ts
+│   │   ├── common.ts         # Shared hooks (useDebounce, useLocalStorage, etc.)
+│   │   └── __tests__/        # Hook tests
 │   ├── lib/                  # Utilities and configurations
-│   │   ├── theme.ts         # Material UI theme configuration
-│   │   ├── i18n.ts          # i18next configuration
+│   │   ├── amplify.ts       # AWS Amplify client configuration
+│   │   ├── amplifyClient.ts # Dual data clients (public API-key + authenticated userPool)
+│   │   ├── date.ts          # Date utilities (dayjs)
 │   │   ├── emailjs.ts       # EmailJS utilities
-│   │   └── utils.ts         # Common utilities
+│   │   ├── env.ts           # Environment detection & feature flags
+│   │   ├── i18n.ts          # i18next configuration
+│   │   ├── logger.ts        # Structured logger with child loggers
+│   │   ├── seo.ts           # SEO/JSON-LD utilities
+│   │   ├── theme.ts         # Material UI theme (TODO: customize colors)
+│   │   ├── utils.ts         # Common utilities
+│   │   └── __tests__/        # Utility tests
 │   ├── pages/                # Next.js pages (file-based routing)
-│   │   ├── _app.tsx         # Custom App component
+│   │   ├── _app.tsx         # App providers (ErrorBoundary, Amplify, Auth, React Query, Toast)
 │   │   ├── _document.tsx    # Custom Document component
-│   │   ├── index.tsx        # Home page
-│   │   └── api/             # API routes
-│   │       └── hello.ts     # Example API endpoint
-│   ├── styles/               # Global styles
+│   │   ├── index.tsx        # Template demo homepage (TODO: replace)
+│   │   ├── 404.tsx          # Custom 404 page
+│   │   ├── 500.tsx          # Custom 500 page
+│   │   ├── auth/
+│   │   │   ├── login.tsx    # Sign-in page (email + password)
+│   │   │   ├── register.tsx # Create account (with validation)
+│   │   │   ├── confirm.tsx  # Email verification code
+│   │   │   └── forgot-password.tsx # Password reset flow
+│   │   └── api/
+│   │       ├── hello.ts     # Example API endpoint
+│   │       └── sitemap.ts   # Dynamic sitemap.xml generator
+│   ├── styles/
 │   │   ├── globals.css      # Global CSS
-│   │   └── Home.module.css  # Module CSS example
-│   └── types/                # TypeScript type definitions
-│       ├── index.ts         # Global types
-│       └── api.ts           # API types
-├── .env.development           # Development environment variables
-├── .env.staging               # Staging environment variables
-├── .env.production            # Production environment structure
-├── .env.vercel                # Vercel-specific guide
-├── .env.netlify               # Netlify-specific guide
-├── .eslintrc.json            # ESLint configuration
-├── .gitignore                # Git ignore rules
-├── .prettierrc               # Prettier configuration
+│   │   └── Home.module.css  # CSS Modules example
+│   └── types/
+│       └── index.ts         # Global TypeScript types (Auth, RBAC, Ecommerce, UI, API)
+├── amplify.yml               # AWS Amplify build specification
+├── amplify_outputs.json      # Amplify client config stub (overwritten by sandbox)
+├── eslint.config.mjs         # ESLint flat config
+├── .prettierrc.json          # Prettier configuration
 ├── jest.config.js            # Jest testing configuration
-├── jest.setup.ts             # Jest setup file
+├── playwright.config.ts      # Playwright E2E configuration
 ├── netlify.toml              # Netlify deployment config
-├── next.config.ts            # Next.js configuration
-├── next-env.d.ts             # Next.js TypeScript declarations
-├── package.json              # Dependencies and scripts
-├── README.md                 # This file
-├── tsconfig.json             # TypeScript configuration
+├── next.config.mjs           # Next.js configuration
 ├── vercel.json               # Vercel deployment config
-├── BRANCHING_STRATEGY.md     # Git workflow documentation
-├── DEPLOYMENT_GUIDE.md       # Vercel deployment guide
-├── DEPLOYMENT_GUIDE_NETLIFY.md  # Netlify deployment guide
-└── ENVIRONMENT_SETUP.md      # Environment variables guide
+├── mcp.json                  # MCP server configuration (Figma, Git, GitHub)
+├── AGENTS.md                 # AI agent orchestration guide
+├── CONTRIBUTING.md            # Contribution guidelines
+├── SECURITY.md                # Security policy
+├── LICENSE                    # MIT License
+└── README.md                 # This file
 ```
 
 ### Design Patterns & Conventions
 
 #### Component Organization
+
 ```typescript
 // ✅ Good: Organized, typed, documented
 // src/components/common/Button/Button.tsx
@@ -352,16 +464,17 @@ import { ButtonProps } from '@/types';
  * Primary button component for user actions
  * @param {ButtonProps} props - Button properties
  */
-export const Button: React.FC<ButtonProps> = ({ 
-  children, 
+export const Button: React.FC<ButtonProps> = ({
+  children,
   variant = 'primary',
-  ...props 
+  ...props
 }) => {
   return <button className={`btn-${variant}`} {...props}>{children}</button>;
 };
 ```
 
 #### Custom Hooks
+
 ```typescript
 // ✅ Good: Reusable, typed, tested
 // src/hooks/useLocalStorage.ts
@@ -371,6 +484,7 @@ export const useLocalStorage = <T>(key: string, initialValue: T) => {
 ```
 
 #### API Routes
+
 ```typescript
 // ✅ Good: Type-safe, error-handled
 // src/pages/api/users.ts
@@ -391,7 +505,7 @@ export default async function handler(
 ### State Management Strategy
 
 **Local State**: React `useState` for component-specific state
-**Shared State**: React Context API for theme, i18n, auth
+**Shared State**: React Context API (`AuthContext` for auth/RBAC, theme, i18n)
 **Server State**: React Query for API data fetching and caching
 **Form State**: React Hook Form for complex forms
 
@@ -405,6 +519,120 @@ export default async function handler(
 
 ---
 
+## ☁️ AWS Amplify Backend
+
+The template includes a pre-configured **AWS Amplify Gen 2** backend with authentication, data, and storage.
+
+### Backend Structure
+
+| Resource | Config File                   | Service                                    |
+| -------- | ----------------------------- | ------------------------------------------ |
+| Auth     | `amplify/auth/resource.ts`    | Amazon Cognito (email login, MFA optional) |
+| Data     | `amplify/data/resource.ts`    | AWS AppSync + DynamoDB (GraphQL API)       |
+| Storage  | `amplify/storage/resource.ts` | Amazon S3 (public/protected/private paths) |
+
+### Local Development with Sandbox
+
+```bash
+# Start a personal cloud sandbox (creates real AWS resources)
+npx ampx sandbox
+
+# The sandbox generates amplify_outputs.json automatically
+# _app.tsx loads it dynamically — no config needed
+
+# Clean up when done
+npx ampx sandbox delete
+```
+
+### Adding Data Models
+
+Edit `amplify/data/resource.ts` to define your schema. The template ships with reference models (Product, Order, Category, ContactSubmission) that you can extend:
+
+```typescript
+const schema = a.schema({
+  // Existing reference models: Product, Order, Category, ContactSubmission
+  // Add your own below:
+  BlogPost: a
+    .model({
+      title: a.string().required(),
+      content: a.string().required(),
+      status: a.enum(['DRAFT', 'PUBLISHED']),
+    })
+    .authorization(allow => [
+      allow.owner(),
+      allow.authenticated().to(['read']),
+      allow.group('Admin').to(['create', 'update', 'delete']),
+    ]),
+});
+```
+
+### Deployment
+
+Push to `main` triggers the Amplify pipeline defined in `amplify.yml`. The pipeline builds the backend first, then the frontend.
+
+---
+
+## 📊 SEO Infrastructure
+
+The template provides comprehensive SEO utilities in `src/lib/seo.ts`.
+
+### Page Metadata
+
+```typescript
+import { generatePageMeta } from '@/lib/seo';
+
+// In your page component
+const meta = generatePageMeta({
+  title: 'About Us',
+  description: 'Learn about our company',
+  path: '/about',
+  image: '/images/about-og.jpg',
+});
+// Returns: { title, description, canonical, openGraph, twitter }
+```
+
+### JSON-LD Structured Data
+
+```typescript
+import { generateOrganizationJsonLd, generateFAQJsonLd, jsonLdScriptProps } from '@/lib/seo';
+
+// Add to your page's <Head>
+<script {...jsonLdScriptProps(generateOrganizationJsonLd())} />
+<script {...jsonLdScriptProps(generateFAQJsonLd(faqItems))} />
+```
+
+Available JSON-LD generators: `Organization`, `WebSite`, `Breadcrumb`, `FAQ`, `Article`, `LocalBusiness`, `Product`.
+
+---
+
+## 📋 Structured Logger
+
+Use `src/lib/logger.ts` instead of `console.log`. The logger is environment-aware and disabled in production.
+
+```typescript
+import { logger, authLogger } from '@/lib/logger';
+
+logger.info('App started');
+authLogger.warn('Token expiring soon', { userId: '123' });
+
+// Create a child logger for component context
+const log = logger.createChild('MyComponent');
+log.debug('Rendering with props', props);
+```
+
+---
+
+## 🤖 Agent Orchestration
+
+This template includes AI agent instructions for accelerated development:
+
+- **[.github/copilot-instructions.md](.github/copilot-instructions.md)** — Coding standards and project rules for GitHub Copilot
+- **[AGENTS.md](AGENTS.md)** — Role-based agent workflows (Setup, Feature, Localization, SEO, QA, Deploy agents)
+
+Agents follow the conventions defined in these files to produce consistent, project-aligned code.
+
+---
+
 ## ⚙️ Development Workflow
 
 ### 🤖 MCP-Powered Development (Agentic AI)
@@ -414,17 +642,19 @@ This template includes **Model Context Protocol (MCP)** configuration for enhanc
 #### Quick Start with MCP
 
 1. **Setup tokens** (one-time, 5 minutes):
+
    ```bash
    # Copy environment template
    cp .env.example .env.local
-   
+
    # Add your Figma token to .env.local
    FIGMA_PERSONAL_ACCESS_TOKEN=figd_your_token_here
-   
+
    # Reload VS Code: Cmd/Ctrl + Shift + P → "Reload Window"
    ```
 
 2. **🚨 CRITICAL: Always use "Copy Dev Mode Link" in Figma**:
+
    - Select node/component in Figma
    - Click **Share** button → **"Copy Dev Mode link"** ✅
    - Paste link in Copilot Chat
@@ -446,6 +676,7 @@ This template includes **Model Context Protocol (MCP)** configuration for enhanc
 #### Example Workflows
 
 **Design-to-Code in 30 seconds**:
+
 ```
 1. Design button component in Figma
 2. Share → "Copy Dev Mode link"
@@ -454,13 +685,15 @@ This template includes **Model Context Protocol (MCP)** configuration for enhanc
 ```
 
 **Extract Design System**:
+
 ```
-Ask Copilot: 
-"Extract all design tokens (colors, typography, spacing) from 
+Ask Copilot:
+"Extract all design tokens (colors, typography, spacing) from
 [Figma Dev Mode link] and create a Material UI theme"
 ```
 
 **Automated Git Operations**:
+
 ```
 Ask Copilot:
 "Show git diff for components folder"
@@ -475,34 +708,34 @@ Ask Copilot:
 
 ```bash
 # Start development server (hot reload enabled)
-npm run dev
+pnpm dev
 
 # Type checking (run before committing)
-npm run type-check
+pnpm type-check
 
 # Linting (run before committing)
-npm run lint
+pnpm lint
 
 # Fix linting issues automatically
-npm run lint:fix
+pnpm lint:fix
 
 # Run all tests
-npm run test
+pnpm test
 
 # Run tests in watch mode
-npm run test:watch
+pnpm test:watch
 
 # Run specific test file
-npm test -- __tests__/components/Button.test.tsx
+pnpm test -- __tests__/components/Button.test.tsx
 
 # Build for production (test locally)
-npm run build
+pnpm build
 
 # Start production server locally
-npm run start
+pnpm start
 
 # Analyze bundle size
-npm run analyze
+pnpm analyze
 ```
 
 ### Git Workflow (Git Flow Strategy)
@@ -564,13 +797,14 @@ git push origin main
 
 ```bash
 # Run this checklist before every commit
-npm run type-check  # ✅ No TypeScript errors
-npm run lint        # ✅ No linting errors
-npm run test        # ✅ All tests pass
-npm run build       # ✅ Build succeeds
+pnpm type-check  # ✅ No TypeScript errors
+pnpm lint        # ✅ No linting errors
+pnpm test        # ✅ All tests pass
+pnpm build       # ✅ Build succeeds
 ```
 
 **Automated via Husky** (if configured):
+
 - Pre-commit: Lint staged files
 - Pre-push: Run tests
 - Commit-msg: Validate commit message format
@@ -627,6 +861,7 @@ cd client-acme-marketing
 #### Marketing Site Checklist
 
 **Essential Features:**
+
 - [ ] ✅ Homepage with hero section
 - [ ] ✅ About/Services pages
 - [ ] ✅ Contact form (EmailJS configured)
@@ -639,6 +874,7 @@ cd client-acme-marketing
 - [ ] ✅ Custom domain connected
 
 **Optional Features:**
+
 - [ ] Blog section (add `/src/pages/blog/`)
 - [ ] Case studies/portfolio
 - [ ] Newsletter signup
@@ -652,11 +888,11 @@ cd client-acme-marketing
 # For simple marketing sites, you may remove:
 
 # 1. Remove React Query (if no API calls)
-npm uninstall @tanstack/react-query
+pnpm remove @tanstack/react-query
 # Remove from src/pages/_app.tsx
 
 # 2. Remove Recharts (if no charts)
-npm uninstall recharts
+pnpm remove recharts
 # Remove related imports
 
 # 3. Simplify i18n (if single language)
@@ -679,44 +915,52 @@ npm uninstall recharts
 # 1. Fork template
 git clone https://github.com/YOUR-ORG/next-web-site-template.git client-beta-backoffice
 
-# 2. Add authentication
-# Install NextAuth.js or Auth0
-npm install next-auth
+# 2. Auth is already built-in
+# - Cognito with Admin/Shopper groups
+# - Auth pages at /auth/login, /auth/register, etc.
+# - AdminLayout with sidebar + route protection
+# - AccountLayout with tabs for user pages
+# - useAuth() hook for role detection (isAdmin, isShopper)
 
-# 3. Create protected routes
+# 3. Create admin pages using AdminLayout
 # src/pages/admin/
 #   ├── index.tsx (dashboard)
+#   ├── products.tsx (product management)
+#   ├── categories.tsx (category management)
+#   ├── orders.tsx (order management)
 #   ├── users.tsx (user management)
-#   ├── content.tsx (content management)
-#   └── analytics.tsx (analytics dashboard)
+#   └── settings.tsx (settings)
 
 # 4. Add data tables and forms
 # Use Material UI DataGrid
-npm install @mui/x-data-grid
+pnpm add @mui/x-data-grid
 
-# 5. Integrate backend API
-# Configure React Query for data fetching
-# Add API routes in src/pages/api/
+# 5. Use dual Amplify clients for data fetching
+# publicClient (API-key) for public reads
+# authClient (userPool) for authenticated operations
+# See src/lib/amplifyClient.ts
 
-# 6. Deploy with restricted access
-# Configure Vercel/Netlify authentication
+# 6. Deploy
+./scripts/deploy-vercel.sh  # or deploy-netlify.sh
 ```
 
 #### Backoffice Checklist
 
 **Essential Features:**
-- [ ] ✅ Authentication (NextAuth, Auth0, or custom)
-- [ ] ✅ Role-based access control (admin, editor, viewer)
-- [ ] ✅ Protected routes (redirect if unauthorized)
+
+- [x] ✅ Authentication (Cognito with email + phone login, optional MFA)
+- [x] ✅ Role-based access control (Admin, Shopper groups via Cognito)
+- [x] ✅ Protected routes (AdminLayout redirects non-admins)
 - [ ] ✅ User management interface
 - [ ] ✅ Data tables (sorting, filtering, pagination)
 - [ ] ✅ CRUD operations (Create, Read, Update, Delete)
-- [ ] ✅ Form validation (React Hook Form + Zod)
-- [ ] ✅ API integration (REST or GraphQL)
-- [ ] ✅ Error handling and logging
+- [x] ✅ Form validation (React Hook Form + Zod)
+- [x] ✅ API integration (AppSync GraphQL via dual clients)
+- [x] ✅ Error handling and logging
 - [ ] ✅ Audit trails (who changed what when)
 
 **Recommended Additions:**
+
 - [ ] Data visualization (Recharts already included)
 - [ ] File upload functionality
 - [ ] Export to CSV/PDF
@@ -726,72 +970,75 @@ npm install @mui/x-data-grid
 - [ ] Activity logs
 - [ ] Email notifications
 
-#### Authentication Setup Example
+#### Authentication & Protected Routes (Built-in)
+
+The template ships with Cognito authentication and role-based layouts:
 
 ```typescript
-// src/pages/api/auth/[...nextauth].ts
-import NextAuth from 'next-auth';
-import Providers from 'next-auth/providers';
+// src/pages/admin/products.tsx — Protected admin page
+import AdminLayout from '@/components/AdminLayout';
 
-export default NextAuth({
-  providers: [
-    Providers.Credentials({
-      name: 'Credentials',
-      credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" }
-      },
-      async authorize(credentials) {
-        // Validate credentials against your backend
-        const user = await validateUser(credentials);
-        if (user) {
-          return user;
-        }
-        return null;
-      }
-    })
-  ],
-  callbacks: {
-    async jwt(token, user) {
-      if (user) {
-        token.role = user.role;
-      }
-      return token;
-    },
-    async session(session, token) {
-      session.user.role = token.role;
-      return session;
-    }
-  },
-  pages: {
-    signIn: '/auth/signin',
-    error: '/auth/error',
-  }
-});
+export default function AdminProductsPage() {
+  return (
+    <AdminLayout title="Products">
+      {/* AdminLayout auto-redirects non-admin users to / */}
+      <ProductTable />
+    </AdminLayout>
+  );
+}
 ```
 
 ```typescript
-// src/components/ProtectedRoute.tsx
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+// src/pages/account/index.tsx — Protected user page
+import AccountLayout from '@/components/AccountLayout';
 
-export const ProtectedRoute: React.FC = ({ children }) => {
-  const { data: session, status } = useSession();
-  const router = useRouter();
+export default function MyAccountPage() {
+  return (
+    <AccountLayout title="My Account">
+      {/* AccountLayout auto-redirects unauthenticated users to /auth/login */}
+      <ProfileForm />
+    </AccountLayout>
+  );
+}
+```
 
-  useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/auth/signin');
-    }
-  }, [status, router]);
+```typescript
+// Using auth state in any component
+import { useAuth } from '@/contexts/AuthContext';
 
-  if (status === 'loading') {
-    return <LoadingSpinner />;
-  }
+function NavBar() {
+  const { user, isAuthenticated, isAdmin, logout } = useAuth();
 
-  return session ? <>{children}</> : null;
-};
+  return (
+    <nav>
+      {isAuthenticated ? (
+        <>
+          <span>Welcome, {user?.givenName}</span>
+          {isAdmin && <Link href="/admin">Admin Dashboard</Link>}
+          <button onClick={logout}>Sign Out</button>
+        </>
+      ) : (
+        <Link href="/auth/login">Sign In</Link>
+      )}
+    </nav>
+  );
+}
+```
+
+```typescript
+// Using dual data clients for AppSync queries
+import { publicClient, authClient } from '@/lib/amplifyClient';
+
+// Public read (storefront — no login needed)
+const { data: products } = await publicClient.models.Product.list();
+
+// Authenticated write (admin only)
+await authClient.models.Product.create({
+  name: 'New Product',
+  slug: 'new-product',
+  price: 29.99,
+  status: 'ACTIVE',
+});
 ```
 
 ---
@@ -834,6 +1081,7 @@ git clone https://github.com/YOUR-ORG/next-web-site-template.git prototype-idea-
 #### Prototype Checklist (MVP Features Only)
 
 **Must Have:**
+
 - [ ] ✅ Core user flow (1-3 pages max)
 - [ ] ✅ Basic UI (Material UI components, no custom design)
 - [ ] ✅ Mock data (no backend required initially)
@@ -841,21 +1089,24 @@ git clone https://github.com/YOUR-ORG/next-web-site-template.git prototype-idea-
 - [ ] ✅ Deployed URL for testing
 
 **Nice to Have:**
+
 - [ ] Form validation
 - [ ] Loading states
 - [ ] Error messages
 - [ ] Analytics tracking
 
 **Skip for Prototype:**
-- ❌ Authentication (use hardcoded "logged in" state)
+
 - ❌ Complex animations
 - ❌ Edge case handling
 - ❌ Production-grade error handling
 - ❌ Comprehensive testing
+- ❌ Full i18n (single language is fine)
 
 #### Prototyping Tips
 
 1. **Use Mock Data**: Create `src/data/mockData.ts`
+
 ```typescript
 export const mockUsers = [
   { id: 1, name: 'John Doe', email: 'john@example.com' },
@@ -864,6 +1115,7 @@ export const mockUsers = [
 ```
 
 2. **Fake API Calls**: Simulate async behavior
+
 ```typescript
 export const fetchUsers = async () => {
   await new Promise(resolve => setTimeout(resolve, 500)); // Fake delay
@@ -872,13 +1124,15 @@ export const fetchUsers = async () => {
 ```
 
 3. **Skip Backend**: Use local storage for state
+
 ```typescript
-const saveData = (data) => {
+const saveData = data => {
   localStorage.setItem('prototypeData', JSON.stringify(data));
 };
 ```
 
 4. **Deploy Early**: Share work-in-progress
+
 ```bash
 # Deploy to preview URL immediately
 vercel --prod=false
@@ -886,6 +1140,7 @@ vercel --prod=false
 ```
 
 5. **Collect Feedback**: Add simple feedback form
+
 ```typescript
 // Add EmailJS feedback form on every page
 <FeedbackButton onClick={() => openFeedbackModal()} />
@@ -901,11 +1156,11 @@ This template is configured for **Vercel**, **Netlify**, and **AWS Amplify** wit
 
 **Automatic deployments** configured for three environments:
 
-| Branch | Environment | URL Pattern |
-|--------|-------------|-------------|
-| `main` | Production | `https://yourapp.com` |
-| `staging` | Staging | `https://staging.yourapp.com` |
-| `development` | Development | `https://dev.yourapp.com` |
+| Branch        | Environment | URL Pattern                   |
+| ------------- | ----------- | ----------------------------- |
+| `main`        | Production  | `https://yourapp.com`         |
+| `staging`     | Staging     | `https://staging.yourapp.com` |
+| `development` | Development | `https://dev.yourapp.com`     |
 
 ### Quick Deploy - Vercel (Recommended)
 
@@ -928,7 +1183,7 @@ git push origin main
 
 ```bash
 # Install Vercel CLI
-npm install -g vercel
+pnpm add -g vercel
 
 # Login
 vercel login
@@ -965,7 +1220,7 @@ git push origin main
 
 ```bash
 # Install Netlify CLI
-npm install -g netlify-cli
+pnpm add -g netlify-cli
 
 # Login
 netlify login
@@ -985,14 +1240,14 @@ netlify deploy --build --prod
 
 ```bash
 # 1. Build the project
-npm run build
+pnpm build
 
 # 2. Deploy via AWS Amplify Console:
 #    - Go to AWS Amplify Console
 #    - Click "New app" > "Host web app"
 #    - Connect GitHub repository
 #    - Configure build settings:
-#      - Build command: npm run build
+#      - Build command: pnpm build
 #      - Output directory: .next
 #    - Set environment variables
 #    - Deploy!
@@ -1010,6 +1265,7 @@ npm run build
 Each platform requires environment variables. Use the provided templates:
 
 **For Vercel:**
+
 ```bash
 # Copy template
 cp .env.vercel .env.local
@@ -1020,6 +1276,7 @@ cp .env.vercel .env.local
 ```
 
 **For Netlify:**
+
 ```bash
 # Copy template
 cp .env.netlify .env.local
@@ -1030,19 +1287,26 @@ cp .env.netlify .env.local
 ```
 
 **Required Environment Variables:**
+
+- `NEXT_PUBLIC_APP_NAME` - Your app/site name
+- `NEXT_PUBLIC_APP_URL` - Your production URL (e.g., `https://myapp.com`)
+
+**Optional Environment Variables:**
+
 - `NEXT_PUBLIC_EMAILJS_SERVICE_ID` - EmailJS service ID
 - `NEXT_PUBLIC_EMAILJS_TEMPLATE_ID` - EmailJS template ID
 - `NEXT_PUBLIC_EMAILJS_PUBLIC_KEY` - EmailJS public key
-- `NEXT_PUBLIC_SITE_URL` - Your site URL
-- `NEXT_PUBLIC_GA_ID` - Google Analytics ID (optional)
+- `NEXT_PUBLIC_GA_ID` - Google Analytics ID
+- `NEXT_PUBLIC_SENTRY_DSN` - Sentry error tracking
 
-**📚 Complete Guide**: See [ENVIRONMENT_SETUP.md](./ENVIRONMENT_SETUP.md)
+See [.env.example](./.env.example) for the full list with descriptions.
 
 ---
 
 ### Custom Domains
 
 **Vercel:**
+
 ```bash
 # Add via dashboard or CLI
 vercel domains add yourdomain.com
@@ -1051,6 +1315,7 @@ vercel domains add dev.yourdomain.com
 ```
 
 **Netlify:**
+
 ```bash
 # Add via dashboard or CLI
 netlify domains:add yourdomain.com
@@ -1062,19 +1327,14 @@ Configure DNS records as instructed by the platform.
 
 ### CI/CD Pipeline
 
-**GitHub Actions** workflow is included but currently **disabled** (`.github/workflows/ci-cd.yml.disabled`).
+**GitHub Actions** workflow is included and active (`.github/workflows/ci-cd.yml`).
 
-To enable:
-```bash
-# Rename to activate
-mv .github/workflows/ci-cd.yml.disabled .github/workflows/ci-cd.yml
+The workflow runs on push to `main`, `staging`, and `development` branches:
 
-# Workflow will run on push to main/staging/development
-# - Type checking
-# - Linting
-# - Tests
-# - Build verification
-```
+- Type checking (`pnpm type-check`)
+- Linting (`pnpm lint:check`)
+- Tests (`pnpm test`)
+- Build verification (`pnpm build`)
 
 ---
 
@@ -1090,18 +1350,19 @@ Before deploying to production, ensure all quality standards are met.
 - [ ] ✅ **Initial JS bundle < 300 KB** gzipped
 - [ ] ✅ **Images optimized** (WebP/AVIF) and lazy-loaded
 - [ ] ✅ **Code splitting** implemented for routes
-- [ ] ✅ **Bundle analysis** reviewed (`npm run analyze`)
+- [ ] ✅ **Bundle analysis** reviewed (`pnpm analyze`)
 - [ ] ✅ **HTTP/2** enabled on hosting
 - [ ] ✅ **CDN** configured (automatic on Vercel/Netlify)
 
 **Test with:**
+
 ```bash
 # Lighthouse CI
-npm install -g @lhci/cli
+pnpm add -g @lhci/cli
 lhci autorun --collect.url=http://localhost:3000
 
 # Bundle analysis
-npm run analyze
+pnpm analyze
 ```
 
 ---
@@ -1120,6 +1381,7 @@ npm run analyze
 - [ ] ✅ **Reduced motion** support for animations
 
 **Test with:**
+
 - Chrome DevTools > Lighthouse > Accessibility audit
 - axe DevTools browser extension
 - Screen reader (VoiceOver on Mac, NVDA on Windows)
@@ -1132,20 +1394,21 @@ npm run analyze
 - [ ] ✅ **CSP headers** configured (check `next.config.ts`)
 - [ ] ✅ **Cookies secure** (HttpOnly, Secure, SameSite)
 - [ ] ✅ **No secrets in client-side code** (check .env files)
-- [ ] ✅ **Dependencies scanned** for vulnerabilities (`npm audit`)
+- [ ] ✅ **Dependencies scanned** for vulnerabilities (`pnpm audit`)
 - [ ] ✅ **Input validation** on all forms
 - [ ] ✅ **Output escaping** to prevent XSS
 - [ ] ✅ **CSRF protection** enabled (if using forms/API)
 - [ ] ✅ **Rate limiting** on API routes (if applicable)
 
 **Test with:**
+
 ```bash
 # Security audit
-npm audit
-npm audit fix
+pnpm audit
+ppnpm audit --fix
 
 # Check for outdated packages
-npm outdated
+pnpm outdated
 ```
 
 ---
@@ -1166,6 +1429,7 @@ npm outdated
 - [ ] ✅ **Canonical URLs** set
 
 **Test with:**
+
 - Google Search Console
 - Google Rich Results Test
 - Lighthouse SEO audit
@@ -1201,7 +1465,7 @@ export const getTheme = (mode: 'light' | 'dark') => {
     palette: {
       mode,
       primary: {
-        main: '#YOUR_PRIMARY_COLOR',  // Change to client brand color
+        main: '#YOUR_PRIMARY_COLOR', // Change to client brand color
       },
       secondary: {
         main: '#YOUR_SECONDARY_COLOR',
@@ -1240,13 +1504,13 @@ export const getTheme = (mode: 'light' | 'dark') => {
 }
 ```
 
-#### Update Logo
+#### Update Logo & Assets
 
-Replace files in `public/`:
-- `public/logo.svg` - Main logo
+Replace placeholder files in `public/`:
+
 - `public/favicon.ico` - Browser favicon
-- `public/apple-touch-icon.png` - iOS home screen icon
-- `public/og-image.png` - Social media preview image (1200x630px)
+- `public/icons/icon.svg` - App icon (used in PWA manifest)
+- `public/og-image.svg` - Social media preview image (replace with 1200×630 JPG/PNG for best compatibility)
 
 ---
 
@@ -1419,7 +1683,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 #### Stripe Payments
 
 ```bash
-npm install @stripe/stripe-js stripe
+pnpm add @stripe/stripe-js stripe
 ```
 
 ```typescript
@@ -1438,7 +1702,7 @@ export const stripePromise = loadStripe(
 #### Prisma (Recommended)
 
 ```bash
-npm install prisma @prisma/client
+pnpm add prisma @prisma/client
 npx prisma init
 
 # Define schema in prisma/schema.prisma
@@ -1452,7 +1716,7 @@ npx prisma migrate dev
 #### Supabase
 
 ```bash
-npm install @supabase/supabase-js
+pnpm add @supabase/supabase-js
 ```
 
 ```typescript
@@ -1478,15 +1742,15 @@ export const supabase = createClient(
 ```bash
 # Solution: Clear cache and reinstall
 rm -rf .next node_modules package-lock.json
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
 
 **Issue**: TypeScript errors during build
 
 ```bash
 # Solution: Run type check to see specific errors
-npm run type-check
+pnpm type-check
 
 # Fix errors or temporarily bypass (not recommended)
 # Edit tsconfig.json: "strict": false
@@ -1509,8 +1773,8 @@ npm run type-check
 # 2. Ensure package.json engines matches platform
 # 3. Set all required env vars in platform dashboard
 # 4. Test production build locally:
-npm run build
-npm run start
+pnpm build
+pnpm start
 ```
 
 **Issue**: Tests fail in src/pages directory
@@ -1534,7 +1798,7 @@ mv src/pages/__tests__/*.test.tsx __tests__/pages/
 ```bash
 # Solutions:
 # 1. Analyze bundle size
-npm run analyze
+pnpm analyze
 
 # 2. Check for large images (compress with tinypng.com)
 # 3. Implement code splitting
@@ -1551,7 +1815,7 @@ const HeavyComponent = dynamic(() => import('./HeavyComponent'), {
 
 ```bash
 # Identify large dependencies
-npm run analyze
+pnpm analyze
 
 # Remove unused imports
 # Use tree-shaking-friendly libraries
@@ -1645,17 +1909,20 @@ emailjs.send(
 ### Getting Help
 
 **Resources:**
+
 - 📚 [Next.js Documentation](https://nextjs.org/docs)
 - 📚 [Material UI Documentation](https://mui.com/)
 - 📚 [TypeScript Documentation](https://www.typescriptlang.org/docs/)
 - 📚 [React Query Documentation](https://tanstack.com/query/latest)
 
 **Community Support:**
+
 - Stack Overflow (tag: next.js, material-ui, typescript)
 - Next.js Discord
 - GitHub Discussions on this repository
 
 **Debugging Tools:**
+
 - React DevTools (browser extension)
 - Redux DevTools (if using Redux)
 - Next.js built-in error overlay
@@ -1670,13 +1937,16 @@ emailjs.send(
 - **[BRANCHING_STRATEGY.md](./BRANCHING_STRATEGY.md)** - Complete Git workflow documentation
 - **[DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md)** - Detailed Vercel deployment instructions
 - **[DEPLOYMENT_GUIDE_NETLIFY.md](./DEPLOYMENT_GUIDE_NETLIFY.md)** - Detailed Netlify deployment instructions
-- **[ENVIRONMENT_SETUP.md](./ENVIRONMENT_SETUP.md)** - Environment variable management
-- **[BRANCHES_CREATED.md](./BRANCHES_CREATED.md)** - Current branch status and next steps
+- **[MCP_SETUP_GUIDE.md](./MCP_SETUP_GUIDE.md)** - Figma MCP and agentic AI setup
+- **[MCP_QUICK_REFERENCE.md](./MCP_QUICK_REFERENCE.md)** - MCP quick reference card
+- **[docs/compliance.md](./docs/compliance.md)** - ISO 25010 & ISO 27001 compliance matrix
+- **[CONTRIBUTING.md](./CONTRIBUTING.md)** - Contribution guidelines
+- **[SECURITY.md](./SECURITY.md)** - Security policy
 
 ### Code Standards
 
-- **TypeScript**: Use strict mode, define types for all props and functions
-- **ESLint**: Follow configuration, no warnings in production builds
+- **TypeScript**: Strict mode (20+ flags) — no `any` types, prefer `unknown` when type is truly unknown
+- **ESLint**: Flat config (`eslint.config.mjs`) with jsx-a11y; no warnings in production builds
 - **Prettier**: Auto-format on save (configure in your editor)
 - **Naming Conventions**:
   - Components: PascalCase (`UserProfile.tsx`)
@@ -1696,7 +1966,7 @@ emailjs.send(
 
 - Optimize images (WebP/AVIF, lazy loading, responsive sizes)
 - Implement proper caching strategies
-- Monitor bundle size (`npm run analyze`)
+- Monitor bundle size (`pnpm analyze`)
 - Use code splitting for routes and heavy components
 - Test with Lighthouse and Web Vitals
 
@@ -1719,7 +1989,7 @@ Improvements and contributions are welcome!
 - Follow existing code style and conventions
 - Write tests for new features
 - Update documentation as needed
-- Ensure all quality checks pass (`npm run type-check`, `npm run lint`, `npm run test`)
+- Ensure all quality checks pass (`pnpm type-check`, `pnpm lint`, `pnpm test`)
 - Add accessibility considerations
 - Include performance impact analysis
 
@@ -1736,9 +2006,11 @@ Free to use for client projects, commercial products, and prototypes.
 ## 🙏 Acknowledgments
 
 Built with these amazing technologies:
+
 - [Next.js](https://nextjs.org/) - The React Framework
 - [Material UI](https://mui.com/) - React UI Components
 - [TypeScript](https://www.typescriptlang.org/) - JavaScript with Types
+- [AWS Amplify](https://docs.amplify.aws/) - Auth, Data, Storage Backend
 - [i18next](https://www.i18next.com/) - Internationalization Framework
 - [React Query](https://tanstack.com/query) - Data Synchronization
 - [EmailJS](https://www.emailjs.com/) - Email Integration
@@ -1749,14 +2021,15 @@ Built with these amazing technologies:
 ## 📞 Support
 
 For questions, issues, or feature requests:
+
 - **GitHub Issues**: [Open an issue](https://github.com/saga95/next-web-site-template/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/saga95/next-web-site-template/discussions)
-- **Email**: your-email@example.com
+- **Email**: Create an [issue](https://github.com/saga95/next-web-site-template/issues)
 
 ---
 
 **Built with ❤️ for modern web development**
 
-*Ready for production use with industry best practices baked in.*
+_Ready for production use with industry best practices baked in._
 
-*Last Updated: October 2025*
+_Last Updated: April 2026_
