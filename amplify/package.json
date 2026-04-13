@@ -1,0 +1,9 @@
+{
+  "name": "amplify-backend",
+  "type": "module",
+  "devDependencies": {
+    "@aws-amplify/backend": "^1.0.0",
+    "@aws-amplify/backend-cli": "^1.0.0",
+    "typescript": "^5.0.0"
+  }
+}

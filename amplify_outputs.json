@@ -1,0 +1,4 @@
+{
+  "$schema": "https://raw.githubusercontent.com/aws-amplify/amplify-backend/main/packages/client-config/src/client-config-schema/schema_v1.json",
+  "version": "1"
+}
