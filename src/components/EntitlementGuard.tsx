@@ -40,5 +40,7 @@ export function EntitlementGuard({
   children,
 }: EntitlementGuardProps) {
   const allowed = useEntitlement(entitlement, mode);
-  return allowed ? <>{children}</> : <>{fallback}</>;
+  return allowed
+    ? (children as React.ReactElement)
+    : (fallback as React.ReactElement);
 }

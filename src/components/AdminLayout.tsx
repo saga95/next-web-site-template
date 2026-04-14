@@ -1,17 +1,17 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import {
+  AppBar,
   Box,
+  Divider,
   Drawer,
+  IconButton,
   List,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  AppBar,
   Toolbar,
   Typography,
-  IconButton,
-  Divider,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
@@ -23,7 +23,6 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PeopleIcon from '@mui/icons-material/People';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { useState, useCallback } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 
 const DRAWER_WIDTH = 260;

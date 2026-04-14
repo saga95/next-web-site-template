@@ -1,23 +1,23 @@
 import {
   createContext,
-  useContext,
   useCallback,
+  useContext,
   useEffect,
   useMemo,
   useReducer,
 } from 'react';
 import {
+  type ConfirmSignUpInput,
+  type SignInInput,
+  type SignUpInput,
+  confirmSignUp,
+  fetchAuthSession,
+  getCurrentUser,
   signIn,
   signOut,
   signUp,
-  confirmSignUp,
-  getCurrentUser,
-  fetchAuthSession,
-  type SignInInput,
-  type SignUpInput,
-  type ConfirmSignUpInput,
 } from 'aws-amplify/auth';
-import type { UserProfile, UserRole, AuthState } from '@/types';
+import type { AuthState, UserProfile, UserRole } from '@/types';
 
 // ─── Context types ──────────────────────────────────────────────────────────────
 
@@ -49,7 +49,7 @@ const initialState: AuthState = {
 function authReducer(state: AuthState, action: AuthAction): AuthState {
   switch (action.type) {
     case 'SET_USER': {
-      const groups = action.payload.groups;
+      const { groups } = action.payload;
       return {
         user: action.payload,
         isAuthenticated: true,

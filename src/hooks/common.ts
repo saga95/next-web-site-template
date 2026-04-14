@@ -1,11 +1,17 @@
-import { useEffect, useRef, useState, useCallback, useLayoutEffect } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 
 /**
  * Hook that runs a callback on component mount
  */
 export function useMount(callback: () => void): void {
   const mountRef = useRef(false);
-  
+
   useEffect(() => {
     if (!mountRef.current) {
       callback();
@@ -33,11 +39,11 @@ export function useUnmount(callback: () => void): void {
  */
 export function usePrevious<T>(value: T): T | undefined {
   const ref = useRef<T | undefined>(undefined);
-  
+
   useEffect(() => {
     ref.current = value;
   });
-  
+
   return ref.current;
 }
 
@@ -46,7 +52,7 @@ export function usePrevious<T>(value: T): T | undefined {
  */
 export function useForceUpdate(): () => void {
   const [, setState] = useState({});
-  
+
   return useCallback(() => setState({}), []);
 }
 
@@ -55,26 +61,28 @@ export function useForceUpdate(): () => void {
  */
 export function useIsMounted(): React.MutableRefObject<boolean> {
   const isMountedRef = useRef(true);
-  
+
   useEffect(() => {
     return () => {
       isMountedRef.current = false;
     };
   }, []);
-  
+
   return isMountedRef;
 }
 
 /**
  * Hook that creates a stable reference to a function
  */
-export function useEvent<T extends (...args: unknown[]) => unknown>(callback: T): T {
+export function useEvent<T extends (...args: unknown[]) => unknown>(
+  callback: T
+): T {
   const ref = useRef<T>(callback);
-  
+
   useLayoutEffect(() => {
     ref.current = callback;
   });
-  
+
   return useCallback((...args: Parameters<T>) => {
     return ref.current(...args);
   }, []) as T;
@@ -112,7 +120,7 @@ export function useThrottle<T>(value: T, interval: number): T {
       setThrottledValue(value);
       return undefined;
     }
-    
+
     const timerId = setTimeout(() => {
       lastExecuted.current = Date.now();
       setThrottledValue(value);

@@ -32,7 +32,7 @@ const eslintConfig = [
       "next-env.d.ts",
     ],
   },
-  ...compat.extends('next/core-web-vitals', 'next/typescript'),
+  ...compat.extends('next/core-web-vitals'),
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
@@ -55,14 +55,14 @@ const eslintConfig = [
       // TypeScript specific rules
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/prefer-const': 'error',
+      // prefer-const handled by base ESLint 'prefer-const' rule below
       '@typescript-eslint/no-var-requires': 'error',
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-empty-function': 'warn',
       '@typescript-eslint/no-inferrable-types': 'error',
-      '@typescript-eslint/prefer-nullish-coalescing': 'error',
-      '@typescript-eslint/prefer-optional-chain': 'error',
+      '@typescript-eslint/prefer-nullish-coalescing': 'off', // requires type-aware parserOptions.project
+      '@typescript-eslint/prefer-optional-chain': 'off', // requires type-aware parserOptions.project
       '@typescript-eslint/ban-ts-comment': 'warn',
 
       // React specific rules

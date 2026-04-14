@@ -1,5 +1,5 @@
 import { createContext, useContext, useMemo } from 'react';
-import type { ResolvedRBAC, Profile, Role } from '@/rbac/types';
+import type { Profile, ResolvedRBAC, Role } from '@/rbac/types';
 import { resolveProfile, resolveRoles } from '@/rbac/registry';
 
 // ─── Context ────────────────────────────────────────────────────────────────

@@ -7,7 +7,11 @@
 // Supply a `resolveCallerRoles` function to plug in your auth strategy.
 
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { resolveRoles, hasAllEntitlements, hasAnyEntitlement } from './registry';
+import {
+  hasAllEntitlements,
+  hasAnyEntitlement,
+  resolveRoles,
+} from './registry';
 import type { Entitlement, Role } from './types';
 
 /**
@@ -15,7 +19,7 @@ import type { Entitlement, Role } from './types';
  * Implement this per your auth strategy (Cognito session, API key, etc.).
  */
 export type ResolveCallerRoles = (
-  req: NextApiRequest,
+  req: NextApiRequest
 ) => Promise<ReadonlyArray<Role | string>> | ReadonlyArray<Role | string>;
 
 export interface RequireEntitlementOptions {
@@ -55,7 +59,7 @@ export function requireEntitlement(options: RequireEntitlementOptions) {
   const { entitlements, mode = 'every', resolveCallerRoles } = options;
 
   return (
-    handler: (req: NextApiRequest, res: NextApiResponse) => Promise<void> | void,
+    handler: (req: NextApiRequest, res: NextApiResponse) => Promise<void> | void
   ) => {
     return async (req: NextApiRequest, res: NextApiResponse) => {
       const roles = await resolveCallerRoles(req);

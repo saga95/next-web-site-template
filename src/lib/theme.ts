@@ -1,4 +1,4 @@
-import { createTheme, ThemeOptions } from '@mui/material/styles';
+import { ThemeOptions, createTheme } from '@mui/material/styles';
 
 // TODO: Customize brand colors below to match your design system
 // Light theme configuration

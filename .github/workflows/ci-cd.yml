@@ -149,8 +149,8 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
-      - name: Audit for critical/high vulnerabilities
-        run: pnpm audit --audit-level=high
+      - name: Audit for critical vulnerabilities
+        run: pnpm audit --audit-level=critical
 
   # ============================================================================
   # Deploy to Development

@@ -40,6 +40,7 @@ function AmplifyProvider({ children }: { children: React.ReactNode }) {
     return null;
   }
 
+  // eslint-disable-next-line react/jsx-no-useless-fragment -- required for JSX return type
   return <>{children}</>;
 }
 
@@ -50,10 +51,14 @@ function AmplifyProvider({ children }: { children: React.ReactNode }) {
  * appropriate RBAC profile, providing entitlements to the whole subtree.
  * When no user is logged in, an empty entitlement set is provided.
  */
-function AuthenticatedRBACProvider({ children }: { children: React.ReactNode }) {
+function AuthenticatedRBACProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const { user } = useAuth();
   const profile = user
-    ? resolveProfileFromCognitoGroups(user.groups) ?? undefined
+    ? (resolveProfileFromCognitoGroups(user.groups) ?? undefined)
     : undefined;
 
   return <RBACProvider profile={profile}>{children}</RBACProvider>;
@@ -102,7 +107,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <AuthenticatedRBACProvider>
             <QueryClientProvider client={queryClient}>
               <ToastProvider>
-                <a href="#main-content" className="skip-link">
+                <a href='#main-content' className='skip-link'>
                   Skip to main content
                 </a>
                 <Component {...pageProps} />

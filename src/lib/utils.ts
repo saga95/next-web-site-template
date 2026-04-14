@@ -17,7 +17,7 @@ export function formatBytes(bytes: number, decimals = 2): string {
 
   const i = Math.floor(Math.log(bytes) / Math.log(k));
 
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
 }
 
 /**
@@ -66,7 +66,8 @@ export function generateId(length = 8): string {
   }
   const bytes = new Uint8Array(length);
   crypto.getRandomValues(bytes);
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const chars =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   return Array.from(bytes, b => chars[b % chars.length]).join('');
 }
 
@@ -123,7 +124,7 @@ export function formatCurrency(
  */
 export function truncateText(text: string, length: number): string {
   if (text.length <= length) return text;
-  return text.slice(0, length) + '...';
+  return `${text.slice(0, length)}...`;
 }
 
 /**
@@ -153,7 +154,7 @@ export function getNestedValue<T>(
       ? (current as Record<string, unknown>)[key]
       : undefined;
   }, obj as unknown);
-  
+
   return value !== undefined ? (value as T) : defaultValue;
 }
 
@@ -169,7 +170,7 @@ export function stripHtml(html: string): string {
  */
 export async function copyToClipboard(text: string): Promise<boolean> {
   if (!isBrowser) return false;
-  
+
   try {
     await navigator.clipboard.writeText(text);
     return true;

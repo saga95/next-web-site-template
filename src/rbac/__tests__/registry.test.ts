@@ -1,24 +1,26 @@
 import {
   ENTITLEMENTS,
-  ROLES,
   PROFILES,
-  ROLE_DEFINITIONS,
   PROFILE_DEFINITIONS,
-  resolveProfile,
-  resolveRoles,
+  ROLES,
+  ROLE_DEFINITIONS,
   getEntitlementsForRole,
   getEntitlementsForRoles,
   getRolesForProfile,
-  hasEntitlement,
   hasAllEntitlements,
   hasAnyEntitlement,
+  hasEntitlement,
+  resolveProfile,
+  resolveRoles,
 } from '@/rbac';
 
 // ─── Entitlements ───────────────────────────────────────────────────────────
 
 describe('ENTITLEMENTS', () => {
   it('contains the expected entitlement keys', () => {
-    expect(ENTITLEMENTS.VIEW_ANALYTICS_DASHBOARD).toBe('VIEW_ANALYTICS_DASHBOARD');
+    expect(ENTITLEMENTS.VIEW_ANALYTICS_DASHBOARD).toBe(
+      'VIEW_ANALYTICS_DASHBOARD'
+    );
     expect(ENTITLEMENTS.CREATE_USER).toBe('CREATE_USER');
     expect(ENTITLEMENTS.DELETE_PROFILE).toBe('DELETE_PROFILE');
   });
@@ -28,7 +30,9 @@ describe('ENTITLEMENTS', () => {
 
 describe('ROLE_DEFINITIONS', () => {
   it('maps USER_MANAGEMENT_ROLE to user entitlements', () => {
-    const def = ROLE_DEFINITIONS.find((r) => r.role === ROLES.USER_MANAGEMENT_ROLE);
+    const def = ROLE_DEFINITIONS.find(
+      r => r.role === ROLES.USER_MANAGEMENT_ROLE
+    );
     expect(def).toBeDefined();
     expect(def!.entitlements).toContain(ENTITLEMENTS.CREATE_USER);
     expect(def!.entitlements).toContain(ENTITLEMENTS.DELETE_USER);
@@ -39,7 +43,9 @@ describe('ROLE_DEFINITIONS', () => {
 
 describe('PROFILE_DEFINITIONS', () => {
   it('maps USER_MANAGER to expected roles', () => {
-    const def = PROFILE_DEFINITIONS.find((p) => p.profile === PROFILES.USER_MANAGER);
+    const def = PROFILE_DEFINITIONS.find(
+      p => p.profile === PROFILES.USER_MANAGER
+    );
     expect(def).toBeDefined();
     expect(def!.roles).toContain(ROLES.USER_MANAGEMENT_ROLE);
     expect(def!.roles).toContain(ROLES.ANALYTICS_VIEWER_ROLE);
@@ -92,7 +98,9 @@ describe('resolveProfile', () => {
     expect(resolved.roles.length).toBeGreaterThan(0);
     expect(resolved.entitlements.has(ENTITLEMENTS.CREATE_USER)).toBe(true);
     expect(resolved.entitlements.has(ENTITLEMENTS.MANAGE_SETTINGS)).toBe(true);
-    expect(resolved.entitlements.has(ENTITLEMENTS.VIEW_ANALYTICS_DASHBOARD)).toBe(true);
+    expect(
+      resolved.entitlements.has(ENTITLEMENTS.VIEW_ANALYTICS_DASHBOARD)
+    ).toBe(true);
   });
 
   it('resolves SHOPPER to basic entitlements only', () => {
@@ -106,7 +114,9 @@ describe('resolveProfile', () => {
   it('resolves USER_MANAGER correctly', () => {
     const resolved = resolveProfile(PROFILES.USER_MANAGER);
     expect(resolved.entitlements.has(ENTITLEMENTS.CREATE_USER)).toBe(true);
-    expect(resolved.entitlements.has(ENTITLEMENTS.VIEW_ANALYTICS_DASHBOARD)).toBe(true);
+    expect(
+      resolved.entitlements.has(ENTITLEMENTS.VIEW_ANALYTICS_DASHBOARD)
+    ).toBe(true);
     expect(resolved.entitlements.has(ENTITLEMENTS.VIEW_PROFILE)).toBe(true);
     // Should NOT have content or order entitlements
     expect(resolved.entitlements.has(ENTITLEMENTS.CREATE_CONTENT)).toBe(false);
@@ -139,14 +149,20 @@ describe('hasAllEntitlements', () => {
   it('returns true when all entitlements are present', () => {
     const resolved = resolveProfile(PROFILES.ADMIN);
     expect(
-      hasAllEntitlements(resolved, [ENTITLEMENTS.CREATE_USER, ENTITLEMENTS.DELETE_USER]),
+      hasAllEntitlements(resolved, [
+        ENTITLEMENTS.CREATE_USER,
+        ENTITLEMENTS.DELETE_USER,
+      ])
     ).toBe(true);
   });
 
   it('returns false when one entitlement is missing', () => {
     const resolved = resolveProfile(PROFILES.SHOPPER);
     expect(
-      hasAllEntitlements(resolved, [ENTITLEMENTS.VIEW_PROFILE, ENTITLEMENTS.CREATE_USER]),
+      hasAllEntitlements(resolved, [
+        ENTITLEMENTS.VIEW_PROFILE,
+        ENTITLEMENTS.CREATE_USER,
+      ])
     ).toBe(false);
   });
 });
@@ -155,14 +171,20 @@ describe('hasAnyEntitlement', () => {
   it('returns true when at least one entitlement is present', () => {
     const resolved = resolveProfile(PROFILES.SHOPPER);
     expect(
-      hasAnyEntitlement(resolved, [ENTITLEMENTS.VIEW_PROFILE, ENTITLEMENTS.CREATE_USER]),
+      hasAnyEntitlement(resolved, [
+        ENTITLEMENTS.VIEW_PROFILE,
+        ENTITLEMENTS.CREATE_USER,
+      ])
     ).toBe(true);
   });
 
   it('returns false when none are present', () => {
     const resolved = resolveProfile(PROFILES.SHOPPER);
     expect(
-      hasAnyEntitlement(resolved, [ENTITLEMENTS.CREATE_USER, ENTITLEMENTS.MANAGE_ORDERS]),
+      hasAnyEntitlement(resolved, [
+        ENTITLEMENTS.CREATE_USER,
+        ENTITLEMENTS.MANAGE_ORDERS,
+      ])
     ).toBe(false);
   });
 });

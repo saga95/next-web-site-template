@@ -1,4 +1,7 @@
-import { resolveProfileFromCognitoGroups, COGNITO_GROUP_TO_PROFILE } from '@/rbac/cognitoMapping';
+import {
+  COGNITO_GROUP_TO_PROFILE,
+  resolveProfileFromCognitoGroups,
+} from '@/rbac/cognitoMapping';
 import { PROFILES } from '@/rbac';
 
 describe('resolveProfileFromCognitoGroups', () => {
@@ -12,7 +15,9 @@ describe('resolveProfileFromCognitoGroups', () => {
 
   it('returns the highest-priority profile when user has multiple groups', () => {
     // Admin is listed first in COGNITO_GROUP_TO_PROFILE, so it wins
-    expect(resolveProfileFromCognitoGroups(['Shopper', 'Admin'])).toBe(PROFILES.ADMIN);
+    expect(resolveProfileFromCognitoGroups(['Shopper', 'Admin'])).toBe(
+      PROFILES.ADMIN
+    );
   });
 
   it('returns null for unmapped groups', () => {
