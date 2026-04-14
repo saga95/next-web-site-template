@@ -8,13 +8,13 @@ import type { ENTITLEMENTS } from './entitlements';
 import type { ROLES } from './roles';
 import type { PROFILES } from './profiles';
 
-/** Union of every built-in entitlement key. */
+/** Union of every built-in entitlement value. */
 export type Entitlement = (typeof ENTITLEMENTS)[keyof typeof ENTITLEMENTS];
 
-/** Union of every built-in role key. */
+/** Union of every built-in role value. */
 export type Role = (typeof ROLES)[keyof typeof ROLES];
 
-/** Union of every built-in profile key. */
+/** Union of every built-in profile value. */
 export type Profile = (typeof PROFILES)[keyof typeof PROFILES];
 
 /** A role definition: a role name mapped to its granted entitlements. */

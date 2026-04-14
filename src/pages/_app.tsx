@@ -9,7 +9,7 @@ import ErrorBoundary from '@/components/ErrorBoundary';
 import { ToastProvider } from '@/components/Toast';
 import { AuthProvider, useAuth } from '@/contexts/AuthContext';
 import { RBACProvider } from '@/contexts/RBACContext';
-import { resolveProfileFromCognitoGroups } from '@/rbac/cognitoMapping';
+import { resolveProfileFromCognitoGroups } from '@/rbac';
 import '@/lib/i18n'; // Initialize i18n
 export { reportWebVitals } from '@/lib/webVitals';
 

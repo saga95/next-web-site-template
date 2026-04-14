@@ -51,7 +51,7 @@ const roleToEntitlements = new Map<string, ReadonlySet<string>>(
 );
 
 const profileToRoles = new Map<string, readonly string[]>(
-  PROFILE_DEFINITIONS.map((pd) => [pd.profile, pd.roles as string[]]),
+  PROFILE_DEFINITIONS.map((pd) => [pd.profile, [...pd.roles]]),
 );
 
 // ─── Public API ─────────────────────────────────────────────────────────────
@@ -62,7 +62,8 @@ const profileToRoles = new Map<string, readonly string[]>(
 export function getEntitlementsForRole(
   role: Role | string,
 ): ReadonlySet<string> {
-  return roleToEntitlements.get(role) ?? new Set();
+  const stored = roleToEntitlements.get(role);
+  return stored ? new Set(stored) : new Set();
 }
 
 /**
@@ -87,7 +88,8 @@ export function getEntitlementsForRoles(
 export function getRolesForProfile(
   profile: Profile | string,
 ): readonly string[] {
-  return profileToRoles.get(profile) ?? [];
+  const stored = profileToRoles.get(profile);
+  return stored ? [...stored] : [];
 }
 
 /**

@@ -62,9 +62,11 @@ export function requireEntitlement(options: RequireEntitlementOptions) {
       const resolved = resolveRoles(roles);
 
       const allowed =
-        mode === 'every'
-          ? hasAllEntitlements(resolved, entitlements)
-          : hasAnyEntitlement(resolved, entitlements);
+        entitlements.length === 0
+          ? true
+          : mode === 'every'
+            ? hasAllEntitlements(resolved, entitlements)
+            : hasAnyEntitlement(resolved, entitlements);
 
       if (!allowed) {
         return res.status(403).json({
