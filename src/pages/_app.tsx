@@ -7,7 +7,9 @@ import { Amplify } from 'aws-amplify';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import { ToastProvider } from '@/components/Toast';
-import { AuthProvider } from '@/contexts/AuthContext';
+import { AuthProvider, useAuth } from '@/contexts/AuthContext';
+import { RBACProvider } from '@/contexts/RBACContext';
+import { resolveProfileFromCognitoGroups } from '@/rbac/cognitoMapping';
 import '@/lib/i18n'; // Initialize i18n
 export { reportWebVitals } from '@/lib/webVitals';
 
@@ -39,6 +41,22 @@ function AmplifyProvider({ children }: { children: React.ReactNode }) {
   }
 
   return <>{children}</>;
+}
+
+// ─── Auth → RBAC Bridge ────────────────────────────────────────────────────────
+
+/**
+ * Reads the authenticated user's Cognito groups and maps them to the
+ * appropriate RBAC profile, providing entitlements to the whole subtree.
+ * When no user is logged in, an empty entitlement set is provided.
+ */
+function AuthenticatedRBACProvider({ children }: { children: React.ReactNode }) {
+  const { user } = useAuth();
+  const profile = user
+    ? resolveProfileFromCognitoGroups(user.groups) ?? undefined
+    : undefined;
+
+  return <RBACProvider profile={profile}>{children}</RBACProvider>;
 }
 
 // ─── React Query Client ────────────────────────────────────────────────────────
@@ -81,14 +99,16 @@ export default function App({ Component, pageProps }: AppProps) {
     <ErrorBoundary>
       <AmplifyProvider>
         <AuthProvider>
-          <QueryClientProvider client={queryClient}>
-            <ToastProvider>
-              <a href="#main-content" className="skip-link">
-                Skip to main content
-              </a>
-              <Component {...pageProps} />
-            </ToastProvider>
-          </QueryClientProvider>
+          <AuthenticatedRBACProvider>
+            <QueryClientProvider client={queryClient}>
+              <ToastProvider>
+                <a href="#main-content" className="skip-link">
+                  Skip to main content
+                </a>
+                <Component {...pageProps} />
+              </ToastProvider>
+            </QueryClientProvider>
+          </AuthenticatedRBACProvider>
         </AuthProvider>
       </AmplifyProvider>
     </ErrorBoundary>
