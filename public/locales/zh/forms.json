@@ -1,0 +1,22 @@
+{
+  "emailLabel": "电子邮件",
+  "emailPlaceholder": "请输入电子邮件",
+  "emailRequired": "电子邮件为必填项",
+  "emailInvalid": "请输入有效的电子邮件",
+  "passwordLabel": "密码",
+  "passwordPlaceholder": "请输入密码",
+  "passwordRequired": "密码为必填项",
+  "passwordMinLength": "密码至少需要{{min}}个字符",
+  "nameLabel": "姓名",
+  "namePlaceholder": "请输入姓名",
+  "nameRequired": "姓名为必填项",
+  "messageLabel": "留言",
+  "messagePlaceholder": "请输入留言",
+  "messageRequired": "留言为必填项",
+  "phoneLabel": "电话",
+  "phonePlaceholder": "请输入电话号码",
+  "addressLabel": "地址",
+  "addressPlaceholder": "请输入地址",
+  "formSubmitSuccess": "表单提交成功！",
+  "formSubmitError": "表单提交失败，请重试。"
+}

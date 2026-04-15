@@ -1,0 +1,22 @@
+{
+  "emailLabel": "البريد الإلكتروني",
+  "emailPlaceholder": "أدخل بريدك الإلكتروني",
+  "emailRequired": "البريد الإلكتروني مطلوب",
+  "emailInvalid": "يرجى إدخال بريد إلكتروني صالح",
+  "passwordLabel": "كلمة المرور",
+  "passwordPlaceholder": "أدخل كلمة المرور",
+  "passwordRequired": "كلمة المرور مطلوبة",
+  "passwordMinLength": "يجب أن تتكون كلمة المرور من {{min}} أحرف على الأقل",
+  "nameLabel": "الاسم",
+  "namePlaceholder": "أدخل اسمك",
+  "nameRequired": "الاسم مطلوب",
+  "messageLabel": "الرسالة",
+  "messagePlaceholder": "أدخل رسالتك",
+  "messageRequired": "الرسالة مطلوبة",
+  "phoneLabel": "الهاتف",
+  "phonePlaceholder": "أدخل رقم هاتفك",
+  "addressLabel": "العنوان",
+  "addressPlaceholder": "أدخل عنوانك",
+  "formSubmitSuccess": "تم إرسال النموذج بنجاح!",
+  "formSubmitError": "فشل إرسال النموذج. يرجى المحاولة مرة أخرى."
+}
