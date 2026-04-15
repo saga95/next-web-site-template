@@ -51,7 +51,7 @@ export function createLogger(context: string): Logger {
 
     const safe = redactSecrets(message);
     const formatted = formatMessage(level, context, safe);
-    const stream = level === 'error' ? process.stderr : process.stderr;
+    const stream = level === 'error' ? process.stderr : process.stdout;
 
     stream.write(`${formatted}\n`);
 

@@ -1,7 +1,10 @@
 import { z } from 'zod';
 
+const emptyToUndefined = (val: unknown) =>
+  typeof val === 'string' && val.trim() === '' ? undefined : val;
+
 const envSchema = z.object({
-  AHREFS_API_KEY: z.string().min(1, 'AHREFS_API_KEY is required').optional(),
+  AHREFS_API_KEY: z.preprocess(emptyToUndefined, z.string().min(1).optional()),
   AHREFS_BASE_URL: z.string().url().default('https://api.ahrefs.com/v3'),
   SEO_MCP_LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
   SEO_MCP_TIMEOUT_MS: z.coerce.number().positive().default(30_000),

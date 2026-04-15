@@ -33,7 +33,7 @@ export class FileNotFoundError extends SeoMcpError {
 export class UnsupportedFileError extends SeoMcpError {
   constructor(filePath: string) {
     super(
-      `Unsupported file type: ${filePath}. Only .tsx, .ts, .jsx, .js, and .md files are supported.`,
+      `Unsupported file type: ${filePath}. Only .tsx, .ts, .jsx, .js, .md, and .mdx files are supported.`,
       'UNSUPPORTED_FILE',
       400
     );

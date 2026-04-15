@@ -105,9 +105,10 @@ export function analyzeInternalLinks(
   // Check for broken internal links (if routes are provided)
   if (availableRoutes.length > 0) {
     for (const link of links) {
-      const normalizedHref = link.href
-        .replace(/\/$/, '')
-        .replace(/\.(tsx?|jsx?)$/, '');
+      const normalizedHref =
+        link.href === '/'
+          ? '/'
+          : link.href.replace(/\/$/, '').replace(/\.(tsx?|jsx?)$/, '');
       const isValid = availableRoutes.some(
         route =>
           normalizedHref === route || normalizedHref.startsWith(`${route}/`)
