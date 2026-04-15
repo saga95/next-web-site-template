@@ -42,7 +42,10 @@
     "bootstrap": "bash scripts/bootstrap.sh",
     "audit": "pnpm audit --audit-level=critical",
     "quality:quick": "pnpm lint:check && pnpm type-check && pnpm test",
-    "quality": "pnpm format:check && pnpm lint:check && pnpm type-check && pnpm test:coverage && pnpm audit"
+    "quality": "pnpm format:check && pnpm lint:check && pnpm type-check && pnpm test:coverage && pnpm audit",
+    "seo:mcp:dev": "cd tools/seo-intelligence-mcp && npx tsx watch src/index.ts",
+    "seo:mcp:build": "cd tools/seo-intelligence-mcp && npx tsc",
+    "seo:mcp:start": "node tools/seo-intelligence-mcp/dist/index.js"
   },
   "lint-staged": {
     "*.{ts,tsx}": [

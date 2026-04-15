@@ -60,6 +60,7 @@
     "jest.setup.ts",
     "jest.config.js",
     "playwright.config.ts",
-    "__tests__"
+    "__tests__",
+    "tools"
   ]
 }
