@@ -28,15 +28,61 @@ In the root `mcp.json`, set `"disabled": false` for the `seo-intelligence` serve
 
 ## Available Tools
 
-| Tool                          | Description                               | Phase   |
-| ----------------------------- | ----------------------------------------- | ------- |
-| `page_audit`                  | Audit a page for SEO readiness            | Phase 2 |
-| `keyword_brief`               | Generate keyword brief using Ahrefs data  | Phase 3 |
-| `metadata_rewrite`            | Suggest improved page title & description | Phase 2 |
-| `schema_suggestion`           | Suggest JSON-LD schema opportunities      | Phase 2 |
-| `internal_link_opportunities` | Find internal linking opportunities       | Phase 2 |
-| `geo_audit`                   | Assess GEO readiness                      | Phase 4 |
-| `aeo_audit`                   | Assess AEO readiness                      | Phase 4 |
+| Tool                          | Description                               |
+| ----------------------------- | ----------------------------------------- |
+| `page_audit`                  | Full SEO audit with per-category scores   |
+| `keyword_brief`               | Keyword research brief (Ahrefs or local)  |
+| `metadata_rewrite`            | Suggest improved page title & description |
+| `schema_suggestion`           | Suggest JSON-LD schema opportunities      |
+| `internal_link_opportunities` | Find internal linking opportunities       |
+| `geo_audit`                   | Generative Engine Optimization readiness  |
+| `aeo_audit`                   | Answer Engine Optimization readiness      |
+
+## Sample Prompts
+
+Use these prompts in your IDE agent (Copilot, Claude Code, etc.) after enabling the MCP server:
+
+### Page Audit
+
+```
+Run a page_audit on src/pages/index.tsx with target keyword "nextjs enterprise template"
+```
+
+### Metadata Rewrite
+
+```
+Use metadata_rewrite on src/pages/about.tsx with brandName "Acme Corp" and targetKeyword "about acme"
+```
+
+### Schema Suggestion
+
+```
+Run schema_suggestion on src/pages/index.tsx with pageType "landing"
+```
+
+### Internal Link Opportunities
+
+```
+Find internal_link_opportunities for src/pages/auth/login.tsx
+```
+
+### Keyword Brief
+
+```
+Generate a keyword_brief for topic "nextjs seo best practices" with pageType "article"
+```
+
+### GEO Audit
+
+```
+Run a geo_audit on src/pages/index.tsx to check generative engine readiness
+```
+
+### AEO Audit
+
+```
+Run an aeo_audit on src/pages/index.tsx to check answer engine readiness
+```
 
 ## Environment Variables
 
@@ -47,6 +93,65 @@ In the root `mcp.json`, set `"disabled": false` for the `seo-intelligence` serve
 | `SEO_MCP_LOG_LEVEL`  | No       | `info`                      | Log level: debug, info, warn, error |
 | `SEO_MCP_TIMEOUT_MS` | No       | `30000`                     | External API timeout in ms          |
 | `SEO_MCP_CACHE_TTL`  | No       | `3600000`                   | Cache TTL in ms                     |
+
+\* Without `AHREFS_API_KEY`, the `keyword_brief` tool works in local-only mode (intent inference without search volume data).
+
+## Architecture
+
+```
+src/
+├── index.ts                   # MCP server entry point
+├── config/env.ts              # Zod-validated environment config
+├── mcp/
+│   ├── types.ts               # Zod input schemas, ToolResult helpers
+│   └── register-tools.ts      # All 7 tools registered with handlers
+├── analyzers/
+│   ├── page/                  # SEO analyzers (metadata, heading, schema, links, images)
+│   ├── geo/                   # GEO readiness analyzer
+│   └── aeo/                   # AEO readiness analyzer
+├── engines/                   # Orchestration engines (audit, metadata, schema, links, keyword)
+├── integrations/ahrefs/       # Ahrefs API client, types, mapper
+└── shared/                    # Logger, errors, file utils, scoring, recommendations
+```
+
+## Development
+
+```bash
+# Dev mode with hot reload
+pnpm seo:mcp:dev
+
+# Run tests
+cd tools/seo-intelligence-mcp && npx vitest run
+
+# Type-check
+cd tools/seo-intelligence-mcp && npx tsc --noEmit
+```
+
+## Testing
+
+138 unit tests cover all analyzers, engines, shared utilities, and integrations:
+
+```bash
+cd tools/seo-intelligence-mcp
+npx vitest run          # single run
+npx vitest              # watch mode
+```
+
+## IDE Compatibility
+
+| IDE / Agent     | Status    | Notes                      |
+| --------------- | --------- | -------------------------- |
+| VS Code Copilot | Supported | Configure via `mcp.json`   |
+| Claude Code     | Supported | Configure via `mcp.json`   |
+| Cursor          | Supported | Add MCP server in settings |
+| Windsurf        | Supported | Add MCP server in settings |
+
+## Troubleshooting
+
+- **Tools not appearing**: Ensure `"disabled": false` in `mcp.json` and the server is built (`pnpm seo:mcp:build`).
+- **Ahrefs errors**: Check that `AHREFS_API_KEY` is valid. The server logs to stderr.
+- **File not found**: Paths are relative to the project root. Use `src/pages/index.tsx` not `/Users/.../index.tsx`.
+- **Path traversal error**: The server blocks paths that escape the project root for security.
 
 \* Required only for `keyword_brief` and Ahrefs-powered features. Local analysis tools work without it.
 
