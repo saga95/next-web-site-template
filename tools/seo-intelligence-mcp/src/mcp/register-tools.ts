@@ -25,6 +25,7 @@ import {
   formatInternalLinkReport,
   runInternalLinkAnalysis,
 } from '../engines/internal-link-engine.js';
+import { runKeywordBrief } from '../engines/keyword-brief-engine.js';
 import { analyzeGeo } from '../analyzers/geo/geo-analyzer.js';
 import { analyzeAeo } from '../analyzers/aeo/aeo-analyzer.js';
 import { readFileContent, resolveSafePath } from '../shared/file-utils.js';
@@ -66,10 +67,12 @@ export function registerTools(server: McpServer): void {
     async (params, _extra) => {
       logger.info(`keyword_brief called for topic: ${params.topic}`);
       try {
-        // Phase 3: wire to keyword-brief-engine (requires Ahrefs integration)
-        return toolSuccess(
-          `[keyword_brief] Ahrefs integration not yet implemented.\n\nInput: ${JSON.stringify(params, null, 2)}`
+        const result = await runKeywordBrief(
+          params.topic,
+          params.domain,
+          params.pageType
         );
+        return toolSuccess(result.report);
       } catch (err) {
         logger.error('keyword_brief failed', err);
         return toolError(formatErrorForUser(err));
