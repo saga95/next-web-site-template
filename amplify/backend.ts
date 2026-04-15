@@ -1,5 +1,5 @@
 import { defineBackend } from '@aws-amplify/backend';
-import { PolicyStatement, Effect } from 'aws-cdk-lib/aws-iam';
+import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { HttpMethods } from 'aws-cdk-lib/aws-s3';
 import { auth } from './auth/resource';
 import { data } from './data/resource';

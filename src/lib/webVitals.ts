@@ -19,7 +19,10 @@ export function reportWebVitals(metric: NextWebVitalsMetric): void {
   // Send to your analytics endpoint
   // Example: Google Analytics
   if (typeof window !== 'undefined' && 'gtag' in window) {
-    const gtag = (window as unknown as Record<string, ((...args: unknown[]) => void) | undefined>)['gtag'];
+    const { gtag } = window as unknown as Record<
+      string,
+      ((...args: unknown[]) => void) | undefined
+    >;
     if (gtag) {
       gtag('event', name, {
         event_category: label === 'web-vital' ? 'Web Vitals' : 'Next.js Metric',
@@ -34,6 +37,8 @@ export function reportWebVitals(metric: NextWebVitalsMetric): void {
   // Development: log to console for debugging
   if (process.env.NODE_ENV === 'development') {
     // eslint-disable-next-line no-console
-    console.log(`[Web Vitals] ${name}: ${Math.round(value)}${name === 'CLS' ? '' : 'ms'} (${label})`);
+    console.log(
+      `[Web Vitals] ${name}: ${Math.round(value)}${name === 'CLS' ? '' : 'ms'} (${label})`
+    );
   }
 }

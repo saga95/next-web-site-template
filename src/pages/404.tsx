@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import { SITE_NAME } from '@/lib/seo';
 
 export default function Custom404() {
@@ -23,7 +24,7 @@ export default function Custom404() {
         <p style={{ fontSize: '1.25rem', color: '#666', marginTop: '0.5rem' }}>
           Page not found
         </p>
-        <a
+        <Link
           href='/'
           style={{
             marginTop: '1.5rem',
@@ -35,7 +36,7 @@ export default function Custom404() {
           }}
         >
           Go home
-        </a>
+        </Link>
       </div>
     </>
   );

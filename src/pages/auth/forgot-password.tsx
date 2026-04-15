@@ -2,18 +2,18 @@ import { useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import {
-  Container,
-  Box,
-  Typography,
-  TextField,
-  Button,
   Alert,
+  Box,
+  Button,
+  Container,
   Paper,
+  TextField,
+  Typography,
 } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { resetPassword, confirmResetPassword } from 'aws-amplify/auth';
+import { confirmResetPassword, resetPassword } from 'aws-amplify/auth';
 
 const requestSchema = z.object({
   email: z.string().email('Enter a valid email'),

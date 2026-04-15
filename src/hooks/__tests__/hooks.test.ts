@@ -1,5 +1,5 @@
-import { renderHook, act } from '@testing-library/react';
-import { useDebounce, useThrottle, usePrevious, useIsMounted } from '../common';
+import { act, renderHook } from '@testing-library/react';
+import { useDebounce, useIsMounted, usePrevious, useThrottle } from '../common';
 
 describe('useDebounce', () => {
   beforeEach(() => {

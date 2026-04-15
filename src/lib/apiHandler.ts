@@ -47,12 +47,15 @@ export function apiHandler(handlers: ApiHandlerMap) {
       const allowed = Object.keys(handlers).join(', ');
       res.setHeader('Allow', allowed);
       return res.status(405).json({
-        error: { code: 'METHOD_NOT_ALLOWED', message: `Method ${method} not allowed` },
+        error: {
+          code: 'METHOD_NOT_ALLOWED',
+          message: `Method ${method} not allowed`,
+        },
       });
     }
 
     try {
-      await handler(req, res);
+      return await handler(req, res);
     } catch (error) {
       // Never expose internals to users (OWASP #6)
       if (process.env.NODE_ENV === 'development') {
@@ -60,10 +63,12 @@ export function apiHandler(handlers: ApiHandlerMap) {
       }
 
       if (!res.headersSent) {
-        res.status(500).json({
+        return res.status(500).json({
           error: { code: 'INTERNAL_ERROR', message: 'Something went wrong' },
         });
       }
+
+      return undefined;
     }
   };
 }

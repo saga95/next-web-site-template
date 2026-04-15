@@ -11,7 +11,7 @@
  */
 
 import Head from 'next/head';
-import { SITE_URL, SITE_NAME } from '@/lib/seo';
+import { SITE_NAME, SITE_URL } from '@/lib/seo';
 import styles from '@/styles/Home.module.css';
 
 export default function Home() {

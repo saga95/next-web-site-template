@@ -1,4 +1,4 @@
-import { ComponentType, lazy, LazyExoticComponent } from 'react';
+import { ComponentType, LazyExoticComponent, lazy } from 'react';
 
 /**
  * `React.lazy` wrapper that retries on chunk load failure.
@@ -14,14 +14,14 @@ import { ComponentType, lazy, LazyExoticComponent } from 'react';
  */
 export function lazyWithRetry<T extends ComponentType<unknown>>(
   factory: () => Promise<{ default: T }>,
-  maxRetries = 3,
+  maxRetries = 3
 ): LazyExoticComponent<T> {
   return lazy(() => retryImport(factory, maxRetries));
 }
 
 async function retryImport<T extends ComponentType<unknown>>(
   factory: () => Promise<{ default: T }>,
-  maxRetries: number,
+  maxRetries: number
 ): Promise<{ default: T }> {
   let lastError: unknown;
 

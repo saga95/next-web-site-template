@@ -11,7 +11,7 @@
  * Current implementation: Local mock (replace with Amplify generateClient())
  */
 
-import type { Todo, CreateTodoInput, UpdateTodoInput } from './types';
+import type { CreateTodoInput, Todo, UpdateTodoInput } from './types';
 
 // ─── Amplify Implementation (uncomment when backend is deployed) ─────────────
 //
