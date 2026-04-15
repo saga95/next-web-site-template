@@ -25,6 +25,14 @@ import {
   formatInternalLinkReport,
   runInternalLinkAnalysis,
 } from '../engines/internal-link-engine.js';
+import { analyzeGeo } from '../analyzers/geo/geo-analyzer.js';
+import { analyzeAeo } from '../analyzers/aeo/aeo-analyzer.js';
+import { readFileContent, resolveSafePath } from '../shared/file-utils.js';
+import { buildAuditScore, calculateCategoryScore } from '../shared/scoring.js';
+import {
+  findingsToRecommendations,
+  formatAuditReport,
+} from '../shared/recommendations.js';
 
 const logger = createLogger('tools');
 
@@ -139,10 +147,29 @@ export function registerTools(server: McpServer): void {
     async (params, _extra) => {
       logger.info(`geo_audit called for: ${params.filePath}`);
       try {
-        // Phase 4: wire to geo analyzer
-        return toolSuccess(
-          `[geo_audit] GEO analyzer not yet implemented.\n\nInput: ${JSON.stringify(params, null, 2)}`
+        const safePath = resolveSafePath(getProjectRoot(), params.filePath);
+        const content = await readFileContent(safePath);
+        const result = analyzeGeo(content, params.filePath);
+
+        const categoryScores = [calculateCategoryScore('geo', result.findings)];
+        const score = buildAuditScore(categoryScores);
+        const recommendations = findingsToRecommendations(result.findings);
+
+        const lines: string[] = [];
+        lines.push(`## GEO Readiness Audit: ${params.filePath}`);
+        lines.push('');
+        lines.push(`**Overall Score: ${score.overall}/100**`);
+        lines.push(`**Topic Clarity**: ${result.topicClarity}`);
+        lines.push(`**Summary Readiness**: ${result.summaryReadiness}`);
+        lines.push('');
+        lines.push(
+          formatAuditReport(params.filePath, score, recommendations)
+            .split('\n')
+            .slice(4)
+            .join('\n')
         );
+
+        return toolSuccess(lines.join('\n'));
       } catch (err) {
         logger.error('geo_audit failed', err);
         return toolError(formatErrorForUser(err));
@@ -157,10 +184,34 @@ export function registerTools(server: McpServer): void {
     async (params, _extra) => {
       logger.info(`aeo_audit called for: ${params.filePath}`);
       try {
-        // Phase 4: wire to aeo analyzer
-        return toolSuccess(
-          `[aeo_audit] AEO analyzer not yet implemented.\n\nInput: ${JSON.stringify(params, null, 2)}`
+        const safePath = resolveSafePath(getProjectRoot(), params.filePath);
+        const content = await readFileContent(safePath);
+        const result = analyzeAeo(content, params.filePath);
+
+        const categoryScores = [calculateCategoryScore('aeo', result.findings)];
+        const score = buildAuditScore(categoryScores);
+        const recommendations = findingsToRecommendations(result.findings);
+
+        const lines: string[] = [];
+        lines.push(`## AEO Readiness Audit: ${params.filePath}`);
+        lines.push('');
+        lines.push(`**Overall Score: ${score.overall}/100**`);
+        lines.push(
+          `**Direct Answers**: ${result.hasDirectAnswers ? 'Yes' : 'No'}`
         );
+        lines.push(
+          `**FAQ Opportunities**: ${result.hasFaqOpportunities ? 'Yes' : 'No'}`
+        );
+        lines.push(`**Snippet Readiness**: ${result.snippetReadiness}`);
+        lines.push('');
+        lines.push(
+          formatAuditReport(params.filePath, score, recommendations)
+            .split('\n')
+            .slice(4)
+            .join('\n')
+        );
+
+        return toolSuccess(lines.join('\n'));
       } catch (err) {
         logger.error('aeo_audit failed', err);
         return toolError(formatErrorForUser(err));
