@@ -12,8 +12,25 @@ import {
 } from './types.js';
 import { formatErrorForUser } from '../shared/errors.js';
 import { createLogger } from '../shared/logger.js';
+import { runPageAudit } from '../engines/page-audit-engine.js';
+import {
+  formatMetadataRewriteReport,
+  runMetadataRewrite,
+} from '../engines/metadata-engine.js';
+import {
+  formatSchemaSuggestionReport,
+  runSchemaSuggestion,
+} from '../engines/schema-engine.js';
+import {
+  formatInternalLinkReport,
+  runInternalLinkAnalysis,
+} from '../engines/internal-link-engine.js';
 
 const logger = createLogger('tools');
+
+function getProjectRoot(): string {
+  return process.cwd();
+}
 
 export function registerTools(server: McpServer): void {
   server.tool(
@@ -23,10 +40,10 @@ export function registerTools(server: McpServer): void {
     async (params, _extra) => {
       logger.info(`page_audit called for: ${params.filePath}`);
       try {
-        // Phase 2: wire to page-audit-engine
-        return toolSuccess(
-          `[page_audit] Tool registered successfully. Analysis engine not yet implemented.\n\nInput: ${JSON.stringify(params, null, 2)}`
-        );
+        const result = await runPageAudit(params.filePath, getProjectRoot(), {
+          targetKeyword: params.targetKeyword,
+        });
+        return toolSuccess(result.report);
       } catch (err) {
         logger.error('page_audit failed', err);
         return toolError(formatErrorForUser(err));
@@ -41,9 +58,9 @@ export function registerTools(server: McpServer): void {
     async (params, _extra) => {
       logger.info(`keyword_brief called for topic: ${params.topic}`);
       try {
-        // Phase 3: wire to keyword-brief-engine
+        // Phase 3: wire to keyword-brief-engine (requires Ahrefs integration)
         return toolSuccess(
-          `[keyword_brief] Tool registered successfully. Ahrefs integration not yet implemented.\n\nInput: ${JSON.stringify(params, null, 2)}`
+          `[keyword_brief] Ahrefs integration not yet implemented.\n\nInput: ${JSON.stringify(params, null, 2)}`
         );
       } catch (err) {
         logger.error('keyword_brief failed', err);
@@ -59,10 +76,15 @@ export function registerTools(server: McpServer): void {
     async (params, _extra) => {
       logger.info(`metadata_rewrite called for: ${params.filePath}`);
       try {
-        // Phase 2: wire to metadata-engine
-        return toolSuccess(
-          `[metadata_rewrite] Tool registered successfully. Metadata engine not yet implemented.\n\nInput: ${JSON.stringify(params, null, 2)}`
+        const result = await runMetadataRewrite(
+          params.filePath,
+          getProjectRoot(),
+          {
+            targetKeyword: params.targetKeyword,
+            brandName: params.brandName,
+          }
         );
+        return toolSuccess(formatMetadataRewriteReport(result));
       } catch (err) {
         logger.error('metadata_rewrite failed', err);
         return toolError(formatErrorForUser(err));
@@ -77,10 +99,12 @@ export function registerTools(server: McpServer): void {
     async (params, _extra) => {
       logger.info(`schema_suggestion called for: ${params.filePath}`);
       try {
-        // Phase 2: wire to schema-engine
-        return toolSuccess(
-          `[schema_suggestion] Tool registered successfully. Schema engine not yet implemented.\n\nInput: ${JSON.stringify(params, null, 2)}`
+        const result = await runSchemaSuggestion(
+          params.filePath,
+          getProjectRoot(),
+          params.pageType
         );
+        return toolSuccess(formatSchemaSuggestionReport(result));
       } catch (err) {
         logger.error('schema_suggestion failed', err);
         return toolError(formatErrorForUser(err));
@@ -95,10 +119,12 @@ export function registerTools(server: McpServer): void {
     async (params, _extra) => {
       logger.info(`internal_link_opportunities called for: ${params.filePath}`);
       try {
-        // Phase 2: wire to internal-link-engine
-        return toolSuccess(
-          `[internal_link_opportunities] Tool registered successfully. Internal link engine not yet implemented.\n\nInput: ${JSON.stringify(params, null, 2)}`
+        const result = await runInternalLinkAnalysis(
+          params.filePath,
+          getProjectRoot(),
+          params.routeScope
         );
+        return toolSuccess(formatInternalLinkReport(result));
       } catch (err) {
         logger.error('internal_link_opportunities failed', err);
         return toolError(formatErrorForUser(err));
@@ -115,7 +141,7 @@ export function registerTools(server: McpServer): void {
       try {
         // Phase 4: wire to geo analyzer
         return toolSuccess(
-          `[geo_audit] Tool registered successfully. GEO analyzer not yet implemented.\n\nInput: ${JSON.stringify(params, null, 2)}`
+          `[geo_audit] GEO analyzer not yet implemented.\n\nInput: ${JSON.stringify(params, null, 2)}`
         );
       } catch (err) {
         logger.error('geo_audit failed', err);
@@ -133,7 +159,7 @@ export function registerTools(server: McpServer): void {
       try {
         // Phase 4: wire to aeo analyzer
         return toolSuccess(
-          `[aeo_audit] Tool registered successfully. AEO analyzer not yet implemented.\n\nInput: ${JSON.stringify(params, null, 2)}`
+          `[aeo_audit] AEO analyzer not yet implemented.\n\nInput: ${JSON.stringify(params, null, 2)}`
         );
       } catch (err) {
         logger.error('aeo_audit failed', err);
