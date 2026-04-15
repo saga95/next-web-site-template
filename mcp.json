@@ -2,10 +2,7 @@
   "mcpServers": {
     "figma": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-figma"
-      ],
+      "args": ["-y", "@modelcontextprotocol/server-figma"],
       "env": {
         "FIGMA_PERSONAL_ACCESS_TOKEN": ""
       },
@@ -14,36 +11,43 @@
     },
     "filesystem": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-filesystem",
-        "."
-      ],
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "."],
       "disabled": false,
       "alwaysAllow": []
     },
     "git": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-git",
-        "--repository",
-        "."
-      ],
+      "args": ["-y", "@modelcontextprotocol/server-git", "--repository", "."],
       "disabled": false,
       "alwaysAllow": []
     },
     "github": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-github"
-      ],
+      "args": ["-y", "@modelcontextprotocol/server-github"],
       "env": {
         "GITHUB_PERSONAL_ACCESS_TOKEN": ""
       },
       "disabled": false,
       "alwaysAllow": []
+    },
+    "seo-intelligence": {
+      "command": "node",
+      "args": ["tools/seo-intelligence-mcp/dist/index.js"],
+      "env": {
+        "AHREFS_API_KEY": "",
+        "AHREFS_BASE_URL": "https://api.ahrefs.com/v3",
+        "SEO_MCP_LOG_LEVEL": "info"
+      },
+      "disabled": true,
+      "alwaysAllow": [
+        "page_audit",
+        "keyword_brief",
+        "metadata_rewrite",
+        "schema_suggestion",
+        "internal_link_opportunities",
+        "geo_audit",
+        "aeo_audit"
+      ]
     }
   }
 }
