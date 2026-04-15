@@ -34,7 +34,7 @@ import type { Entitlement } from '@/rbac/types';
  */
 export function useEntitlement(
   entitlement: (Entitlement | string) | ReadonlyArray<Entitlement | string>,
-  mode: 'every' | 'some' = 'every',
+  mode: 'every' | 'some' = 'every'
 ): boolean {
   const { entitlements } = useRBAC();
 
@@ -42,7 +42,7 @@ export function useEntitlement(
     const list = Array.isArray(entitlement) ? entitlement : [entitlement];
     if (list.length === 0) return true;
     return mode === 'every'
-      ? list.every((e) => entitlements.has(e))
-      : list.some((e) => entitlements.has(e));
+      ? list.every(e => entitlements.has(e))
+      : list.some(e => entitlements.has(e));
   }, [entitlement, entitlements, mode]);
 }

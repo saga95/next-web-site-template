@@ -14,7 +14,9 @@ function mockReqRes(roles: string[]) {
 
 describe('requireEntitlement', () => {
   it('calls handler when entitlement is present', async () => {
-    const { req, res, resolveCallerRoles } = mockReqRes([ROLES.USER_MANAGEMENT_ROLE]);
+    const { req, res, resolveCallerRoles } = mockReqRes([
+      ROLES.USER_MANAGEMENT_ROLE,
+    ]);
     const handler = jest.fn();
 
     const guard = requireEntitlement({
@@ -27,7 +29,9 @@ describe('requireEntitlement', () => {
   });
 
   it('returns 403 when entitlement is missing', async () => {
-    const { req, res, resolveCallerRoles } = mockReqRes([ROLES.BASIC_USER_ROLE]);
+    const { req, res, resolveCallerRoles } = mockReqRes([
+      ROLES.BASIC_USER_ROLE,
+    ]);
     const handler = jest.fn();
 
     const guard = requireEntitlement({
@@ -41,12 +45,14 @@ describe('requireEntitlement', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         error: expect.objectContaining({ code: 'FORBIDDEN' }),
-      }),
+      })
     );
   });
 
   it('supports mode="some" — passes when at least one entitlement matches', async () => {
-    const { req, res, resolveCallerRoles } = mockReqRes([ROLES.USER_MANAGEMENT_ROLE]);
+    const { req, res, resolveCallerRoles } = mockReqRes([
+      ROLES.USER_MANAGEMENT_ROLE,
+    ]);
     const handler = jest.fn();
 
     const guard = requireEntitlement({
@@ -60,7 +66,9 @@ describe('requireEntitlement', () => {
   });
 
   it('supports mode="every" (default) — rejects when one is missing', async () => {
-    const { req, res, resolveCallerRoles } = mockReqRes([ROLES.USER_MANAGEMENT_ROLE]);
+    const { req, res, resolveCallerRoles } = mockReqRes([
+      ROLES.USER_MANAGEMENT_ROLE,
+    ]);
     const handler = jest.fn();
 
     const guard = requireEntitlement({

@@ -12,9 +12,9 @@ describe('EntitlementGuard', () => {
   it('renders children when entitlement is granted', () => {
     renderWithRBAC(
       <EntitlementGuard entitlement={ENTITLEMENTS.CREATE_USER}>
-        <span data-testid="protected">Secret</span>
+        <span data-testid='protected'>Secret</span>
       </EntitlementGuard>,
-      PROFILES.ADMIN,
+      PROFILES.ADMIN
     );
     expect(screen.getByTestId('protected')).toBeInTheDocument();
   });
@@ -22,9 +22,9 @@ describe('EntitlementGuard', () => {
   it('renders nothing when entitlement is missing', () => {
     renderWithRBAC(
       <EntitlementGuard entitlement={ENTITLEMENTS.CREATE_USER}>
-        <span data-testid="protected">Secret</span>
+        <span data-testid='protected'>Secret</span>
       </EntitlementGuard>,
-      PROFILES.SHOPPER,
+      PROFILES.SHOPPER
     );
     expect(screen.queryByTestId('protected')).not.toBeInTheDocument();
   });
@@ -33,11 +33,11 @@ describe('EntitlementGuard', () => {
     renderWithRBAC(
       <EntitlementGuard
         entitlement={ENTITLEMENTS.CREATE_USER}
-        fallback={<span data-testid="denied">No access</span>}
+        fallback={<span data-testid='denied'>No access</span>}
       >
-        <span data-testid="protected">Secret</span>
+        <span data-testid='protected'>Secret</span>
       </EntitlementGuard>,
-      PROFILES.SHOPPER,
+      PROFILES.SHOPPER
     );
     expect(screen.queryByTestId('protected')).not.toBeInTheDocument();
     expect(screen.getByTestId('denied')).toBeInTheDocument();
@@ -47,11 +47,11 @@ describe('EntitlementGuard', () => {
     renderWithRBAC(
       <EntitlementGuard
         entitlement={[ENTITLEMENTS.CREATE_USER, ENTITLEMENTS.MANAGE_ORDERS]}
-        mode="some"
+        mode='some'
       >
-        <span data-testid="protected">Visible</span>
+        <span data-testid='protected'>Visible</span>
       </EntitlementGuard>,
-      PROFILES.USER_MANAGER,
+      PROFILES.USER_MANAGER
     );
     expect(screen.getByTestId('protected')).toBeInTheDocument();
   });
@@ -60,11 +60,11 @@ describe('EntitlementGuard', () => {
     renderWithRBAC(
       <EntitlementGuard
         entitlement={[ENTITLEMENTS.CREATE_USER, ENTITLEMENTS.MANAGE_ORDERS]}
-        mode="every"
+        mode='every'
       >
-        <span data-testid="protected">Hidden</span>
+        <span data-testid='protected'>Hidden</span>
       </EntitlementGuard>,
-      PROFILES.USER_MANAGER,
+      PROFILES.USER_MANAGER
     );
     expect(screen.queryByTestId('protected')).not.toBeInTheDocument();
   });

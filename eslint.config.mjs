@@ -1,6 +1,6 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+import { FlatCompat } from '@eslint/eslintrc';
 import js from '@eslint/js';
 import typescriptEslint from '@typescript-eslint/eslint-plugin';
 import typescriptParser from '@typescript-eslint/parser';
@@ -19,17 +19,17 @@ const compat = new FlatCompat({
 const eslintConfig = [
   {
     ignores: [
-      "**/.next/**",
-      "**/node_modules/**",
-      "**/dist/**",
-      "**/build/**",
-      "**/.env*",
-      "**/coverage/**",
-      "**/playwright-report/**",
-      "**/test-results/**",
-      "**/*.config.js",
-      "**/*.config.ts",
-      "next-env.d.ts",
+      '**/.next/**',
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/build/**',
+      '**/.env*',
+      '**/coverage/**',
+      '**/playwright-report/**',
+      '**/test-results/**',
+      '**/*.config.js',
+      '**/*.config.ts',
+      'next-env.d.ts',
     ],
   },
   ...compat.extends('next/core-web-vitals'),
@@ -47,13 +47,16 @@ const eslintConfig = [
     },
     plugins: {
       '@typescript-eslint': typescriptEslint,
-      'react': react,
+      react: react,
       'react-hooks': reactHooks,
       'jsx-a11y': jsxA11y,
     },
     rules: {
       // TypeScript specific rules
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_' },
+      ],
       '@typescript-eslint/no-explicit-any': 'warn',
       // prefer-const handled by base ESLint 'prefer-const' rule below
       '@typescript-eslint/no-var-requires': 'error',
@@ -125,7 +128,7 @@ const eslintConfig = [
       'no-console': ['warn', { allow: ['warn', 'error'] }],
       'no-debugger': 'error',
       'no-duplicate-imports': 'error',
-      'eqeqeq': ['warn', 'smart'],
+      eqeqeq: ['warn', 'smart'],
       'no-unused-expressions': 'error',
       'prefer-const': 'error',
       'no-var': 'error',

@@ -27,7 +27,7 @@ export const COGNITO_GROUP_TO_PROFILE: ReadonlyArray<{
  * Returns `null` if no mapping is found.
  */
 export function resolveProfileFromCognitoGroups(
-  groups: readonly string[],
+  groups: readonly string[]
 ): Profile | string | null {
   for (const mapping of COGNITO_GROUP_TO_PROFILE) {
     if (groups.includes(mapping.group)) {

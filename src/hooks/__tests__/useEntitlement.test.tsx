@@ -14,7 +14,7 @@ describe('useEntitlement', () => {
   it('returns true for a single granted entitlement', () => {
     const { result } = renderHook(
       () => useEntitlement(ENTITLEMENTS.VIEW_ANALYTICS_DASHBOARD),
-      { wrapper: wrapper({ profile: PROFILES.USER_MANAGER }) },
+      { wrapper: wrapper({ profile: PROFILES.USER_MANAGER }) }
     );
     expect(result.current).toBe(true);
   });
@@ -22,7 +22,7 @@ describe('useEntitlement', () => {
   it('returns false for a single missing entitlement', () => {
     const { result } = renderHook(
       () => useEntitlement(ENTITLEMENTS.MANAGE_ORDERS),
-      { wrapper: wrapper({ profile: PROFILES.SHOPPER }) },
+      { wrapper: wrapper({ profile: PROFILES.SHOPPER }) }
     );
     expect(result.current).toBe(false);
   });
@@ -34,7 +34,7 @@ describe('useEntitlement', () => {
           ENTITLEMENTS.CREATE_USER,
           ENTITLEMENTS.VIEW_ANALYTICS_DASHBOARD,
         ]),
-      { wrapper: wrapper({ profile: PROFILES.USER_MANAGER }) },
+      { wrapper: wrapper({ profile: PROFILES.USER_MANAGER }) }
     );
     expect(result.current).toBe(true);
   });
@@ -42,11 +42,8 @@ describe('useEntitlement', () => {
   it('returns false when not all entitlements are present (mode=every)', () => {
     const { result } = renderHook(
       () =>
-        useEntitlement([
-          ENTITLEMENTS.CREATE_USER,
-          ENTITLEMENTS.MANAGE_ORDERS,
-        ]),
-      { wrapper: wrapper({ profile: PROFILES.USER_MANAGER }) },
+        useEntitlement([ENTITLEMENTS.CREATE_USER, ENTITLEMENTS.MANAGE_ORDERS]),
+      { wrapper: wrapper({ profile: PROFILES.USER_MANAGER }) }
     );
     expect(result.current).toBe(false);
   });
@@ -56,9 +53,9 @@ describe('useEntitlement', () => {
       () =>
         useEntitlement(
           [ENTITLEMENTS.CREATE_USER, ENTITLEMENTS.MANAGE_ORDERS],
-          'some',
+          'some'
         ),
-      { wrapper: wrapper({ profile: PROFILES.USER_MANAGER }) },
+      { wrapper: wrapper({ profile: PROFILES.USER_MANAGER }) }
     );
     expect(result.current).toBe(true);
   });
@@ -70,7 +67,7 @@ describe('useEntitlement', () => {
         wrapper: wrapper({
           roles: [ROLES.CONTENT_MANAGEMENT_ROLE],
         }),
-      },
+      }
     );
     expect(result.current).toBe(true);
   });
