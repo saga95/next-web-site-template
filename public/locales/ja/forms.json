@@ -1,0 +1,22 @@
+{
+  "emailLabel": "メールアドレス",
+  "emailPlaceholder": "メールアドレスを入力",
+  "emailRequired": "メールアドレスは必須です",
+  "emailInvalid": "有効なメールアドレスを入力してください",
+  "passwordLabel": "パスワード",
+  "passwordPlaceholder": "パスワードを入力",
+  "passwordRequired": "パスワードは必須です",
+  "passwordMinLength": "パスワードは{{min}}文字以上必要です",
+  "nameLabel": "名前",
+  "namePlaceholder": "名前を入力",
+  "nameRequired": "名前は必須です",
+  "messageLabel": "メッセージ",
+  "messagePlaceholder": "メッセージを入力",
+  "messageRequired": "メッセージは必須です",
+  "phoneLabel": "電話番号",
+  "phonePlaceholder": "電話番号を入力",
+  "addressLabel": "住所",
+  "addressPlaceholder": "住所を入力",
+  "formSubmitSuccess": "フォームが正常に送信されました！",
+  "formSubmitError": "フォームの送信に失敗しました。もう一度お試しください。"
+}

@@ -4,18 +4,6 @@ export default function Document() {
   return (
     <Html lang='en'>
       <Head>
-        {/* Preconnect to known origins for faster resource loading */}
-        <link rel='dns-prefetch' href='https://fonts.googleapis.com' />
-        <link
-          rel='preconnect'
-          href='https://fonts.googleapis.com'
-          crossOrigin='anonymous'
-        />
-        <link
-          rel='preconnect'
-          href='https://fonts.gstatic.com'
-          crossOrigin='anonymous'
-        />
         {/* Meta for theme color (mobile browser chrome) */}
         <meta
           name='theme-color'

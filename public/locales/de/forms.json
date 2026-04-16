@@ -1,0 +1,22 @@
+{
+  "emailLabel": "E-Mail",
+  "emailPlaceholder": "Geben Sie Ihre E-Mail ein",
+  "emailRequired": "E-Mail ist erforderlich",
+  "emailInvalid": "Bitte geben Sie eine gültige E-Mail ein",
+  "passwordLabel": "Passwort",
+  "passwordPlaceholder": "Geben Sie Ihr Passwort ein",
+  "passwordRequired": "Passwort ist erforderlich",
+  "passwordMinLength": "Das Passwort muss mindestens {{min}} Zeichen lang sein",
+  "nameLabel": "Name",
+  "namePlaceholder": "Geben Sie Ihren Namen ein",
+  "nameRequired": "Name ist erforderlich",
+  "messageLabel": "Nachricht",
+  "messagePlaceholder": "Geben Sie Ihre Nachricht ein",
+  "messageRequired": "Nachricht ist erforderlich",
+  "phoneLabel": "Telefon",
+  "phonePlaceholder": "Geben Sie Ihre Telefonnummer ein",
+  "addressLabel": "Adresse",
+  "addressPlaceholder": "Geben Sie Ihre Adresse ein",
+  "formSubmitSuccess": "Formular erfolgreich gesendet!",
+  "formSubmitError": "Formular konnte nicht gesendet werden. Bitte versuchen Sie es erneut."
+}

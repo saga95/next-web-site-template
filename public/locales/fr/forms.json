@@ -1,0 +1,22 @@
+{
+  "emailLabel": "E-mail",
+  "emailPlaceholder": "Entrez votre e-mail",
+  "emailRequired": "L'e-mail est obligatoire",
+  "emailInvalid": "Veuillez entrer un e-mail valide",
+  "passwordLabel": "Mot de passe",
+  "passwordPlaceholder": "Entrez votre mot de passe",
+  "passwordRequired": "Le mot de passe est obligatoire",
+  "passwordMinLength": "Le mot de passe doit comporter au moins {{min}} caractères",
+  "nameLabel": "Nom",
+  "namePlaceholder": "Entrez votre nom",
+  "nameRequired": "Le nom est obligatoire",
+  "messageLabel": "Message",
+  "messagePlaceholder": "Entrez votre message",
+  "messageRequired": "Le message est obligatoire",
+  "phoneLabel": "Téléphone",
+  "phonePlaceholder": "Entrez votre numéro de téléphone",
+  "addressLabel": "Adresse",
+  "addressPlaceholder": "Entrez votre adresse",
+  "formSubmitSuccess": "Formulaire envoyé avec succès !",
+  "formSubmitError": "Échec de l'envoi du formulaire. Veuillez réessayer."
+}

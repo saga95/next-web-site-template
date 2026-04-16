@@ -1,0 +1,19 @@
+{
+  "home": "ホーム",
+  "about": "概要",
+  "services": "サービス",
+  "products": "製品",
+  "contact": "お問い合わせ",
+  "blog": "ブログ",
+  "features": "機能",
+  "pricing": "料金",
+  "faq": "よくある質問",
+  "documentation": "ドキュメント",
+  "api": "API",
+  "dashboard": "ダッシュボード",
+  "settings": "設定",
+  "profile": "プロフィール",
+  "logout": "ログアウト",
+  "login": "ログイン",
+  "signup": "新規登録"
+}

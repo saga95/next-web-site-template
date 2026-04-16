@@ -1,0 +1,19 @@
+{
+  "home": "首页",
+  "about": "关于",
+  "services": "服务",
+  "products": "产品",
+  "contact": "联系我们",
+  "blog": "博客",
+  "features": "功能",
+  "pricing": "定价",
+  "faq": "常见问题",
+  "documentation": "文档",
+  "api": "API",
+  "dashboard": "仪表盘",
+  "settings": "设置",
+  "profile": "个人资料",
+  "logout": "退出登录",
+  "login": "登录",
+  "signup": "注册"
+}

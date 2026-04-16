@@ -14,29 +14,29 @@ i18n
   .init({
     fallbackLng: 'en',
     debug: process.env['NODE_ENV'] === 'development',
-    
+
     interpolation: {
       escapeValue: false, // React already does escaping
     },
-    
+
     backend: {
       // Path where resources are loaded from
       loadPath: '/locales/{{lng}}/{{ns}}.json',
     },
-    
+
     detection: {
       // Order of language detection
       order: ['localStorage', 'navigator', 'htmlTag'],
       caches: ['localStorage'],
     },
-    
+
     // Supported languages
     supportedLngs: ['en', 'es', 'fr', 'de', 'ja', 'zh', 'ar'],
-    
+
     // Namespaces
-    ns: ['common', 'home', 'navigation', 'forms', 'errors'],
+    ns: ['common', 'navigation', 'forms'],
     defaultNS: 'common',
-    
+
     react: {
       useSuspense: false,
     },

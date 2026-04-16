@@ -1,0 +1,19 @@
+{
+  "home": "Inicio",
+  "about": "Acerca de",
+  "services": "Servicios",
+  "products": "Productos",
+  "contact": "Contacto",
+  "blog": "Blog",
+  "features": "Características",
+  "pricing": "Precios",
+  "faq": "Preguntas frecuentes",
+  "documentation": "Documentación",
+  "api": "API",
+  "dashboard": "Panel",
+  "settings": "Configuración",
+  "profile": "Perfil",
+  "logout": "Cerrar sesión",
+  "login": "Iniciar sesión",
+  "signup": "Registrarse"
+}
