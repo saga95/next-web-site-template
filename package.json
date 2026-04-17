@@ -43,6 +43,7 @@
     "audit": "pnpm audit --audit-level=critical",
     "quality:quick": "pnpm lint:check && pnpm type-check && pnpm test",
     "quality": "pnpm format:check && pnpm lint:check && pnpm type-check && pnpm test:coverage && pnpm audit",
+    "analyze": "ANALYZE=true next build",
     "seo:mcp:dev": "cd tools/seo-intelligence-mcp && npx tsx watch src/index.ts",
     "seo:mcp:build": "cd tools/seo-intelligence-mcp && npx tsc",
     "seo:mcp:start": "node tools/seo-intelligence-mcp/dist/index.js"
@@ -89,6 +90,7 @@
     "@eslint/eslintrc": "^3.3.5",
     "@eslint/js": "^8.57.1",
     "@netlify/plugin-nextjs": "^5.7.5",
+    "@next/bundle-analyzer": "^16.2.4",
     "@playwright/test": "^1.59.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",

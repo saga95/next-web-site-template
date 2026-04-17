@@ -131,6 +131,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     hydrate();
   }, []);
 
+  // Cross-tab logout: listen for logout events from other tabs
+  useEffect(() => {
+    const LOGOUT_KEY = 'auth:logout';
+
+    // Prefer BroadcastChannel, fall back to StorageEvent
+    if (typeof BroadcastChannel !== 'undefined') {
+      const bc = new BroadcastChannel(LOGOUT_KEY);
+      bc.onmessage = () => dispatch({ type: 'CLEAR_USER' });
+      return () => bc.close();
+    }
+
+    // StorageEvent fallback for older browsers
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === LOGOUT_KEY) dispatch({ type: 'CLEAR_USER' });
+    };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, []);
+
   const login = useCallback(async (email: string, password: string) => {
     const input: SignInInput = { username: email, password };
     await signIn(input);
@@ -141,6 +160,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = useCallback(async () => {
     await signOut();
     dispatch({ type: 'CLEAR_USER' });
+
+    // Broadcast logout to other tabs
+    const LOGOUT_KEY = 'auth:logout';
+    if (typeof BroadcastChannel !== 'undefined') {
+      const bc = new BroadcastChannel(LOGOUT_KEY);
+      bc.postMessage('logout');
+      bc.close();
+    } else {
+      // StorageEvent fallback
+      window.localStorage.setItem(LOGOUT_KEY, Date.now().toString());
+      window.localStorage.removeItem(LOGOUT_KEY);
+    }
   }, []);
 
   const register = useCallback(async (input: SignUpInput) => {

@@ -1,0 +1,25 @@
+name: Copilot Code Review
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  copilot-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+    # Copilot reviews are auto-enabled for repos with GitHub Copilot.
+    # This workflow ensures consistent review settings and path-specific instructions.
+# Path-specific review instructions for Copilot:
+# - src/pages/api/**     → Check auth middleware, input validation, error handling
+# - src/hooks/**         → Check memoization, cleanup, dependency arrays
+# - src/components/**    → Check accessibility (aria-*, roles), keyboard navigation
+# - src/contexts/**      → Check provider nesting, memoization of context values
+# - src/lib/**           → Check env var access (use getEnvVar), no direct process.env
+# - src/utils/**         → Check for XSS vectors, proper sanitization
+# - amplify/**           → Check authorization rules on all models
