@@ -14,6 +14,24 @@ Fast read-only codebase exploration. Use for:
 - Understanding code dependencies
 - Answering questions about the codebase
 
+### 🎨 Aria — UX Designer Agent
+
+Senior UI/UX designer embedded into the project. Owns the entire design layer
+(design system, personas, empathy maps, IA, sitemaps, user flows, journey maps,
+wireframes, hi-fi mockups, Storybook). Anchors every decision to
+`design-system/tokens.ts`.
+
+- **Persona & rules**: [CLAUDE.md](CLAUDE.md)
+- **Slash commands**: [.claude/commands/](.claude/commands/) (`/design-system`, `/persona`, `/userflow`, `/wireframe`, `/audit`, etc.)
+- **Templates**: [.claude/templates/](.claude/templates/)
+- **Design tokens**: [design-system/tokens.ts](design-system/tokens.ts)
+- **MUI adapter**: [design-system/mui-theme.ts](design-system/mui-theme.ts)
+- **Output folders**: [ux-docs/](ux-docs/)
+
+Use Aria for any UI/UX task: "Aria, build a wireframe for X", "Aria, audit the
+theme", "Aria, create a persona for Y". Both Claude Code and GitHub Copilot
+should follow `CLAUDE.md` when acting in this role.
+
 ### Custom Agent Templates
 
 Below are role-based instruction sets that agents (human or AI) can follow when performing specific tasks.

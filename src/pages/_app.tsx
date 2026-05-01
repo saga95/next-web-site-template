@@ -5,7 +5,10 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Amplify } from 'aws-amplify';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import ErrorBoundary from '@/components/ErrorBoundary';
+import ErrorBoundary, {
+  RootErrorBoundary,
+  RouteErrorBoundary,
+} from '@/components/ErrorBoundary';
 import { ToastProvider } from '@/components/Toast';
 import { AuthProvider, useAuth } from '@/contexts/AuthContext';
 import { RBACProvider } from '@/contexts/RBACContext';
@@ -101,21 +104,25 @@ export default function App({ Component, pageProps }: AppProps) {
   }, [router.events]);
 
   return (
-    <ErrorBoundary>
+    <RootErrorBoundary>
       <AmplifyProvider>
         <AuthProvider>
           <AuthenticatedRBACProvider>
             <QueryClientProvider client={queryClient}>
-              <ToastProvider>
-                <a href='#main-content' className='skip-link'>
-                  Skip to main content
-                </a>
-                <Component {...pageProps} />
-              </ToastProvider>
+              <ErrorBoundary level='app'>
+                <ToastProvider>
+                  <a href='#main-content' className='skip-link'>
+                    Skip to main content
+                  </a>
+                  <RouteErrorBoundary>
+                    <Component {...pageProps} />
+                  </RouteErrorBoundary>
+                </ToastProvider>
+              </ErrorBoundary>
             </QueryClientProvider>
           </AuthenticatedRBACProvider>
         </AuthProvider>
       </AmplifyProvider>
-    </ErrorBoundary>
+    </RootErrorBoundary>
   );
 }

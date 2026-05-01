@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        ".",
+        "ux-docs",
+        "design-system",
+        "src/components",
+        "src/stories"
+      ]
+    }
+  }
+}

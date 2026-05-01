@@ -4,6 +4,10 @@ import { logger } from '@/lib/logger';
 interface ErrorBoundaryProps {
   children: React.ReactNode;
   fallback?: React.ReactNode;
+  /** Boundary level for structured logging. */
+  level?: 'root' | 'app' | 'route';
+  /** Called when an error is caught — use for external reporting (e.g. Sentry). */
+  onError?: (error: Error, errorInfo: ErrorInfo) => void;
 }
 
 interface ErrorBoundaryState {
@@ -22,11 +26,14 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   }
 
   override componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-    logger.error('Uncaught error in component tree', {
+    const level = this.props.level ?? 'app';
+    logger.error(`[ErrorBoundary:${level}] Uncaught error`, {
       error: error.message,
       stack: error.stack,
       componentStack: errorInfo.componentStack,
+      level,
     });
+    this.props.onError?.(error, errorInfo);
   }
 
   override render(): React.ReactNode {
@@ -68,3 +75,58 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 }
 
 export default ErrorBoundary;
+
+// ─── Layered convenience wrappers ───────────────────────────────────────────────
+
+/**
+ * Root-level boundary — catches catastrophic failures (broken providers, etc.).
+ * Shows a minimal fullscreen message because nothing else can be trusted.
+ */
+export function RootErrorBoundary({ children }: { children: React.ReactNode }) {
+  return (
+    <ErrorBoundary
+      level='root'
+      fallback={
+        <div
+          role='alert'
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: '100vh',
+            fontFamily: 'system-ui, sans-serif',
+            textAlign: 'center',
+            padding: '2rem',
+          }}
+        >
+          <div>
+            <h1>Application Error</h1>
+            <p>Something unexpected happened. Please refresh the page.</p>
+          </div>
+        </div>
+      }
+    >
+      {children}
+    </ErrorBoundary>
+  );
+}
+
+/**
+ * App-level boundary — wraps providers and layout.
+ * Can retry because the shell is still intact.
+ */
+export function AppErrorBoundary({ children }: { children: React.ReactNode }) {
+  return <ErrorBoundary level='app'>{children}</ErrorBoundary>;
+}
+
+/**
+ * Route-level boundary — wraps individual pages.
+ * Users can retry or navigate away without losing the full app shell.
+ */
+export function RouteErrorBoundary({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return <ErrorBoundary level='route'>{children}</ErrorBoundary>;
+}

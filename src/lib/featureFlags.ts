@@ -30,6 +30,10 @@ export const FEATURE_FLAGS = {
   AI_SEARCH: 'NEXT_PUBLIC_FF_AI_SEARCH',
   /** Example: dark mode toggle */
   DARK_MODE: 'NEXT_PUBLIC_FF_DARK_MODE',
+  /** Sentry error tracking — enable when DSN is configured */
+  SENTRY: 'NEXT_PUBLIC_FF_SENTRY',
+  /** Stripe payments — enable when Stripe keys are configured */
+  STRIPE: 'NEXT_PUBLIC_FF_STRIPE',
 } as const;
 
 export type FeatureFlag = keyof typeof FEATURE_FLAGS;

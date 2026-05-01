@@ -1,17 +1,23 @@
+import bundleAnalyzer from '@next/bundle-analyzer';
+
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+});
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   /* config options here */
   reactStrictMode: true,
-  
+
   // Exclude test files and directories from pages
   pageExtensions: ['tsx', 'ts', 'jsx', 'js'].map(ext => {
     return ext;
   }),
-  
+
   // Performance optimizations
   swcMinify: true,
   compress: true,
-  
+
   // Image optimization
   images: {
     formats: ['image/avif', 'image/webp'],
@@ -21,7 +27,7 @@ const nextConfig = {
     dangerouslyAllowSVG: false,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
-  
+
   // Experimental features for performance
   experimental: {
     optimizePackageImports: [
@@ -31,7 +37,7 @@ const nextConfig = {
       'dayjs',
     ],
   },
-  
+
   // Security headers
   async headers() {
     return [
@@ -56,7 +62,8 @@ const nextConfig = {
           },
           {
             key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=(), browsing-topics=()',
+            value:
+              'camera=(), microphone=(), geolocation=(), browsing-topics=()',
           },
           // Content Security Policy
           {
@@ -70,7 +77,7 @@ const nextConfig = {
               "connect-src 'self'",
               "frame-ancestors 'none'",
               "base-uri 'self'",
-              "form-action 'self'"
+              "form-action 'self'",
             ].join('; '),
           },
           // Strict Transport Security
@@ -109,7 +116,7 @@ const nextConfig = {
       },
     ];
   },
-  
+
   // Redirects for SEO
   async redirects() {
     return [
@@ -120,7 +127,7 @@ const nextConfig = {
       },
     ];
   },
-  
+
   // Webpack configuration for performance
   webpack: (config, { dev, isServer }) => {
     // SVG handling
@@ -129,7 +136,7 @@ const nextConfig = {
       issuer: /\.[jt]sx?$/,
       use: ['@svgr/webpack'],
     });
-    
+
     // Performance optimizations
     if (!dev && !isServer) {
       config.optimization = {
@@ -158,24 +165,29 @@ const nextConfig = {
         },
       };
     }
-    
+
     return config;
   },
-  
+
   // Compiler options
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production' ? {
-      exclude: ['error', 'warn'],
-    } : false,
+    removeConsole:
+      process.env.NODE_ENV === 'production'
+        ? {
+            exclude: ['error', 'warn'],
+          }
+        : false,
   },
-  
+
   // Power configuration
   poweredByHeader: false,
-  
-  // Environment variables
+
+  // Environment variables exposed to the browser
   env: {
-    CUSTOM_KEY: process.env.CUSTOM_KEY || '',
+    NEXT_PUBLIC_APP_ENV: process.env.NODE_ENV || 'development',
+    NEXT_PUBLIC_APP_VERSION: process.env.npm_package_version || '0.0.0',
+    NEXT_PUBLIC_BUILD_TIME: new Date().toISOString(),
   },
 };
 
-export default nextConfig;
+export default withBundleAnalyzer(nextConfig);
