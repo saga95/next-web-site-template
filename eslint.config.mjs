@@ -30,6 +30,8 @@ const eslintConfig = [
       '**/*.config.js',
       '**/*.config.ts',
       'next-env.d.ts',
+      '.claude/templates/**',
+      'ux-docs/**',
     ],
   },
   ...compat.extends('next/core-web-vitals'),
