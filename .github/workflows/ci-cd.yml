@@ -165,7 +165,7 @@ jobs:
       url: https://dev.yourapp.com
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: build-development
       - name: Deploy to Development
@@ -191,7 +191,7 @@ jobs:
       url: https://staging.yourapp.com
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: build-staging
       - name: Deploy to Staging
@@ -216,7 +216,7 @@ jobs:
       url: https://yourapp.com
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: build-production
       - name: Deploy to Production
