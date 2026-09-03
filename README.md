@@ -100,11 +100,11 @@ Want to accelerate development with Figma-to-code workflows?
 
 ### "Use this template" vs. Fork vs. Clone
 
-| Method | Visibility | History | Upstream sync | Best for |
-|--------|-----------|---------|---------------|----------|
-| **Use this template** (recommended) | Private or public | Clean (1 commit) | Manual | Client projects, SaaS products |
-| **Clone + re-init** | Private or public | Clean (1 commit) | Manual | Quick prototypes, internal tools |
-| **Fork** | Inherits public | Full history | Easy (`git fetch upstream`) | Open-source contributions, learning |
+| Method                              | Visibility        | History          | Upstream sync               | Best for                            |
+| ----------------------------------- | ----------------- | ---------------- | --------------------------- | ----------------------------------- |
+| **Use this template** (recommended) | Private or public | Clean (1 commit) | Manual                      | Client projects, SaaS products      |
+| **Clone + re-init**                 | Private or public | Clean (1 commit) | Manual                      | Quick prototypes, internal tools    |
+| **Fork**                            | Inherits public   | Full history     | Easy (`git fetch upstream`) | Open-source contributions, learning |
 
 > **⚠️ Important:** Forking a public repo creates a **public** fork. GitHub does not allow making forks of public repos private. For client or commercial work, always use **"Use this template"** or **clone + re-init**.
 
@@ -159,13 +159,13 @@ git push origin update/sync-template  # create PR for review
 
 The template is structured so **infrastructure stays separate from your domain code**. Understanding this helps predict and resolve conflicts:
 
-| Layer | Files | Merge Behavior |
-|-------|-------|---------------|
-| **Infra (clean merge)** | `src/lib/` (env, logger, seo, i18n, date, utils), `src/hooks/common.ts`, `src/components/ErrorBoundary.tsx`, `src/components/Toast.tsx`, `docs/`, `scripts/`, CI/CD, eslint/prettier configs | Merges cleanly — you typically don't modify these |
-| **Auth & Layouts (may conflict)** | `src/contexts/AuthContext.tsx`, `src/components/AdminLayout.tsx`, `src/components/AccountLayout.tsx`, `src/pages/auth/*` | May conflict if you customized nav items, groups, or form fields |
-| **Amplify backend (likely conflicts)** | `amplify/data/resource.ts`, `amplify/auth/resource.ts`, `amplify/storage/resource.ts`, `amplify/backend.ts` | Will conflict — you've added your own models and config |
-| **Your domain (no conflict)** | `src/pages/` (your pages), `src/features/` (your modules), `src/components/` (your components) | No conflict — template doesn't touch your custom files |
-| **Shared config (review carefully)** | `package.json`, `tsconfig.json`, `next.config.mjs`, `_app.tsx` | May conflict on dependency versions or provider order |
+| Layer                                  | Files                                                                                                                                                                                        | Merge Behavior                                                   |
+| -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| **Infra (clean merge)**                | `src/lib/` (env, logger, seo, i18n, date, utils), `src/hooks/common.ts`, `src/components/ErrorBoundary.tsx`, `src/components/Toast.tsx`, `docs/`, `scripts/`, CI/CD, eslint/prettier configs | Merges cleanly — you typically don't modify these                |
+| **Auth & Layouts (may conflict)**      | `src/contexts/AuthContext.tsx`, `src/components/AdminLayout.tsx`, `src/components/AccountLayout.tsx`, `src/pages/auth/*`                                                                     | May conflict if you customized nav items, groups, or form fields |
+| **Amplify backend (likely conflicts)** | `amplify/data/resource.ts`, `amplify/auth/resource.ts`, `amplify/storage/resource.ts`, `amplify/backend.ts`                                                                                  | Will conflict — you've added your own models and config          |
+| **Your domain (no conflict)**          | `src/pages/` (your pages), `src/features/` (your modules), `src/components/` (your components)                                                                                               | No conflict — template doesn't touch your custom files           |
+| **Shared config (review carefully)**   | `package.json`, `tsconfig.json`, `next.config.mjs`, `_app.tsx`                                                                                                                               | May conflict on dependency versions or provider order            |
 
 #### Conflict Resolution Strategy
 
@@ -361,7 +361,7 @@ my-next-template/
 │   ├── icons/
 │   │   └── icon.svg          # App icon (TODO: replace with your icon)
 │   ├── manifest.json         # PWA manifest
-│   ├── og-image.svg          # Social preview placeholder (TODO: replace)
+│   ├── og-image.png          # Social preview placeholder, 1200×630 (TODO: replace)
 │   └── robots.txt            # Search engine directives
 ├── scripts/                   # Deployment and utility scripts
 │   ├── bootstrap.sh          # One-command project setup
@@ -1494,7 +1494,7 @@ Replace placeholder files in `public/`:
 
 - `public/favicon.ico` - Browser favicon
 - `public/icons/icon.svg` - App icon (used in PWA manifest)
-- `public/og-image.svg` - Social media preview image (replace with 1200×630 JPG/PNG for best compatibility)
+- `public/og-image.png` - Social media preview image, 1200×630 (replace with your branded PNG/JPG — SVG is not a supported `og:image` format on X, Facebook, or LinkedIn)
 
 ---
 
@@ -1725,8 +1725,8 @@ export const supabase = createClient(
 
 ```bash
 # Solution: Clear cache and reinstall
-rm -rf .next node_modules package-lock.json
-pnpm install
+rm -rf .next node_modules
+pnpm install --frozen-lockfile
 pnpm dev
 ```
 

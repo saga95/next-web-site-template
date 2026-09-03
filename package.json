@@ -58,11 +58,12 @@
     ]
   },
   "engines": {
-    "node": ">=18.0.0",
+    "node": ">=20.0.0",
     "npm": ">=9.0.0"
   },
   "dependencies": {
     "@aws-amplify/ui-react": "^6.0.0",
+    "@aws-sdk/client-cognito-identity-provider": "^3.1125.0",
     "@emailjs/browser": "^4.4.1",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
@@ -82,9 +83,11 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.53.0",
     "react-i18next": "^15.1.0",
-    "zod": "^3.23.8"
+    "zod": "^3.25.17"
   },
   "devDependencies": {
+    "@aws-amplify/backend": "^1.24.0",
+    "@aws-amplify/backend-cli": "^1.9.0",
     "@commitlint/cli": "^20.5.0",
     "@commitlint/config-conventional": "^20.5.0",
     "@eslint/eslintrc": "^3.3.5",
@@ -95,6 +98,7 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
+    "@types/aws-lambda": "^8.10.163",
     "@types/dompurify": "^3.2.0",
     "@types/jest": "^30.0.0",
     "@types/node": "^20",
@@ -102,6 +106,8 @@
     "@types/react-dom": "^18",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
+    "aws-cdk-lib": "^2.268.0",
+    "constructs": "^10.8.1",
     "eslint": "^8.57.1",
     "eslint-config-next": "14.2.25",
     "eslint-plugin-jsx-a11y": "^6.10.2",

@@ -5,6 +5,7 @@ This guide will help you deploy your Next.js template to Vercel with proper envi
 ## 🚀 Quick Setup (5 minutes)
 
 ### Prerequisites
+
 - GitHub account (already set up ✅)
 - Vercel account (free tier is sufficient)
 
@@ -15,16 +16,19 @@ This guide will help you deploy your Next.js template to Vercel with proper envi
 ### 1️⃣ Create Vercel Account & Install CLI
 
 #### Create Account
+
 1. Go to https://vercel.com/signup
 2. Click **"Continue with GitHub"**
 3. Authorize Vercel to access your GitHub account
 
 #### Install Vercel CLI (Optional but Recommended)
+
 ```bash
 npm install -g vercel
 ```
 
 Then login:
+
 ```bash
 vercel login
 ```
@@ -34,18 +38,21 @@ vercel login
 ### 2️⃣ Import Your GitHub Repository
 
 #### Via Vercel Dashboard:
+
 1. Go to https://vercel.com/new
 2. Click **"Import Git Repository"**
 3. Select **saga95/next-web-site-template**
 4. Click **"Import"**
 
 #### Via CLI:
+
 ```bash
 cd /Users/sagara/work/my-next-template
 vercel
 ```
 
 Follow the prompts:
+
 - **Set up and deploy?** Yes
 - **Which scope?** Your account
 - **Link to existing project?** No
@@ -73,9 +80,10 @@ Follow the prompts:
    - ✅ **development** (Preview)
 
 Vercel will now deploy:
+
 - `main` → Production URL
-- `staging` → Preview URL (staging-next-web-site-template-*.vercel.app)
-- `development` → Preview URL (development-next-web-site-template-*.vercel.app)
+- `staging` → Preview URL (staging-next-web-site-template-\*.vercel.app)
+- `development` → Preview URL (development-next-web-site-template-\*.vercel.app)
 
 ---
 
@@ -97,6 +105,7 @@ API_SECRET_KEY=your-secret-key-here
 #### Environment-Specific Variables:
 
 ##### **Production (main branch only)**
+
 ```bash
 NEXT_PUBLIC_APP_URL=https://next-web-site-template.vercel.app
 NEXT_PUBLIC_EMAILJS_SERVICE_ID=prod_service_id
@@ -106,6 +115,7 @@ NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 ```
 
 ##### **Preview - Staging branch**
+
 ```bash
 NEXT_PUBLIC_APP_URL=https://staging-next-web-site-template.vercel.app
 NEXT_PUBLIC_EMAILJS_SERVICE_ID=staging_service_id
@@ -114,6 +124,7 @@ NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=staging_public_key
 ```
 
 ##### **Preview - Development branch**
+
 ```bash
 NEXT_PUBLIC_APP_URL=https://development-next-web-site-template.vercel.app
 NEXT_PUBLIC_EMAILJS_SERVICE_ID=dev_service_id
@@ -138,11 +149,13 @@ NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=dev_public_key
 ### 6️⃣ Set Up Custom Domains (Optional)
 
 #### For Production (main):
+
 1. Go to **Settings → Domains**
 2. Add your custom domain (e.g., `mywebsite.com`)
 3. Follow DNS configuration instructions
 
 #### For Staging:
+
 1. Add subdomain: `staging.mywebsite.com`
 2. Configure it to deploy from `staging` branch
 
@@ -187,6 +200,7 @@ git push origin development
 4. Once deployed, click "Visit" to see your site
 
 #### Via CLI:
+
 ```bash
 vercel ls
 ```
@@ -196,6 +210,7 @@ vercel ls
 ## 🔄 Deployment Workflow
 
 ### Development Workflow:
+
 ```bash
 # Work on development branch
 git checkout development
@@ -203,18 +218,22 @@ git checkout development
 git commit -m "feat: new feature"
 git push origin development
 ```
+
 → **Auto-deploys to:** `development-next-web-site-template-*.vercel.app`
 
 ### Staging Workflow:
+
 ```bash
 # Merge development to staging
 git checkout staging
 git merge development
 git push origin staging
 ```
+
 → **Auto-deploys to:** `staging-next-web-site-template-*.vercel.app`
 
 ### Production Workflow:
+
 ```bash
 # Create release branch
 git checkout -b release/1.0.0 development
@@ -231,6 +250,7 @@ git checkout main
 git merge release/1.0.0
 git push origin main
 ```
+
 → **Auto-deploys to:** `next-web-site-template.vercel.app` (Production)
 
 ---
@@ -238,16 +258,19 @@ git push origin main
 ## 🔐 Security Best Practices
 
 ### 1. Use Vercel Environment Variables
+
 - ✅ **Never commit** `.env.local` or files with real secrets
 - ✅ **Use Vercel dashboard** to store sensitive data
 - ✅ **Encrypt sensitive variables** (Vercel encrypts them automatically)
 
 ### 2. Separate Credentials Per Environment
+
 - **Production:** Real API keys, production database
 - **Staging:** Test API keys, staging database
 - **Development:** Development API keys, local/dev database
 
 ### 3. Use Different EmailJS Templates
+
 - Create separate EmailJS templates for each environment
 - Use different service IDs to track emails by environment
 
@@ -256,11 +279,13 @@ git push origin main
 ## 📊 Monitoring Deployments
 
 ### Vercel Dashboard
+
 - **Deployments:** See all deployments and their status
 - **Analytics:** Track page views, performance (requires Pro plan)
 - **Logs:** View runtime logs for debugging
 
 ### CLI Commands
+
 ```bash
 # List recent deployments
 vercel ls
@@ -281,12 +306,12 @@ vercel alias [deployment-url] [custom-domain]
 
 After setup, you'll have:
 
-| Branch | Environment | URL Pattern | Purpose |
-|--------|-------------|-------------|---------|
-| **main** | Production | `next-web-site-template.vercel.app` | Live production site |
-| **staging** | Preview | `staging-*-saga95.vercel.app` | Pre-production testing |
-| **development** | Preview | `development-*-saga95.vercel.app` | Development testing |
-| **feature/*** | Preview | `next-web-site-template-*-saga95.vercel.app` | Feature branch previews |
+| Branch          | Environment | URL Pattern                                  | Purpose                 |
+| --------------- | ----------- | -------------------------------------------- | ----------------------- |
+| **main**        | Production  | `next-web-site-template.vercel.app`          | Live production site    |
+| **staging**     | Preview     | `staging-*-saga95.vercel.app`                | Pre-production testing  |
+| **development** | Preview     | `development-*-saga95.vercel.app`            | Development testing     |
+| **feature/\***  | Preview     | `next-web-site-template-*-saga95.vercel.app` | Feature branch previews |
 
 ---
 
@@ -295,16 +320,18 @@ After setup, you'll have:
 ### Build Fails on Vercel but Works Locally
 
 **Check:**
+
 1. Environment variables are set correctly
-2. Node version matches (Vercel uses Node 18 by default)
+2. Node version matches (this template requires Node ≥ 20 — see `.nvmrc`)
 3. All dependencies are in `package.json`
 
 **Fix:**
+
 ```bash
-# Specify Node version in package.json
+# Node version is pinned in .nvmrc and enforced in package.json
 {
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.0.0"
   }
 }
 ```
@@ -312,12 +339,14 @@ After setup, you'll have:
 ### Environment Variables Not Working
 
 **Check:**
+
 1. Variable names are correct (case-sensitive)
 2. Variables starting with `NEXT_PUBLIC_` are exposed to browser
 3. Variables without `NEXT_PUBLIC_` are server-side only
 4. You've redeployed after adding variables
 
 **Fix:** Redeploy after adding variables:
+
 ```bash
 vercel --prod  # For production
 # or trigger via git push
@@ -326,11 +355,13 @@ vercel --prod  # For production
 ### Deployments Not Triggering
 
 **Check:**
+
 1. GitHub integration is connected
 2. Branch deployments are enabled
 3. No build errors in previous deployment
 
 **Fix:** Reconnect GitHub integration:
+
 - Settings → Git → Disconnect → Reconnect
 
 ---
@@ -421,12 +452,14 @@ Before going to production:
 ## 🎉 You're All Set!
 
 Your Next.js template is now deployed with:
+
 - ✅ Automatic deployments for main, staging, and development
 - ✅ Environment-specific configurations
 - ✅ Preview URLs for every branch
 - ✅ Secure environment variable management
 
 **Next Steps:**
+
 - Test a deployment by pushing to development
 - Configure your custom domain
 - Set up real EmailJS credentials

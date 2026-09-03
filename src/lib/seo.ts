@@ -16,9 +16,11 @@ export const SITE_URL =
   process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000';
 export const SITE_NAME = process.env['NEXT_PUBLIC_APP_NAME'] || 'My App';
 
-// TODO: Replace public/og-image.svg with your actual OG image (1200×630px JPG/PNG recommended)
+// A neutral 1200×630 PNG placeholder ships at public/og-image.png.
+// TODO: replace it with your branded artwork — keep it PNG/JPG (SVG is not a
+// supported og:image format on X, Facebook, or LinkedIn) and 1200×630.
 export const DEFAULT_OG_IMAGE = {
-  url: `${SITE_URL}/og-image.svg`,
+  url: `${SITE_URL}/og-image.png`,
   width: 1200,
   height: 630,
   alt: `${SITE_NAME} - Open Graph Image`,

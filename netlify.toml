@@ -12,8 +12,9 @@
   functions = "netlify/functions"
 
 [build.environment]
-  # Node version
-  NODE_VERSION = "18.17.0"
+  # Node version — must be >= 20 (aws-cdk-lib and the toolchain require it).
+  # Also pinned in .nvmrc.
+  NODE_VERSION = "20"
   
   # Next.js specific
   NEXT_TELEMETRY_DISABLED = "1"

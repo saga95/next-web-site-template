@@ -1,7 +1,7 @@
 import '@/styles/globals.css';
 import '@aws-amplify/ui-react/styles.css';
 import type { AppProps } from 'next/app';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Amplify } from 'aws-amplify';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -19,30 +19,28 @@ export { reportWebVitals } from '@/lib/webVitals';
 // ─── Amplify Provider ──────────────────────────────────────────────────────────
 
 function AmplifyProvider({ children }: { children: React.ReactNode }) {
-  const [isConfigured, setIsConfigured] = useState(false);
-
   useEffect(() => {
     const configureAmplify = async () => {
       try {
         const outputs = await import('../../amplify_outputs.json');
         Amplify.configure(outputs.default);
-        setIsConfigured(true);
       } catch {
         // In development without sandbox, continue without Amplify
         console.warn(
           'Amplify outputs not found. Running without backend configuration.'
         );
-        setIsConfigured(true);
       }
     };
 
-    configureAmplify();
+    void configureAmplify();
   }, []);
 
-  if (!isConfigured) {
-    return null;
-  }
-
+  // Render children immediately — never gate the app tree (and therefore the
+  // SSR/SSG output, including every <Head> tag) on Amplify configuration.
+  // `useEffect` does not run during SSR, so a gate here would strip all page
+  // content and meta tags from the server-rendered HTML that crawlers and
+  // link-preview bots see. AuthContext already handles the "not configured
+  // yet" state the same as "no session".
   // eslint-disable-next-line react/jsx-no-useless-fragment -- required for JSX return type
   return <>{children}</>;
 }

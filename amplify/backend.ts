@@ -12,7 +12,6 @@ import { Certificate } from 'aws-cdk-lib/aws-certificatemanager';
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { ARecord, HostedZone, RecordTarget } from 'aws-cdk-lib/aws-route53';
 import { ApiGatewayv2DomainProperties } from 'aws-cdk-lib/aws-route53-targets';
-import { HttpMethods } from 'aws-cdk-lib/aws-s3';
 import { auth } from './auth/resource';
 import { data } from './data/resource';
 import { storage } from './storage/resource';
@@ -55,12 +54,21 @@ cfnUserPool.policies = {
 };
 
 // ─── Post-confirmation Lambda: permission to add users to groups ────────────────
+//
+// Scope the policy to a wildcard User Pool ARN built from pseudo-parameters
+// rather than `userPool.userPoolArn`. The concrete ARN getter creates a
+// resource-level dependency edge (Lambda policy → User Pool) that, combined with
+// the trigger edge (User Pool → Lambda), is a circular dependency CloudFormation
+// rejects. The wildcard is still account- and region-scoped.
+
+const authStack = Stack.of(backend.auth.resources.userPool);
+const cognitoUserPoolWildcardArn = `arn:aws:cognito-idp:${authStack.region}:${authStack.account}:userpool/*`;
 
 backend.postConfirmation.resources.lambda.addToRolePolicy(
   new PolicyStatement({
     effect: Effect.ALLOW,
     actions: ['cognito-idp:AdminAddUserToGroup'],
-    resources: [backend.auth.resources.userPool.userPoolArn],
+    resources: [cognitoUserPoolWildcardArn],
   })
 );
 
@@ -204,17 +212,18 @@ backend.addOutput({
   },
 });
 // ─── S3 CORS for file uploads ───────────────────────────────────────────────────
+//
+// `resources.bucket` is the read-only `IBucket` interface and has no
+// `addCorsRule()`. Override CORS on the underlying L1 `CfnBucket` instead.
 
-const s3Bucket = backend.storage.resources.bucket;
-s3Bucket.addCorsRule({
-  allowedHeaders: ['*'],
-  allowedMethods: [
-    HttpMethods.GET,
-    HttpMethods.PUT,
-    HttpMethods.POST,
-    HttpMethods.DELETE,
+backend.storage.resources.cfnResources.cfnBucket.corsConfiguration = {
+  corsRules: [
+    {
+      allowedHeaders: ['*'],
+      allowedMethods: ['GET', 'PUT', 'POST', 'DELETE'],
+      allowedOrigins: ['*'], // TODO: Restrict to your domain in production
+      exposedHeaders: ['ETag', 'x-amz-meta-custom-header'],
+      maxAge: 3600,
+    },
   ],
-  allowedOrigins: ['*'], // TODO: Restrict to your domain in production
-  exposedHeaders: ['ETag', 'x-amz-meta-custom-header'],
-  maxAge: 3600,
-});
+};

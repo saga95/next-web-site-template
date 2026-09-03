@@ -41,7 +41,20 @@ export const lightTheme = {
   info: tokens.colors.info,
 } as const;
 
-export const darkTheme: typeof lightTheme = {
+/**
+ * Structural theme shape derived from {@link lightTheme}, with every literal
+ * string widened to `string`. Without this, `darkTheme: typeof lightTheme`
+ * plus `as const` would force each dark value to equal its light counterpart
+ * (e.g. `bg.base` would have to be the literal `"#ffffff"`), which fails
+ * `tsc` and, in turn, `next build`.
+ */
+type Widen<T> = T extends string
+  ? string
+  : { readonly [K in keyof T]: Widen<T[K]> };
+
+export type Theme = Widen<typeof lightTheme>;
+
+export const darkTheme: Theme = {
   bg: {
     base: tokens.colors.neutral[950],
     subtle: tokens.colors.neutral[900],
@@ -69,6 +82,4 @@ export const darkTheme: typeof lightTheme = {
   warning: tokens.colors.warning,
   error: tokens.colors.error,
   info: tokens.colors.info,
-} as const;
-
-export type Theme = typeof lightTheme;
+};
