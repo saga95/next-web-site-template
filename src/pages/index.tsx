@@ -11,7 +11,7 @@
  */
 
 import Head from 'next/head';
-import { SITE_NAME, SITE_URL } from '@/lib/seo';
+import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_URL } from '@/lib/seo';
 import styles from '@/styles/Home.module.css';
 
 export default function Home() {
@@ -45,12 +45,21 @@ export default function Home() {
         <meta property='og:url' content={SITE_URL} />
         <meta property='og:title' content={title} />
         <meta property='og:description' content={description} />
-        <meta property='og:image' content={`${SITE_URL}/og-image.svg`} />
+        <meta property='og:image' content={DEFAULT_OG_IMAGE.url} />
+        <meta
+          property='og:image:width'
+          content={String(DEFAULT_OG_IMAGE.width)}
+        />
+        <meta
+          property='og:image:height'
+          content={String(DEFAULT_OG_IMAGE.height)}
+        />
+        <meta property='og:image:alt' content={DEFAULT_OG_IMAGE.alt} />
         <meta property='twitter:card' content='summary_large_image' />
         <meta property='twitter:url' content={SITE_URL} />
         <meta property='twitter:title' content={title} />
         <meta property='twitter:description' content={description} />
-        <meta property='twitter:image' content={`${SITE_URL}/og-image.svg`} />
+        <meta property='twitter:image' content={DEFAULT_OG_IMAGE.url} />
         <link rel='icon' href='/favicon.ico' />
         <link rel='canonical' href={SITE_URL} />
       </Head>

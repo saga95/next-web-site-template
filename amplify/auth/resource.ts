@@ -9,7 +9,7 @@ import { postConfirmation } from './post-confirmation/resource';
  * - Email + phone login
  * - User groups for RBAC (Admin, Shopper)
  * - Post-confirmation Lambda to assign default group
- * - Optional MFA (TOTP)
+ * - Optional MFA (TOTP + SMS)
  * - Custom user attributes (given name, family name, phone)
  *
  * Customize login methods and user attributes as needed.
@@ -30,6 +30,9 @@ export const auth = defineAuth({
   multifactor: {
     mode: 'OPTIONAL',
     totp: true,
+    // Cognito rejects the User Pool when phone login is enabled without SMS MFA,
+    // so SMS must stay on for as long as `loginWith.phone` is `true` above.
+    sms: true,
   },
   groups: ['Admin', 'Shopper'],
   triggers: {
