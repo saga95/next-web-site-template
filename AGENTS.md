@@ -1,5 +1,17 @@
 # Agent Configuration — Next.js Enterprise Template
 
+## Token & Cost Discipline
+
+Applies to every agent (human or AI):
+
+- **MCP servers are opt-in.** All servers in `mcp.json` ship `disabled: true`. Enable only the ones the task needs (e.g. `figma` only when a Figma URL is provided), and disable them again afterwards. Never have an agent connect to a server it has no use for.
+- **Quality gate, in tiers** — run the cheapest tier that covers your change:
+  1. While iterating: `pnpm quality:quick` (quiet output, tests only for changed files).
+  2. Once before opening a PR: `pnpm quality` (format, lint, types, full coverage, audit).
+  3. Everything else is enforced by CI — do not re-run the full gate after every edit.
+- **Reuse before regenerating.** Search for an existing component/hook/util first (`src/components/ui`, `src/hooks`, `src/utils`) and read `CHANGELOG.md` / prior PRs for decisions already made.
+- **No Copilot review workflow.** The template's quality gate (husky + lint-staged, CI, PR checklist) is the review mechanism.
+
 ## Available Agents
 
 ### Default Agent
