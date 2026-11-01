@@ -22,6 +22,8 @@ const customJestConfig = {
   fakeTimers: { enableGlobally: false },
   // Module name mapper for path aliases
   moduleNameMapper: {
+    '^@/design-system$': '<rootDir>/design-system/index.ts',
+    '^@/design-system/(.*)$': '<rootDir>/design-system/$1',
     '^@/(.*)$': '<rootDir>/src/$1',
   },
 
