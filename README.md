@@ -324,6 +324,10 @@ Organize your projects effectively:
 
 ## 🏗️ Project Architecture
 
+![Architecture overview](docs/diagrams/architecture.drawio.svg)
+
+Diagrams are editable draw.io files — see [docs/diagrams](docs/diagrams/README.md).
+
 ### Directory Structure
 
 ```
