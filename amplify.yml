@@ -18,6 +18,9 @@ frontend:
         # grep exits 1 when no NEXT_PUBLIC_* vars are set — a valid state that
         # must not abort the build under `set -e`.
         - (env | grep -e NEXT_PUBLIC_ >> .env.production) || true
+        # Amplify's AWS_BRANCH is not NEXT_PUBLIC_, so expose it to the client
+        # bundle for getEnvironment() (NODE_ENV is always production here).
+        - echo "NEXT_PUBLIC_AWS_BRANCH=$AWS_BRANCH" >> .env.production
         - pnpm run build
   artifacts:
     baseDirectory: .next

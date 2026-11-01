@@ -139,6 +139,9 @@ devDependencies:
   constructs:
     specifier: ^10.8.1
     version: 10.8.1
+  esbuild:
+    specifier: ^0.25
+    version: 0.25.12
   eslint:
     specifier: ^8.57.1
     version: 8.57.1

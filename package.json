@@ -108,6 +108,7 @@
     "@typescript-eslint/parser": "^6.21.0",
     "aws-cdk-lib": "^2.268.0",
     "constructs": "^10.8.1",
+    "esbuild": "^0.25",
     "eslint": "^8.57.1",
     "eslint-config-next": "14.2.25",
     "eslint-plugin-jsx-a11y": "^6.10.2",
