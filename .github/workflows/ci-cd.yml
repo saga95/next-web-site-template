@@ -6,11 +6,24 @@ on:
       - main
       - staging
       - development
+    paths-ignore:
+      - '**/*.md'
+      - 'docs/**'
+      - 'ux-docs/**'
   pull_request:
     branches:
       - main
       - staging
       - development
+    paths-ignore:
+      - '**/*.md'
+      - 'docs/**'
+      - 'ux-docs/**'
+
+# Cancel superseded runs of the same ref (saves CI minutes on rapid pushes)
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
   NODE_VERSION: '20.x'

@@ -6,19 +6,19 @@
       "env": {
         "FIGMA_PERSONAL_ACCESS_TOKEN": ""
       },
-      "disabled": false,
+      "disabled": true,
       "alwaysAllow": []
     },
     "filesystem": {
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-filesystem", "."],
-      "disabled": false,
+      "disabled": true,
       "alwaysAllow": []
     },
     "git": {
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-git", "--repository", "."],
-      "disabled": false,
+      "disabled": true,
       "alwaysAllow": []
     },
     "github": {
@@ -27,7 +27,7 @@
       "env": {
         "GITHUB_PERSONAL_ACCESS_TOKEN": ""
       },
-      "disabled": false,
+      "disabled": true,
       "alwaysAllow": []
     },
     "seo-intelligence": {
