@@ -37,24 +37,27 @@ info "Checking prerequisites..."
 
 # Node.js
 if ! command -v node &> /dev/null; then
-  error "Node.js is not installed. Please install Node.js >= 18."
+  error "Node.js is not installed. Please install Node.js >= 20 (see .nvmrc)."
   exit 1
 fi
 
 NODE_VERSION=$(node -v | sed 's/v//' | cut -d. -f1)
-if (( NODE_VERSION < 18 )); then
-  error "Node.js >= 18 required. Found: $(node -v)"
+if (( NODE_VERSION < 20 )); then
+  error "Node.js >= 20 required (run 'nvm use'). Found: $(node -v)"
   exit 1
 fi
 success "Node.js $(node -v)"
 
 # Package manager
+# pnpm is required: only pnpm-lock.yaml is committed, and CDK bundling needs
+# pnpm's strict layout. Use corepack to get the version pinned in package.json.
+if ! command -v pnpm &> /dev/null && command -v corepack &> /dev/null; then
+  corepack enable &> /dev/null || true
+fi
 if command -v pnpm &> /dev/null; then
   PKG_MGR="pnpm"
-elif command -v npm &> /dev/null; then
-  PKG_MGR="npm"
 else
-  error "No package manager found. Install pnpm or npm."
+  error "pnpm not found. Run 'corepack enable' (bundled with Node) or 'npm i -g pnpm@9'."
   exit 1
 fi
 success "Package manager: $PKG_MGR"
@@ -71,11 +74,9 @@ success "Git $(git --version | cut -d' ' -f3)"
 echo ""
 info "Installing dependencies..."
 
-if [[ "$PKG_MGR" == "pnpm" ]]; then
-  pnpm install --frozen-lockfile 2>/dev/null || pnpm install
-else
-  npm ci 2>/dev/null || npm install
-fi
+# No stderr suppression / unfrozen fallback: install errors (wrong Node,
+# lockfile drift) must be visible rather than silently producing a broken tree.
+pnpm install --frozen-lockfile
 success "Dependencies installed"
 
 # ─── Step 3: Setup environment variables ──────────────────────────────────────
