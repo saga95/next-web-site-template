@@ -34,8 +34,8 @@ Built with enterprise-grade features, comprehensive documentation, and deploymen
 
 ### Prerequisites
 
-- **Node.js 18+** (LTS recommended)
-- **pnpm** (preferred), or npm/yarn
+- **Node.js 20+** (see `.nvmrc`; run `nvm use`). Older versions are rejected at install time.
+- **pnpm 9** — required (the repo ships `pnpm-lock.yaml` only). Run `corepack enable` and the right version is picked up from `package.json`
 - **Git** with SSH or HTTPS access
 - **Basic knowledge of**: Next.js, React, TypeScript, Material UI
 
