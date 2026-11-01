@@ -12,6 +12,7 @@
     "usernamehw.errorlens",
     "ms-vscode.vscode-typescript-next",
     "ms-vscode.vscode-react",
-    "ms-vscode.vscode-accessibility-tools"
+    "ms-vscode.vscode-accessibility-tools",
+    "hediet.vscode-drawio"
   ]
 }

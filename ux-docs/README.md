@@ -17,3 +17,7 @@ Output folder for **Aria**, the UX Designer Agent (see [`../CLAUDE.md`](../CLAUD
 All artifacts must reference design tokens from
 [`../design-system/tokens.ts`](../design-system/tokens.ts). See
 [`../.claude/commands/`](../.claude/commands/) for full command specifications.
+
+## Diagrams
+
+Stakeholder-friendly, editable architecture and flow diagrams (draw.io) live in [`docs/diagrams/`](../docs/diagrams/README.md).
